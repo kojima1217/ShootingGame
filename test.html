@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<style>
+  /* マウスカーソルの非表示 */
+  html,
+  body {
+    cursor: none;
+  }
+</style>
+
+<title>Mouse Stalker</title>
+
+<body>
+
+  <script>
+
+    class P2 {
+      constructor(x = 0, y = 0) { this.x = x; this.y = y }
+      get clone() { return new P2(this.x, this.y) }//複写
+      add({ x = 0, y = 0 }, { x: X, y: Y } = this) { this.x = X + x; this.y = Y + y; return this }//加算
+      sub({ x = 0, y = 0 }, { x: X, y: Y } = this) { this.x = X - x; this.y = Y - y; return this }//減算
+      mul({ x = 0, y = 0 }, { x: X, y: Y } = this) { this.x = X * x; this.y = Y * y; return this }//乗算
+      div({ x = 0, y = 0 }, { x: X, y: Y } = this) { this.x = X / x; this.y = Y / y; return this }//除算
+      sMul(n = 0, { x: X, y: Y } = this) { this.x = X * n; this.y = Y * n; return this }//スカラー倍
+    }
+    //__
+
+    //追いかける素となるもの（マウスの座標）
+    class MousePointer extends P2 {
+      constructor(x, y) {
+        super(x, y);
+      }
+
+      handleEvent(event) {
+        this.x = event.clientX + window.pageXOffset;
+        this.y = event.clientY + window.pageYOffset;
+      }
+
+      static create(view = document) {
+        let obj = new this();
+        view.addEventListener('mousemove', obj, false);
+        return obj;
+      }
+    }
+
+    //__
+    //追いかけるもの
+    class Stalker extends P2 {
+      constructor(target, images, pointer, option = {}) {
+        super(pointer.x, pointer.y);
+        this.target = target;
+        this.images = images;
+        this.pointer = pointer;
+        this.option = Object.assign({}, this.constructor.getDefaultOption(), option);
+        this.disabled = false;
+
+        this.chase();
+      }
+
+
+      chase() {
+        const { PI, floor: int } = Math;
+        if (this.disabled) return;
+        let
+          dp = this.pointer.clone.sub(this),
+          n = 360 / this.images.length,
+          ang = Math.atan2(dp.x, -dp.y) * 180 / PI;
+
+        this.add(dp.sMul(this.option.accelerator));
+        this.locate();
+        this.target.src = this.images[int((360 + ang) % 360 / n)].src;
+        requestAnimationFrame(this.chase.bind(this));
+      }
+
+
+      locate() {
+        const int = Math.floor;
+        let p = this.option.offset.clone.add(this);
+        Object.assign(this.target.style, { left: int(p.x) + 'px', top: int(p.y) + 'px' });
+        return this;
+      }
+
+
+      static getDefaultOption() {
+        return {
+          offset: new P2(0, 0),
+          accelerator: .9
+        };
+      }
+
+
+      static create(imageList, pointer, option = {}) {
+        let
+          div = document.createElement('div'),
+          target = new Image,
+          style = { position: 'absolute', left: '0px', top: '0px' },
+          images = imageList.map(src => Object.assign(new Image, { src }));
+
+        target.src = images[0].src;
+        Object.assign(div.style, style);
+        Object.assign(target.style, style);
+        document.body.appendChild(div).appendChild(target);
+
+        return new Stalker(target, images, pointer, option);
+      }
+    }
+
+    //__ 
+
+    const src = [
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJklI+py33gYgsAymsCrVjqzXXMB4YiQpbmmaor1rpvFMvzWFf6bjm1xgv6frYdjhhMKoifpJKWerKiwpOgJRVhq1NStrPlWa9UsTVsPJfT3SZXu9aN0XK19w2O3zz6HvxuNiZYAAA7',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJklI+py+0Po5xUhIuzziDuz3UeuAHmRIYnmppuRbovBcqzVNvrWOr7k/OJgB/hrRE0EnvGnyLZRBabMgbUJsA+p8JDdauJIo6IsFLhLF/Ei+EiwK4YzvKxrt7+4tHpvdcPGChRAAA7',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJXlI+py+0Po2Rh2lBtxFk73nkLGIoIWZoCmh7sC1PwTI70jSn4nuy868MdAMSi8YhMEg3KpnPJfEqNiKk1YZUqss4FV6kaIsNiKjlaPJcB6nJb/B7G56oCADs=',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJjlI+py+0Po5zUhFDhvbnt3SnfFx4AMILheaacx7Csiy1vIsu0eJu57kKQFD9gyjIkFlu0UWPJbPaUS+mUWrRCoKhmhOv9QncS8HFiTpbH6i23e32+o+s5U2yfufOykv8P6FAAADs=',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJnlI+pywkPQZi02QhptQw/PXGdBwbi4kngqaQl65ArfLgzLdgabugb7gvxgqahbGfEvJKRJfD4a6SIpSJiqqwiW9iPVjjCfq1SsZZldp6mVWbm9mxueTk5mN57k/F5FR8l8dchSChQAAA7',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJmlI+py+0PE4j0gFvj3dnt3y3fGCLjGHjN+QXuOins5tYMZ85AzYu4oNvxbDJQcEgsBmnI1G15aTqfS+kDar0emxpdFuLlUmbfLkpcOUmn49aaDWa+4Z7oPKm9DzV6ZOkPGCg4yFAAADs=',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJXlI+py+0PAZwJSErtxU9vzngfWInkIlpnmbbuaLxyqsy2xt4zoutH7xMAg4KA8YhMKpcBBPMJbTqj1KOiWl1go4zts7FcXZPisbWcQKLN63H7+o7L54cCADs=',
+      'data:image/gif;base64,R0lGODlhIAAgAJEAAPwAAYcAAf///wAAACH5BAEAAAIALAAAAAAgACAAAAJflI+py+0PYwO02nthwDzr3XFSQIZeRJYmIBmp2rXuC8YtDYsjXusfb0LxcpjfMOgYvpAM5TLUcD5tCtoMx0S8tEBoIlXtFsNNcaWZNMu+3XUY517A43IwvXzP6/d8fQEAOw=='
+    ];
+
+    let
+      pointer0 = MousePointer.create(),
+      pointer1 = Stalker.create(src, pointer0, { offset: new P2(), accelerator: .4 });
+
+  </script>
+
+</body>
