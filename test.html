@@ -7,14 +7,57 @@
   body {
     cursor: none;
   }
+
+  #field {
+    width: 400px;
+    height: 400px;
+    border: 1px solid black;
+  }
 </style>
 
 <title>Mouse Stalker</title>
 
 <body>
 
+  <canvas id="field"></canvas>
+
   <script>
 
+    let rockOn = false;
+
+    document.addEventListener("keydown", keyDown, true);
+
+    function keyDown(e) {
+      if (e.keyCode == 32) {
+        rockOn = true;
+      }
+    }
+
+    document.addEventListener("keyup", keyUp, true);
+
+    function keyUp(e) {
+      if (e.keyCode == 32) {
+        rockOn = false;
+      }
+    }
+
+    document.addEventListener("click", click, true);
+
+    function click(e) {
+      console.log("通過");
+    }
+
+    //ドラッグのデフォルト動作無効
+    function DragStartFunc(e){
+      if(e.preventDefault){
+        e.preventDefault();
+      }else{
+        return false;
+      }
+    }
+    document.addEventListener("dragstart", DragStartFunc);
+
+    
     class P2 {
       constructor(x = 0, y = 0) { this.x = x; this.y = y }
       get clone() { return new P2(this.x, this.y) }//複写
@@ -69,7 +112,9 @@
 
         this.add(dp.sMul(this.option.accelerator));
         this.locate();
+        if(!rockOn){
         this.target.src = this.images[int((360 + ang) % 360 / n)].src;
+        }
         requestAnimationFrame(this.chase.bind(this));
       }
 
