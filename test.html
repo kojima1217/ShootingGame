@@ -4,17 +4,17 @@
 <style>
   /* マウスカーソルの非表示 */
 
-  html, body{
+  html,
+  body {
     cursor: none;
   }
-  
+
   #hako {
     width: 1200px;
     height: 800px;
     margin-left: auto;
     margin-right: auto;
   }
-
 </style>
 
 <title>Mouse Stalker</title>
@@ -28,7 +28,7 @@
   <script>
 
     //ゲームスピード
-    const GAME_SPEED = 1000/60;
+    const GAME_SPEED = 1000 / 60;
 
     //画面サイズ
     const SCREEN_W = 1200;
@@ -39,8 +39,8 @@
     const CANVAS_H = SCREEN_H;
 
     //フィールドサイズ
-    const FIELD_W = SCREEN_W *2;
-    const FIELD_H = SCREEN_H *2;
+    const FIELD_W = SCREEN_W * 2;
+    const FIELD_H = SCREEN_H * 2;
 
     //キャンバス
     let can = document.getElementById("can");
@@ -65,6 +65,61 @@
 
     //自機が向いている方向
     let direc = 0;
+
+    //自機のショット
+    const CHARA_SHOT_MAX_COUNT = 100;
+    let fire = false;
+
+    //ショットが段々大きくなる
+    let blastInit = 0.5;//大きくなる速度
+    let blastShot = blastInit;
+
+    function CharacterShot() {
+      this.position = new Point();
+      this.size = 0;
+      this.speed = 0;
+      this.alive = false;
+    }
+
+    CharacterShot.prototype.set = function (p, size, speed) {
+      //座標をセット
+      this.position.x = p.x;
+      this.position.y = p.y;
+
+      //サイズ、スピードをセット
+      this.size = size;
+      this.speed = speed;
+
+      //生存フラグを立てる
+      this.alive = true;
+    }
+
+    // var length = 1000;
+    // var initial = 4;
+    // var ratio = -2;
+    // var arr = Array.apply(null, new Array(length)).map(function (v, i) { return initial * Math.pow(ratio, i); });
+    let burst = 0;
+    let burstCount = 0;
+
+    CharacterShot.prototype.move = function () {
+      this.size += blastShot;
+      this.speed += blastShot;
+
+      //座標を真上にspeed分だけ移動させる
+      this.position.y -= this.speed;
+      this.position.x += burst;
+
+      //一定以上の座標に到達していたら生存フラグを降ろす
+      if (this.position.y < -this.size) {
+        this.alive = false;
+      }
+    }
+
+    //ショットの初期化
+    var charaShot = new Array(CHARA_SHOT_MAX_COUNT);
+    for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
+      charaShot[i] = new CharacterShot();
+    }
 
     //画像ファイルを読み込み
     // let spriteImage = new Image();
@@ -107,20 +162,20 @@
     // }
 
     // update(){
-      
+
     // }
 
-    function Point(){
+    function Point() {
       this.x = 0;
       this.y = 0;
     }
 
     //自機
-    function Jiki(){
+    function Jiki() {
       this.position = new Point();
       this.size = 0;
     }
-    Jiki.prototype.init = function(size){
+    Jiki.prototype.init = function (size) {
       this.size = size;
     }
 
@@ -129,36 +184,49 @@
     jiki.init(10);
 
     //ゲーム初期化
-    function gameInit(){
-      setInterval(gameLoop,GAME_SPEED);
+    function gameInit() {
+      setInterval(gameLoop, GAME_SPEED);
     }
 
     //ゲームループ
-    function gameLoop(){
+    function gameLoop() {
       //移動の処理
+      burstCount++;
+      if(burstCount < 2){
+        burst = 5;
+      }else if(burstCount < 4){
+        burst = -5;
+      }else if(burstCount < 10){
+        burst = 10;
+      }else if(burstCount < 16){
+        burst= -10;
+      }else{
+        burstCount = 0;
+      }
+
 
       //描画の処理
       vcon.fillStyle = "black";
-      vcon.fillRect(0,0,SCREEN_W,SCREEN_H);
+      vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
 
-      if(direc == 0){
+      if (direc == 0) {
         vcon.fillStyle = "red";
-      }else if(direc == 1){
+      } else if (direc == 1) {
         vcon.fillStyle = "blue";
-      }else if(direc == 2){
+      } else if (direc == 2) {
         vcon.fillStyle = "yellow";
-      }else if(direc == 3){
+      } else if (direc == 3) {
         vcon.fillStyle = "cyan";
-      }else if(direc == 4){
+      } else if (direc == 4) {
         vcon.fillStyle = "orange";
-      }else if(direc == 5){
+      } else if (direc == 5) {
         vcon.fillStyle = "pink";
-      }else if(direc == 6){
+      } else if (direc == 6) {
         vcon.fillStyle = "green";
-      }else{
+      } else {
         vcon.fillStyle = "white";
       }
-      vcon.fillRect(100,100,100,100);
+      vcon.fillRect(100, 100, 100, 100);
 
       //パスの設定を開始
       vcon.beginPath();
@@ -176,13 +244,53 @@
       //自機を描く
       vcon.fill();
 
+      //自機ショットのパスを設定
+      vcon.beginPath();
+      //自機ショットのチェック（描画用）
+      for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
+        //ショットはもう発射されてる？
+        if (charaShot[i].alive) {
+          //ショットを動かす
+          charaShot[i].move();
+
+          //ショットを描くパスを設定
+          vcon.arc(
+            charaShot[i].position.x,
+            charaShot[i].position.y,
+            charaShot[i].size,
+            0, Math.PI * 2, false
+          );
+          //パスをいったん閉じる
+          vcon.closePath();
+        }
+      }
+      //自機ショットの色を設定
+      vcon.fillStyle = "red";
+      //自機ショットを描く
+      vcon.fill();
+
       // drawSprite(0,100,100);
 
       //仮想画面から実際のキャンバスにコピー
       con.drawImage(vcan, 0, 0, SCREEN_W, SCREEN_H, 0, 0, CANVAS_W, CANVAS_H);
+
+      //ショット
+      if (fire) {
+        //自機ショットのチェック
+        for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
+          //ショットが既に発射されているか？
+          if (!charaShot[i].alive) {
+            //ショットを自機の位置にセット、サイズ、速度
+            charaShot[i].set(jiki.position, 3, 20);
+            //ループを抜ける
+            break;
+          }
+        }
+      }
+      
     }
 
-    window.onload = function(){
+    window.onload = function () {
       gameInit();
     }
 
@@ -197,7 +305,7 @@
     // }
 
     can.addEventListener("mousemove", mouseMove, true);
-    function mouseMove(event){
+    function mouseMove(event) {
       //マウスカーソル座標の更新
       mouse.x = event.clientX - can.offsetLeft;
       mouse.y = event.clientY - can.offsetTop;
@@ -224,6 +332,7 @@
       event.preventDefault();
       if (event.which == 1) {
         console.log("左クリック");
+        fire = true;
       }
       if (event.which == 2) {
         console.log("中クリック");
@@ -238,6 +347,8 @@
     function mouseUp(event) {
       if (event.which == 1) {
         console.log("左クリック離された");
+        blastShot = blastInit;
+        fire = false;
       }
       if (event.which == 2) {
         console.log("中クリック離された");
@@ -289,8 +400,8 @@
       }
 
       handleEvent(event) {
-        this.x = event.clientX + window.pageXOffset -12;
-        this.y = event.clientY + window.pageYOffset -12;
+        this.x = event.clientX + window.pageXOffset - 12;
+        this.y = event.clientY + window.pageYOffset - 12;
       }
 
       static create(view = can) {
