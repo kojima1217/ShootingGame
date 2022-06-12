@@ -29,6 +29,14 @@ function mouseDown(event) {
   if (event.which == 1) {
     console.log("左クリック");
     fire = true;
+    /*
+    GameOverの時にクリックしたら初期化
+    押しっぱなし対策
+    delete jiki;
+    jiki = new jiki();
+    ゲームオーバーフラッグを元に戻してオープニングへ
+    スコア初期化
+    */
   }
   if (event.which == 2) {
     console.log("中クリック");
@@ -54,12 +62,14 @@ function mouseUp(event) {
 }
 
 //右クリックのメニュー無効
-// document.addEventListener('contextmenu', function (e) {
-//   e.preventDefault();
-// });
-// document.oncontextmenu = function () {
-//   return false;
-// };
+if (!Debug) {
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+  document.oncontextmenu = function () {
+    return false;
+  };
+}
 
 //マウスホイール
 document.onmousewheel = function (event) {

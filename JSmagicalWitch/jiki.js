@@ -2,7 +2,7 @@
 
 //自機初期化
 let jiki = new Jiki();
-jiki.init(10);
+jiki.init(10);//自機のサイズ
 
 //仮の自機判定描画
 function drawJiki() {
@@ -46,9 +46,9 @@ function setShot() {
       //ショットが既に発射されているか？
       if (!charaShotCenter[i].alive && !charaShotRight[i].alive && !charaShotLeft[i].alive) {
         //ショットを自機の位置にセット、サイズ、速度
-        charaShotCenter[i].set(jiki.position, CHARA_SHOT_SIZE, CHARA_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago);
-        charaShotRight[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago);
-        charaShotLeft[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago);
+        charaShotCenter[i].set(jiki.position, CHARA_SHOT_SIZE, CHARA_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAtackPoint);
+        charaShotRight[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAtackPoint);
+        charaShotLeft[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAtackPoint);
         //ループを抜ける
         break;
       }
@@ -59,33 +59,6 @@ function setShot() {
 
 //自機ショットの描画処理まとめ
 function drawShot() {
-  //** 真ん中の弾の描画 **//
-  //自機ショットのパスを設定
-  vcon.beginPath();
-  //自機ショットのチェック（描画用）
-  for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
-    //ショットはもう発射されてる？
-    if (charaShotCenter[i].alive) {
-      //ショットを動かす
-      charaShotCenter[i].move();
-
-      //ショットを描くパスを設定
-      vcon.arc(
-        charaShotCenter[i].position.x,
-        charaShotCenter[i].position.y,
-        charaShotCenter[i].size,
-        0, Math.PI * 2, false
-      );
-      //パスをいったん閉じる
-      vcon.closePath();
-    }
-  }
-  //自機ショットの色を設定
-  vcon.fillStyle = "cyan";
-  //自機ショットを描く
-  vcon.fill();
-
-
   //** 右側の弾の描画 **//
   //自機ショットのパスを設定
   vcon.beginPath();
@@ -153,6 +126,33 @@ function drawShot() {
   }
   //自機ショットの色を設定
   vcon.fillStyle = "#87cefa";
+  //自機ショットを描く
+  vcon.fill();
+
+
+  //** 真ん中の弾の描画 **//
+  //自機ショットのパスを設定
+  vcon.beginPath();
+  //自機ショットのチェック（描画用）
+  for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
+    //ショットはもう発射されてる？
+    if (charaShotCenter[i].alive) {
+      //ショットを動かす
+      charaShotCenter[i].move();
+
+      //ショットを描くパスを設定
+      vcon.arc(
+        charaShotCenter[i].position.x,
+        charaShotCenter[i].position.y,
+        charaShotCenter[i].size,
+        0, Math.PI * 2, false
+      );
+      //パスをいったん閉じる
+      vcon.closePath();
+    }
+  }
+  //自機ショットの色を設定
+  vcon.fillStyle = "cyan";
   //自機ショットを描く
   vcon.fill();
 }

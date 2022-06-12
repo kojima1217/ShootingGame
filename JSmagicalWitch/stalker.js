@@ -18,8 +18,8 @@ class P2 {
     }
 
     handleEvent(event) {
-      this.x = event.clientX + window.pageXOffset - 12;
-      this.y = event.clientY + window.pageYOffset - 12;
+      this.x = event.clientX + window.pageXOffset - 38;
+      this.y = event.clientY + window.pageYOffset - 50;
     }
 
     static create(view = can) {
@@ -54,7 +54,7 @@ class P2 {
 
       this.add(dp.sMul(this.option.accelerator));
       this.locate();
-      if (!rockOn) this.target.src = this.images[int((360 + ang) % 360 / n)].src;
+      if (!rockOn && jiki.hpPoint > 0) this.target.src = this.images[int((360 + ang) % 360 / n)].src;
       if (this.target.src == this.images[0].src) direc = 0;
       if (this.target.src == this.images[1].src) direc = 1;
       if (this.target.src == this.images[2].src) direc = 2;
@@ -63,6 +63,7 @@ class P2 {
       if (this.target.src == this.images[5].src) direc = 5;
       if (this.target.src == this.images[6].src) direc = 6;
       if (this.target.src == this.images[7].src) direc = 7;
+      if (jiki.hpPoint <= 0) this.target.src = lose.src;//GameOver時の画像に変換
       requestAnimationFrame(this.chase.bind(this));
     }
 
@@ -101,16 +102,20 @@ class P2 {
 
   //__ 
 
-  const src = [
-    "../images/testC6.png",
-    "../images/testC7.png",
-    "../images/testC4.png",
-    "../images/testC3.png",
-    "../images/testC0.png",
-    "../images/testC1.png",
-    "../images/testC2.png",
-    "../images/testC5.png",
+  let src = [
+    "../images/witch0.gif",
+    "../images/witch1.gif",
+    "../images/witch2.gif",
+    "../images/witch3.gif",
+    "../images/witch4.gif",
+    "../images/witch5.gif",
+    "../images/witch6.gif",
+    "../images/witch7.gif",
   ];
+
+  //GameOver時の画像
+  let lose = new Image();
+  lose.src = "../images/witch0.gif";
 
   let
     pointer0 = MousePointer.create(),
