@@ -36,8 +36,9 @@ vcan.height = FIELD_H;
 let camera_x = 0;
 let camera_y = 0;
 
-//GameOverフラグ
-let gameOver = false;
+//ゲームの状態 0=Opening 1=game 2=gameOver
+let gameSituation = 0;
+let toggleFlag = true;
 
 //自機の座標
 let jiki_x = 0;
@@ -68,7 +69,14 @@ waku.src = "../images/waku.gif";
 //モンスター
 let spriteImage = new Image();
 spriteImage.src = "../images/monster.gif";
-
+//ゲーム開始画面の女の子の立ち絵と背景
+let titleWitch = new Image();
+titleWitch.src = "../images/TitleWitch.png";
+let openingBG = new Image();
+openingBG.src = "../images/OpeningBG2.jpg";
+//ゲームオーバー時の女の子立ち絵
+let loseWitch = new Image();
+loseWitch.src = "../images/GameOverWitch3.png";
 
 //スプライトクラス
 class Sprite {
@@ -116,40 +124,30 @@ function gameInit() {
   //requestAnimationFrame の方がゲームに向いてるけど面倒なので保留
 }
 
-let reload = 0;
-let reload2 = 0;
-
 let gamethread = 0;
 
 //ゲームループ
 function gameLoop() {
 
-  if (!gameOver) {
+  if (gameSituation == 0) {
+    gamethread = 0;
+    vcon.drawImage(openingBG, 0, 0, 1920, 1080, -600, 0, 1920, 1080);
+    vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
+    vcon.drawImage(titleWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
+  }
+
+  if (gameSituation == 1) {
 
     gamethread++;
-
-    if(gamethread == 100){
-      shutugen.push(new Shutugen(5, 300, 100, 0, 0, 50, 50, 1, 1));
-    }
-    if(gamethread == 200) shutugen.push(new Shutugen(5, 200, 300, 0, 0, 50, 50, 1, 2));
-
-    //コウモリの出現（仮）ステージ作る時は消す
-    // if (reload == 0) {
-    //   bat.push(new Bat(0, 200, 100, 2, 2, 64, 43, 10));
-    //   //スプライトナンバー, 出現位置ｘ, 出現位置ｙ, 動きｘ, 動きｙ, 大きさｘ, 大きさｙ, ヒットポイント
-    //   reload = 1;
-    //   if (++reload2 == 1) {
-    //     reload = 20;
-    //     reload2 = 0;
-    //   }
-    // }
-    // if (reload > 0) reload--;
+    //-----ステージ１-----
+    if (gamethread == 100) shutugen.push(new Shutugen(5, 300, 100, 0, 0, 50, 50, 1, 1));
+    if (gamethread == 200) shutugen.push(new Shutugen(5, 200, 300, 0, 0, 50, 50, 1, 2));
 
     //-----敵の動き-----
-    update_on(bat);//コウモリ
-    update_on(batAtack);//コウモリの弾
-    update_on(jyouka);//コウモリ浄化
-    update_on(shutugen);
+    // update_on(bat);//コウモリ
+    // update_on(batAtack);//コウモリの弾
+    // update_on(jyouka);//コウモリ浄化
+    // update_on(shutugen);
 
     //-----自機ショットの生成-----
     setShot();
@@ -170,26 +168,38 @@ function gameLoop() {
     draw_on(bat);//コウモリ
     draw_on(batAtack);//コウモリの弾
     draw_on(jyouka);//コウモリ浄化
-  
+
 
     //自機ＨＰの表示（仮）
-    if (jiki.hpPoint > 30) {
+    if (jiki.hpPoint > 300) {
       vcon.fillStyle = "rgba(0,0,255,0.5)";
     } else {
       vcon.fillStyle = "rgba(255,0,0,0.5)";
     }
-    vcon.fillRect(100, 100, jiki.hpPoint / 5, 20);
+    vcon.fillRect(100, 60, jiki.hpPoint / 5, 20);
     vcon.strokeStyle = "black";
-    vcon.strokeRect(100, 100, 200, 20);
+    vcon.strokeRect(100, 60, 200, 20);
 
+    //HPがゼロになったらゲームオーバー判定
+    //if (jiki.hpPoint <= 0) { gameSituation = 2; }
   }
 
+  //ゲーム状況に影響されないようgameSituationの外に置く
+  //敵の動き
+  update_on(bat);//コウモリ
+  update_on(batAtack);//コウモリの弾
+  update_on(jyouka);//コウモリ浄化
+  update_on(shutugen);
+
   //ゲームオーバー
-  if (jiki.hpPoint <= 0) { gameOver = true }
-  if (gameOver) {
-    vcon.fillStyle = "black";
+  if (gameSituation == 2) {
+    vcon.fillStyle = "#f5deb3";
     vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
+    vcon.drawImage(loseWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
+    vcon.font = "20px 'Impact'";
+    vcon.fillStyle = "black";
+    vcon.fillText("最初の街に戻る", 300, 500);
   }
 
   //仮想画面から実際のキャンバスにコピー

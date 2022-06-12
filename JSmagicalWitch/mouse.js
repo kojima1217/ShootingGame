@@ -22,13 +22,42 @@ function keyUp(e) {
   }
 }
 
+//ゲーム画面内のクリックされた座標を計算するための変数
+let clickX = 0;
+let clickY = 0;
+let clickPositonX = 0;
+let clickPositonY = 0;
+let targetElement = document.getElementById("hako");
+let screenBox = targetElement.getBoundingClientRect();
+let cX = Math.floor(screenBox.left);
+let cY = Math.floor(screenBox.top);
+
 //マウスボタンを押下した時
 document.addEventListener("mousedown", mouseDown, true);
 function mouseDown(event) {
+  //クリックした座標を取得
+  clickX = event.pageX;
+  clickY = event.pageY;
+  clickPositonX = clickX - cX;
+  clickPositonY = clickY - cY;
   event.preventDefault();
   if (event.which == 1) {
     console.log("左クリック");
-    fire = true;
+    if (toggleFlag) {
+      if (gameSituation == 0) {
+        gameSituation = 1;
+        gamethread = 0;
+        toggleFlag = false;
+      }
+      if (clickPositonX > 300 && clickPositonX < 500 && clickPositonY > 500 && clickPositonY < 600) {
+        if (gameSituation == 2) {
+          jiki.hpPoint = 1000;
+          gameSituation = 0;
+          toggleFlag = false;
+        }
+      }
+    }
+    if (gameSituation == 1) fire = true;
     /*
     GameOverの時にクリックしたら初期化
     押しっぱなし対策
@@ -51,7 +80,8 @@ document.addEventListener("mouseup", mouseUp, true);
 function mouseUp(event) {
   if (event.which == 1) {
     console.log("左クリック離された");
-    fire = false;
+    toggleFlag = true;
+    if (gameSituation == 1) fire = false;
   }
   if (event.which == 2) {
     console.log("中クリック離された");

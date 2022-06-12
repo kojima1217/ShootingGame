@@ -1,16 +1,18 @@
-//****色々、関数やクラスなど****//
+//****大事な関数****//
 
 //-----デバッグ-----
 function gameDebug() {
   if (Debug) {
     con.font = "20px 'Impact'";
-    con.fillStyle = "white";
+    con.fillStyle = "black";
     con.fillText("弾" + charaShotCenter.length, 20, 20);
     con.fillText("敵" + bat.length, 20, 40);
     con.fillText("敵弾" + batAtack.length, 20, 60);
     con.fillText("HP" + jiki.hpPoint, 20, 80);
     con.fillText("MAXHP" + jiki.maxHp, 20, 100);
-    //con.fillText("test" + shutugen[1].shutNum, 20, 120);
+    con.fillText("ゲームの状態" + gameSituation, 20, 120);
+    con.fillText("クリック座標Ｘ" + clickPositonX, 20, 140);
+    con.fillText("クリック座標Ｙ" + clickPositonY, 20, 160);
   }
 }
 

@@ -23,6 +23,12 @@ class Enemy {
         if (this.x < -200 || this.x > SCREEN_W || this.y < -200 || this.y > SCREEN_H) {
             this.kill = true;
         }
+
+        //ゲームオーバーになったら全部消す
+        if(jiki.hpPoint <= 0){
+            this.kill = true;
+            gameSituation = 2;
+        }
     }
 
     draw() {
@@ -43,6 +49,7 @@ class Shutugen extends Enemy {
     }
 
     update() {
+        super.update();
         this.shutugenCount++;
         if (this.shutugenCount > 50) {
             if (this.shutugenCount % 10 == 0) {

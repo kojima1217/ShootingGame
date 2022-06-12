@@ -54,7 +54,7 @@ class P2 {
 
       this.add(dp.sMul(this.option.accelerator));
       this.locate();
-      if (!rockOn && jiki.hpPoint > 0) this.target.src = this.images[int((360 + ang) % 360 / n)].src;
+      if (!rockOn && gameSituation != 2) this.target.src = this.images[int((360 + ang) % 360 / n)].src;
       if (this.target.src == this.images[0].src) direc = 0;
       if (this.target.src == this.images[1].src) direc = 1;
       if (this.target.src == this.images[2].src) direc = 2;
@@ -63,7 +63,17 @@ class P2 {
       if (this.target.src == this.images[5].src) direc = 5;
       if (this.target.src == this.images[6].src) direc = 6;
       if (this.target.src == this.images[7].src) direc = 7;
-      if (jiki.hpPoint <= 0) this.target.src = lose.src;//GameOver時の画像に変換
+      if (gameSituation == 2) {
+        //GameOver時の画像に変換
+        loseAnimeCount++;
+        if(loseAnimeCount < 10){
+          this.target.src = lose.src;
+        }else if(loseAnimeCount < 20){
+          this.target.src = lose2.src;
+        }else {
+          loseAnimeCount = 0;
+        }
+      }
       requestAnimationFrame(this.chase.bind(this));
     }
 
@@ -115,7 +125,10 @@ class P2 {
 
   //GameOver時の画像
   let lose = new Image();
-  lose.src = "../images/witch0.gif";
+  lose.src = "../images/GameOverWitch1.gif";
+  let lose2 = new Image();
+  lose2.src = "../images/GameOverWitch2.gif";
+  let loseAnimeCount = 0;
 
   let
     pointer0 = MousePointer.create(),
