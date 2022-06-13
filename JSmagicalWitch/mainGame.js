@@ -45,6 +45,9 @@ let jiki_x = 0;
 let jiki_y = 0;
 let mouse = new Point();
 
+//自機のダメージ判定(描画用)
+let damageFlag = false;
+
 //自機が向いている方向
 let direc = 0;
 
@@ -62,6 +65,9 @@ let fire = false;
 let blastInit = 0.5;//ショットが段々大きくなる
 let shotAtackPoint = 10;//弾の攻撃力初期値
 
+//音声ファイルの読み込み
+const startSE = new Audio("../sounds/se/start.wav");
+
 //画像ファイルを読み込み
 //背景の枠
 let waku = new Image();
@@ -69,14 +75,20 @@ waku.src = "../images/waku.gif";
 //モンスター
 let spriteImage = new Image();
 spriteImage.src = "../images/monster.gif";
-//ゲーム開始画面の女の子の立ち絵と背景
+//ゲーム開始画面のタイトルロゴと女の子の立ち絵と背景
+let titleLogo = new Image();
+titleLogo.src = "../images/TitleLogo.png"
 let titleWitch = new Image();
 titleWitch.src = "../images/TitleWitch.png";
 let openingBG = new Image();
-openingBG.src = "../images/OpeningBG2.jpg";
+openingBG.src = "../images/OpeningBG.jpg";
 //ゲームオーバー時の女の子立ち絵
 let loseWitch = new Image();
 loseWitch.src = "../images/GameOverWitch3.png";
+
+//ダメージエフェクト　後にスプライト化
+let damageEf = new Image();
+damageEf.src = "../images/damage.png";
 
 //スプライトクラス
 class Sprite {
@@ -134,6 +146,7 @@ function gameLoop() {
     vcon.drawImage(openingBG, 0, 0, 1920, 1080, -600, 0, 1920, 1080);
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
     vcon.drawImage(titleWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
+    vcon.drawImage(titleLogo, 0, 0, 650, 150, 50, 50, 650*1.5, 150*1.5);
   }
 
   if (gameSituation == 1) {

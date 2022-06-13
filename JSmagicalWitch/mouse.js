@@ -45,14 +45,16 @@ function mouseDown(event) {
     console.log("左クリック");
     if (toggleFlag) {
       if (gameSituation == 0) {
-        gameSituation = 1;
         gamethread = 0;
+        startSE.play();
+        gameSituation = 1;
         toggleFlag = false;
       }
       if (clickPositonX > 300 && clickPositonX < 500 && clickPositonY > 500 && clickPositonY < 600) {
         if (gameSituation == 2) {
           jiki.hpPoint = 1000;
           gameSituation = 0;
+          damageFlag = false;
           toggleFlag = false;
         }
       }

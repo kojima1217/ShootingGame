@@ -18,8 +18,8 @@ class P2 {
     }
 
     handleEvent(event) {
-      this.x = event.clientX + window.pageXOffset - 38;
-      this.y = event.clientY + window.pageYOffset - 50;
+      this.x = event.clientX + window.pageXOffset-38;//-38
+      this.y = event.clientY + window.pageYOffset-50;//-50
     }
 
     static create(view = can) {

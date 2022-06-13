@@ -4,6 +4,8 @@
 let jiki = new Jiki();
 jiki.init(10);//自機のサイズ
 
+let dFcount = 0;
+
 //仮の自機判定描画
 function drawJiki() {
   //パスの設定を開始
@@ -19,9 +21,22 @@ function drawJiki() {
   //自機の色を設定する
   vcon.fillStyle = "blue";
 
+  //自機ダメージを受けた時の描画
+  if (damageFlag) {
+    dFcount++;
+    if (dFcount % 3 == 0) {
+      vcon.drawImage(damageEf, 0, 0, 150, 130, jiki.position.x-75, jiki.position.y-75, 150, 130);
+    }
+    if(dFcount >= 21){
+      dFcount = 0;
+      damageFlag = false;
+    }
+  }
+
   //自機を描く
   vcon.fill();
 }
+
 
 
 //ショットの初期化
@@ -156,3 +171,5 @@ function drawShot() {
   //自機ショットを描く
   vcon.fill();
 }
+
+

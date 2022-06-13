@@ -114,6 +114,7 @@ class Bat extends Enemy {
             jiki.position.x, jiki.position.y, jiki.size, jiki.size
         )) {
             jiki.hpPoint -= 1;
+            damageFlag = true;
         }
 
         //コウモリの動作
@@ -178,6 +179,7 @@ class BatAtack extends Enemy {
             jiki.position.x, jiki.position.y, jiki.size, jiki.size
         )) {
             jiki.hpPoint -= 100;
+            damageFlag = true;
             this.kill = true;
         }
     }
