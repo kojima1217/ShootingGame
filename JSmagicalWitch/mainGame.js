@@ -66,29 +66,39 @@ let blastInit = 0.5;//ショットが段々大きくなる
 let shotAtackPoint = 10;//弾の攻撃力初期値
 
 //音声ファイルの読み込み
-const startSE = new Audio("../sounds/se/start.wav");
+const startSE = new Audio("sounds/se/start.wav");
 
 //画像ファイルを読み込み
 //背景の枠
 let waku = new Image();
-waku.src = "../images/waku.gif";
+waku.src = "images/waku.gif";
 //モンスター
 let spriteImage = new Image();
-spriteImage.src = "../images/monster.gif";
-//ゲーム開始画面のタイトルロゴと女の子の立ち絵と背景
+spriteImage.src = "images/monster.gif";
+//ゲーム開始画面の画像
 let titleLogo = new Image();
-titleLogo.src = "../images/TitleLogo.png"
+titleLogo.src = "images/TitleLogo.png";
 let titleWitch = new Image();
-titleWitch.src = "../images/TitleWitch.png";
+titleWitch.src = "images/TitleWitch.png";
+let howTo = new Image();
+howTo.src = "images/HowToPlay.png";
+let startBtn = new Image();
+startBtn.src = "images/startbutton.png";
 let openingBG = new Image();
-openingBG.src = "../images/OpeningBG.jpg";
+openingBG.src = "images/OpeningBG.jpg";
 //ゲームオーバー時の女の子立ち絵
 let loseWitch = new Image();
-loseWitch.src = "../images/GameOverWitch3.png";
+loseWitch.src = "images/GameOverWitch3.png";
+let continueBtn = new Image();
+continueBtn.src = "images/continue.png";
+let gameOverBG = new Image();
+gameOverBG.src = "images/GameOverBG.jpg";
+let yarare = new Image();
+yarare.src = "images/yararechatta.png";
 
 //ダメージエフェクト　後にスプライト化
 let damageEf = new Image();
-damageEf.src = "../images/damage.png";
+damageEf.src = "images/damage.png";
 
 //スプライトクラス
 class Sprite {
@@ -146,7 +156,12 @@ function gameLoop() {
     vcon.drawImage(openingBG, 0, 0, 1920, 1080, -600, 0, 1920, 1080);
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
     vcon.drawImage(titleWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
-    vcon.drawImage(titleLogo, 0, 0, 650, 150, 50, 50, 650*1.5, 150*1.5);
+    vcon.drawImage(howTo, 0, 0, 800, 550, 100, 220, 800/1.5, 550/1.5);
+    vcon.drawImage(startBtn, 0, 0, 450, 130, 185, 630, 450*0.8, 130*0.8);
+    vcon.drawImage(titleLogo, 0, 0, 650, 150, (SCREEN_W-650*1.5)/2, 20, 650*1.5, 150*1.5);
+    // vcon.strokeStyle = "red";
+    // vcon.strokeRect(200, 640, 330, 90);
+
   }
 
   if (gameSituation == 1) {
@@ -206,13 +221,20 @@ function gameLoop() {
 
   //ゲームオーバー
   if (gameSituation == 2) {
-    vcon.fillStyle = "#f5deb3";
-    vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
+    // vcon.fillStyle = "#f5deb3";
+    // vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
+    vcon.drawImage(gameOverBG, 0, 0, 800, 600, 0, 0, 800*1.6, 600*1.6);
+    vcon.drawImage(continueBtn, 0, 0, 260, 260, 50, 220, 260*2.2, 260*2.2);
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
     vcon.drawImage(loseWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
-    vcon.font = "20px 'Impact'";
-    vcon.fillStyle = "black";
-    vcon.fillText("最初の街に戻る", 300, 500);
+    vcon.drawImage(yarare, 0, 0, 640, 100, 50, 40, 640*1.8, 100*1.8);
+    // vcon.font = "100px 'HGS創英角ﾎﾟｯﾌﾟ体'";
+    // vcon.fillStyle = "black";
+    // vcon.fillText("げーむおーばー", 80, 150);
+    // vcon.strokeStyle = "red";
+    // vcon.strokeRect(160, 330, 360, 120);
+    // vcon.strokeStyle = "blue";
+    // vcon.strokeRect(160, 490, 360, 120);
   }
 
   //仮想画面から実際のキャンバスにコピー

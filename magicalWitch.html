@@ -7,18 +7,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-
     body {
-      cursor: none;/* マウスカーソルの非表示 */
-      background-image: url(images/mahoujin.svg),url(images/mokume.jpg);
-      background-size: auto,cover;
-      background-repeat: no-repeat,no-repeat;
+      cursor: none;
+      /* マウスカーソルの非表示 */
+      background-image: url('images/mahoujin.png'), url("images/mokume.jpg");
+      background-size: cover, cover;
+      background-repeat: no-repeat, no-repeat;
     }
 
     #book {
       width: 1400px;
       height: 850px;
-      background-image: url(images/book.gif);
+      background-image: url("images/book.gif");
       background-repeat: no-repeat;
       background-size: 1400px;
       margin-left: auto;
@@ -33,12 +33,73 @@
       margin-right: auto;
     }
 
+    .is-hide {
+      display: none;
+    }
+
+    .fadeout-bg {
+      transition-property: opacity;
+      transition-delay: .9s;
+      transition-duration: .8s;
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .fadeout-loader {
+      transition-property: opacity;
+      transition-delay: .9s;
+      transition-duration: .3s;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #loader-bg {
+      background: black;
+      background-image: url("images/loading.gif");
+      background-repeat: no-repeat;
+      background-position: center center;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+    }
+
+    #loader {
+      height: 120px;
+      left: 50%;
+      margin-left: -60px;
+      margin-top: -60px;
+      position: fixed;
+      top: 50%;
+      width: 120px;
+    }
+
+    /* #loader p {
+      color: black;
+      font-size: 10px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    #loader p img {
+      display: inline-block;
+    } */
   </style>
 
   <title>Magical Witch</title>
 </head>
 
 <body>
+  <div id="loader-bg" class="is-hide">
+    <div id="loader" class="is-hide">
+      <!-- <p>
+        <img src="images/himaho.gif"><br>
+        Now Loading
+      </p> -->
+    </div>
+  </div>
 
   <div id="book">
     <div id="hako">
@@ -46,13 +107,14 @@
     </div>
   </div>
 
-
+  <script src="JSmagicalWitch/loader.js"></script>
   <script src="JsmagicalWitch/comm.js"></script>
   <script src="JsmagicalWitch/monster.js"></script>
   <script src="JsmagicalWitch/mainGame.js"></script>
   <script src="JsmagicalWitch/jiki.js"></script>
   <script src="JSmagicalWitch/mouse.js"></script>
   <script src="JSmagicalWitch/stalker.js"></script>
+
 
 </body>
 

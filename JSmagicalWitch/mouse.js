@@ -44,14 +44,19 @@ function mouseDown(event) {
   if (event.which == 1) {
     console.log("左クリック");
     if (toggleFlag) {
-      if (gameSituation == 0) {
-        gamethread = 0;
-        startSE.play();
-        gameSituation = 1;
-        toggleFlag = false;
+      if (gameSituation == 0) {//ゲーム開始
+        if (clickPositonX > 200 && clickPositonX < 530 && clickPositonY > 640 && clickPositonY < 730) {
+          gamethread = 0;
+          startSE.play();
+          gameSituation = 1;
+          toggleFlag = false;
+        }
       }
-      if (clickPositonX > 300 && clickPositonX < 500 && clickPositonY > 500 && clickPositonY < 600) {
-        if (gameSituation == 2) {
+      if (gameSituation == 2) {//ゲームオーバー
+        if (clickPositonX > 160 && clickPositonX < 520 && clickPositonY > 330 && clickPositonY < 450) {
+          console.log("コンテニュー");
+        }
+        if (clickPositonX > 160 && clickPositonX < 520 && clickPositonY > 490 && clickPositonY < 610) {
           jiki.hpPoint = 1000;
           gameSituation = 0;
           damageFlag = false;

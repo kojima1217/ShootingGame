@@ -113,21 +113,21 @@ class P2 {
   //__ 
 
   let src = [
-    "../images/witch0.gif",
-    "../images/witch1.gif",
-    "../images/witch2.gif",
-    "../images/witch3.gif",
-    "../images/witch4.gif",
-    "../images/witch5.gif",
-    "../images/witch6.gif",
-    "../images/witch7.gif",
+    "images/witch0.gif",
+    "images/witch1.gif",
+    "images/witch2.gif",
+    "images/witch3.gif",
+    "images/witch4.gif",
+    "images/witch5.gif",
+    "images/witch6.gif",
+    "images/witch7.gif",
   ];
 
   //GameOver時の画像
   let lose = new Image();
-  lose.src = "../images/GameOverWitch1.gif";
+  lose.src = "images/GameOverWitch1.gif";
   let lose2 = new Image();
-  lose2.src = "../images/GameOverWitch2.gif";
+  lose2.src = "images/GameOverWitch2.gif";
   let loseAnimeCount = 0;
 
   let
