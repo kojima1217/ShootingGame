@@ -5,12 +5,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet"> -->
 
   <style>
+    /* @font-face {
+      font-family: 'Hachi Maru Pop', cursive;
+      src: url(http://themes.googleusercontent.com/static/fonts/chelaone/v1/DHUBEAsCcSRMyWTJ6sisfj8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+    } */
+
     body {
       cursor: none;
       /* マウスカーソルの非表示 */
-      background-image: url('images/mahoujin.png'), url("images/mokume.jpg");
+      background-image: url(images/mahoujin.png), url(images/mokume.jpg);
       background-size: cover, cover;
       background-repeat: no-repeat, no-repeat;
     }
@@ -18,7 +26,7 @@
     #book {
       width: 1400px;
       height: 850px;
-      background-image: url("images/book.gif");
+      background-image: url(images/book.gif);
       background-repeat: no-repeat;
       background-size: 1400px;
       margin-left: auto;
@@ -44,18 +52,10 @@
       opacity: 0;
       pointer-events: none;
     }
-    
-    .fadeout-loader {
-      transition-property: opacity;
-      transition-delay: .9s;
-      transition-duration: .3s;
-      opacity: 0;
-      pointer-events: none;
-    }
 
     #loader-bg {
       background: black;
-      background-image: url("images/loading.gif");
+      background-image: url(images/loading.gif);
       background-repeat: no-repeat;
       background-position: center center;
       height: 100%;
@@ -65,41 +65,13 @@
       width: 100%;
       z-index: 100;
     }
-
-    #loader {
-      height: 120px;
-      left: 50%;
-      margin-left: -60px;
-      margin-top: -60px;
-      position: fixed;
-      top: 50%;
-      width: 120px;
-    }
-
-    /* #loader p {
-      color: black;
-      font-size: 10px;
-      line-height: 1.4;
-      text-align: center;
-    }
-
-    #loader p img {
-      display: inline-block;
-    } */
   </style>
 
   <title>Magical Witch</title>
 </head>
 
 <body>
-  <div id="loader-bg" class="is-hide">
-    <div id="loader" class="is-hide">
-      <!-- <p>
-        <img src="images/himaho.gif"><br>
-        Now Loading
-      </p> -->
-    </div>
-  </div>
+  <div id="loader-bg" class="is-hide"></div>
 
   <div id="book">
     <div id="hako">

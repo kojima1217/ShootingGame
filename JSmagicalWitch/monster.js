@@ -25,7 +25,7 @@ class Enemy {
         }
 
         //ゲームオーバーになったら全部消す
-        if(jiki.hpPoint <= 0){
+        if (jiki.hpPoint <= 0) {
             this.kill = true;
             gameSituation = 2;
         }
@@ -54,11 +54,11 @@ class Shutugen extends Enemy {
         if (this.shutugenCount > 50) {
             if (this.shutugenCount % 10 == 0) {
                 if (this.shutNum2 == 1) {
-                    bat.push(new Bat(0, this.x, this.y + 10, 0, 0, 64, 43, 10, 1));
+                    bat.push(new Bat(0, this.x, this.y + 10, 0, 0, 64, 43, 1, 1));
                     //スプライトナンバー, 出現位置ｘ, 出現位置ｙ, 動きｘ, 動きｙ, 大きさｘ, 大きさｙ, ヒットポイント
                 }
                 if (this.shutNum2 == 2) {
-                    bat.push(new Bat(0, this.x, this.y + 10, 0, 0, 64, 43, 10, 2));
+                    bat.push(new Bat(0, this.x, this.y + 10, 0, 0, 64, 43, 1, 2));
                     //スプライトナンバー, 出現位置ｘ, 出現位置ｙ, 動きｘ, 動きｙ, 大きさｘ, 大きさｙ, ヒットポイント
                 }
 
@@ -119,8 +119,8 @@ class Bat extends Enemy {
 
         //コウモリの動作
         if (this.shutNum == 1) {
-            this.vx = 2;
-            this.vy = 2;
+            this.vx = 0;
+            this.vy = -2;
             //弾の発射
             if (this.y == 200 && !this.kill) {
                 homing(this.x, this.y);
@@ -174,13 +174,23 @@ class BatAtack extends Enemy {
     update() {
         super.update();
 
-        if (checkHit(
-            this.x, this.y, this.sizeX, this.sizeY,
-            jiki.position.x, jiki.position.y, jiki.size, jiki.size
-        )) {
-            jiki.hpPoint -= 100;
-            damageFlag = true;
-            this.kill = true;
+        if (barrierOn) {
+            if(circleHit(
+                this.x, this.y, this.sizeX,
+                jiki.position.x,jiki.position.y,80//80はアイスバリアの半径
+            )){
+                this.kill = true;
+            }
+        }else{
+            if (checkHit(
+                this.x, this.y, this.sizeX, this.sizeY,
+                jiki.position.x, jiki.position.y, jiki.size, jiki.size
+            )) {
+                jiki.hpPoint -= 100;
+                damageFlag = true;
+                this.kill = true;
+            }
         }
+        
     }
 }

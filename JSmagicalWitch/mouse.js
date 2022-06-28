@@ -47,38 +47,82 @@ function mouseDown(event) {
       if (gameSituation == 0) {//ゲーム開始
         if (clickPositonX > 200 && clickPositonX < 530 && clickPositonY > 640 && clickPositonY < 730) {
           gamethread = 0;
-          startSE.play();
+          startVo.play();
           gameSituation = 1;
           toggleFlag = false;
         }
       }
       if (gameSituation == 2) {//ゲームオーバー
         if (clickPositonX > 160 && clickPositonX < 520 && clickPositonY > 330 && clickPositonY < 450) {
-          console.log("コンテニュー");
+          continueVo.play();
+          if (stagethred == 1) stagethred = 0;
+          else if (stagethred == 3) stagethred = 2;
+          else if (stagethred == 5) stagethred = 4;
+          else if (stagethred == 7) stagethred = 6;
+          else if (stagethred == 9) stagethred = 8;
+          jiki.hpPoint = 1000;
+          gameSituation = 1;
+          stopStage = false;
+          fire = false;
+          gamethread = 0;
+          actFontCount = 0;
+          actFontFlag = true;
+          goVoCount = 0;
+          lastFadeOut = 1;
+          lastCount = 0;
+          damageFlag = false;
+          toggleFlag = false;
         }
         if (clickPositonX > 160 && clickPositonX < 520 && clickPositonY > 490 && clickPositonY < 610) {
+          //ゲームの初期化
           jiki.hpPoint = 1000;
           gameSituation = 0;
+          stagethred = 0;
+          actFontCount = 0;
+          actFontFlag = true;
+          stopStage = false;
+          fire = false;
           damageFlag = false;
           toggleFlag = false;
         }
       }
+      if (gameSituation == 3) {//ステージクリア
+        if (stagethred == 1) stagethred = 2;
+        else if (stagethred == 3) stagethred = 4;
+        else if (stagethred == 5) stagethred = 6;
+        else if (stagethred == 7) stagethred = 8;
+        gameSituation = 1;
+        stopStage = false;
+        gamethread = 0;
+        toggleFlag = false;
+      }
+      if (gameSituation == 4 && lastCount > 500) {//全ステージクリア
+        jiki.hpPoint = 1000;
+        gameSituation = 0;
+        stagethred = 0;
+        actFontCount = 0;
+        actFontFlag = true;
+        stopStage = false;
+        fire = false;
+        damageFlag = false;
+        toggleFlag = false;
+      }
     }
-    if (gameSituation == 1) fire = true;
-    /*
-    GameOverの時にクリックしたら初期化
-    押しっぱなし対策
-    delete jiki;
-    jiki = new jiki();
-    ゲームオーバーフラッグを元に戻してオープニングへ
-    スコア初期化
-    */
+    if (gameSituation == 1 && stopStage) fire = true;
   }
   if (event.which == 2) {
     console.log("中クリック");
   }
   if (event.which == 3) {
     console.log("右クリック");
+    fireBl.push(new FireBlast());
+    // barrierOn = true;
+    // iceBa.push(new IceBarrier(0));
+    // iceBa.push(new IceBarrier(60));
+    // iceBa.push(new IceBarrier(120));
+    // iceBa.push(new IceBarrier(180));
+    // iceBa.push(new IceBarrier(240));
+    // iceBa.push(new IceBarrier(300));
   }
 }
 

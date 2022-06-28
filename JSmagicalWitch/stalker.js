@@ -63,6 +63,7 @@ class P2 {
       if (this.target.src == this.images[5].src) direc = 5;
       if (this.target.src == this.images[6].src) direc = 6;
       if (this.target.src == this.images[7].src) direc = 7;
+      if (!stopStage && gameSituation == 1) this.target.src = this.images[0].src;
       if (gameSituation == 2) {
         //GameOver時の画像に変換
         loseAnimeCount++;

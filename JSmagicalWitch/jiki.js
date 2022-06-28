@@ -25,7 +25,8 @@ function drawJiki() {
   if (damageFlag) {
     dFcount++;
     if (dFcount % 3 == 0) {
-      vcon.drawImage(damageEf, 0, 0, 150, 130, jiki.position.x-75, jiki.position.y-75, 150, 130);
+      //vcon.drawImage(damageEf, 0, 0, 150, 130, jiki.position.x-75, jiki.position.y-75, 150, 130);
+      drawSprite2(20, jiki.position.x-75, jiki.position.y-75, 1);
     }
     if(dFcount >= 21){
       dFcount = 0;
@@ -85,20 +86,22 @@ function drawShot() {
       if (direc == 0) charaShotRight[i].position.x += 1.5;//上
       else if (direc == 1) charaShotRight[i].position.x += 1.5;//右上
       else if (direc == 2) charaShotRight[i].position.y += 1.5;//右
-      else if (direc == 3) charaShotRight[i].position.x -= 1.5;//右下
+      else if (direc == 3) charaShotRight[i].position.y += 1.5;//右下
       else if (direc == 4) charaShotRight[i].position.x -= 1.5;//下
-      else if (direc == 5) charaShotRight[i].position.y -= 1.5;//左下
+      else if (direc == 5) charaShotRight[i].position.x -= 1.5;//左下
       else if (direc == 6) charaShotRight[i].position.y -= 1.5;//左
-      else charaShotRight[i].position.x += 1.5;//左上
+      else charaShotRight[i].position.y -= 1.5;//左上
       charaShotRight[i].move();
 
       //ショットを描くパスを設定
+      if(stopStage){
       vcon.arc(
         charaShotRight[i].position.x,
         charaShotRight[i].position.y,
         charaShotRight[i].size,
         0, Math.PI * 2, false
       );
+      }
       //パスをいったん閉じる
       vcon.closePath();
     }
@@ -119,7 +122,7 @@ function drawShot() {
       //ショットを動かす
       //charaShotLeft[i].position.x -= 1.5;
       if (direc == 0) charaShotLeft[i].position.x -= 1.5;//上
-      else if (direc == 1) charaShotLeft[i].position.x -= 1.5;//右上
+      else if (direc == 1) charaShotLeft[i].position.y -= 1.5;//右上
       else if (direc == 2) charaShotLeft[i].position.y -= 1.5;//右
       else if (direc == 3) charaShotLeft[i].position.x += 1.5;//右下
       else if (direc == 4) charaShotLeft[i].position.x += 1.5;//下
@@ -129,12 +132,14 @@ function drawShot() {
       charaShotLeft[i].move();
 
       //ショットを描くパスを設定
+      if(stopStage){
       vcon.arc(
         charaShotLeft[i].position.x,
         charaShotLeft[i].position.y,
         charaShotLeft[i].size,
         0, Math.PI * 2, false
       );
+      }
       //パスをいったん閉じる
       vcon.closePath();
     }
@@ -156,12 +161,14 @@ function drawShot() {
       charaShotCenter[i].move();
 
       //ショットを描くパスを設定
+      if(stopStage){
       vcon.arc(
         charaShotCenter[i].position.x,
         charaShotCenter[i].position.y,
         charaShotCenter[i].size,
         0, Math.PI * 2, false
       );
+      }
       //パスをいったん閉じる
       vcon.closePath();
     }
