@@ -337,7 +337,14 @@ function drawSprite2(snum, x, y, ex) {
 
 let fireBl = [];//ファイヤーブラスト
 let explod = [];//ファイヤーブラストの爆発
+let thHantei = [];//サンダーソードの判定
+let thGra = [];//サンダーソードのグラフィック
 let iceBa = [];//アイスバリア
+
+let fireReload = 1800;
+let thunderReload = 1800;
+let iceReload = 1800;
+let reloadGauge = 0;
 
 //ステージ
 let stageSituation = [];
@@ -395,7 +402,10 @@ function gameLoop() {
     setShot();
     update_on(fireBl);
     update_on(explod);
+    update_on(thHantei);
+    update_on(thGra);
     update_on(iceBa);
+
 
     //-----描画の処理-----
     //背景
@@ -408,11 +418,13 @@ function gameLoop() {
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
 
     //自機判定とショットの描画
-    drawJiki();//←仮の描画
+    //drawJiki();//←仮の描画
     drawShot();
     draw_on(iceBa);
     draw_on(fireBl);
     draw_on(explod);
+    draw_on(thHantei);
+    draw_on(thGra);
 
     //敵の描画
     draw_on(shutugen);//コウモリ出現の魔法陣　描画順はコウモリより上
@@ -423,6 +435,8 @@ function gameLoop() {
   }
 
   //ゲーム状況に影響されないようgameSituationの外に置く
+  //自機判定
+  drawJiki();//←仮の描画
   //ステージ背景の動き
   update_on(stageSituation);
   //敵の動き
@@ -445,9 +459,6 @@ function gameLoop() {
     vcon.drawImage(howTo, 0, 0, 800, 550, 100, 220, 800 / 1.5, 550 / 1.5);
     vcon.drawImage(startBtn, 0, 0, 450, 130, 185, 630, 450 * 0.8, 130 * 0.8);
     vcon.drawImage(titleLogo, 0, 0, 650, 150, (SCREEN_W - 650 * 1.5) / 2, 20, 650 * 1.5, 150 * 1.5);
-    // vcon.strokeStyle = "red";
-    // vcon.strokeRect(200, 640, 330, 90);
-
   }
 
   //ゲームオーバー
@@ -458,24 +469,11 @@ function gameLoop() {
         gameOverVo.play();
       }
     }
-    // vcon.fillStyle = "#f5deb3";
-    // vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
     vcon.drawImage(gameOverBG, 0, 0, 800, 600, 0, 0, 800 * 1.6, 600 * 1.6);
     vcon.drawImage(continueBtn, 0, 0, 260, 260, 50, 220, 260 * 2.2, 260 * 2.2);
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
     vcon.drawImage(loseWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
     vcon.drawImage(gameOverFont, 0, 0, 620, 100, 50, 40, 620 * 1.8, 100 * 1.8);
-    // vcon.drawImage(yarare, 0, 0, 640, 100, 50, 40, 640*1.8, 100*1.8);
-    // vcon.fillStyle = "black";
-    // vcon.font = "bold 100px 'Hachi Maru Pop'";
-    // vcon.fillText("やられちゃった。。。", 100, 150);
-    // vcon.font = "100px 'HGS創英角ﾎﾟｯﾌﾟ体'";
-    // vcon.fillStyle = "black";
-    // vcon.fillText("げーむおーばー", 80, 150);
-    // vcon.strokeStyle = "red";
-    // vcon.strokeRect(160, 330, 360, 120);
-    // vcon.strokeStyle = "blue";
-    // vcon.strokeRect(160, 490, 360, 120);
   }
 
   //ステージクリア
@@ -495,9 +493,6 @@ function gameLoop() {
     } else if (stagethred == 7) {
       vcon.drawImage(yasiki_9, 0, 0, 700, 400, -60, 0, 1400, 800);
     }
-    // vcon.fillStyle = "black";
-    // vcon.font = "bold 100px 'Hachi Maru Pop'";
-    // vcon.fillText("ステージクリア", 100, 150);
     vcon.drawImage(clearFont, 0, 0, 470, 170, (SCREEN_W - 470 * 1.5) / 2, 200, 470 * 1.5, 170 * 1.5);
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
   }
@@ -525,44 +520,7 @@ function gameLoop() {
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
   }
 
-  //自機ＨＰの表示
-  if (gameSituation == 1 || gameSituation == 3) {
-    vcon.beginPath();
-    //魔法アイコンリロードゲージ
-    vcon.fillStyle = "rgba(30, 200, 230,0.7)";
-    vcon.fillRect(140, 85, 200, 10);
-    //HPゲージ枠
-    vcon.fillStyle = "silver";
-    vcon.fillRect(148, 58, 204, 24);
-    vcon.fillStyle = "black";
-    vcon.fillRect(150, 60, 200, 20);
-    //HPゲージ
-    if (jiki.hpPoint > 500) {
-      vcon.fillStyle = "rgba(0,255,0,0.7)";
-    } else if (jiki.hpPoint > 200) {
-      vcon.fillStyle = "rgba(255,255,0,0.7)";
-    } else {
-      vcon.fillStyle = "rgba(255,0,0,0.7)";
-    }
-    vcon.fillRect(150, 60, jiki.hpPoint / 5, 20);
-    //アイコン枠
-    vcon.fillStyle = "silver";
-    vcon.arc(110, 70, 40, 0, 2 * Math.PI);
-    vcon.fill();
-    //魔法アイコン
-    drawSprite2(21, 70, 29, 1/7*8);
-    //vcon.drawImage(spriteImage2, 397, 952, 70, 70, 70, 30, 80, 80);//スプライト関数に拡大がないため
-    // vcon.drawImage(thunderOn, 0, 0, 70, 70, 90, 112, 40, 40);
-    // vcon.drawImage(iceOn, 0, 0, 70, 70, 90, 152, 40, 40);
-    //↓参考用
-    // new Sprite(397, 952, 70, 70),//21:魔法アイコン炎
-    // new Sprite(481, 952, 70, 70),//22:魔法アイコン雷
-    // new Sprite(566, 952, 70, 70),//23:魔法アイコン氷
-    // new Sprite(648, 952, 70, 70),//24:魔法アイコン炎リロード中
-    // new Sprite(728, 952, 70, 70),//25:魔法アイコン雷リロード中
-    // new Sprite(808, 952, 70, 70),//26:魔法アイコン氷リロード中
-    vcon.closePath();
-  }
+  HpGauge();
 
   //仮想画面から実際のキャンバスにコピー
   con.drawImage(vcan, 0, 0, SCREEN_W, SCREEN_H, 0, 0, CANVAS_W, CANVAS_H);

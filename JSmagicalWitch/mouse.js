@@ -108,21 +108,34 @@ function mouseDown(event) {
         toggleFlag = false;
       }
     }
-    if (gameSituation == 1 && stopStage) fire = true;
+    if (gameSituation == 1 && stopStage && !thunderSwordFlag) fire = true;
   }
   if (event.which == 2) {
     console.log("中クリック");
   }
-  if (event.which == 3) {
+  if (event.which == 3 && gameSituation == 1 && stopStage) {
     console.log("右クリック");
-    fireBl.push(new FireBlast());
-    // barrierOn = true;
-    // iceBa.push(new IceBarrier(0));
-    // iceBa.push(new IceBarrier(60));
-    // iceBa.push(new IceBarrier(120));
-    // iceBa.push(new IceBarrier(180));
-    // iceBa.push(new IceBarrier(240));
-    // iceBa.push(new IceBarrier(300));
+    fire = false;
+
+    if (changeMagic == 0 && fireReload == 1800) {
+      fireBl.push(new FireBlast());
+    } else if (changeMagic == 1 && thunderReload == 1800) {
+      thunderSwordFlag = true;
+      thHantei.push(new ThunderHantei(1));
+      thHantei.push(new ThunderHantei(2));
+      thHantei.push(new ThunderHantei(3));
+      thHantei.push(new ThunderHantei(4));
+      thHantei.push(new ThunderHantei(5));
+      thGra.push(new ThunderGraphic());
+    } else if (changeMagic == 2 && iceReload == 1800) {
+      barrierOn = true;
+      iceBa.push(new IceBarrier(0));
+      iceBa.push(new IceBarrier(60));
+      iceBa.push(new IceBarrier(120));
+      iceBa.push(new IceBarrier(180));
+      iceBa.push(new IceBarrier(240));
+      iceBa.push(new IceBarrier(300));
+    }
   }
 }
 
@@ -152,9 +165,22 @@ if (!Debug) {
   };
 }
 
+let changeMagic = 0;
 //マウスホイール
 document.onmousewheel = function (event) {
-  console.log(event.wheelDelta);
+  //console.log(event.wheelDelta);
+  console.log(changeMagic);
+  if (event.wheelDelta > 0) {
+    changeMagic--;
+  } else {
+    changeMagic++;
+  }
+  if (changeMagic > 2) {
+    changeMagic = 0;
+  }
+  if (changeMagic < 0) {
+    changeMagic = 2;
+  }
 }
 
 //ドラッグのデフォルト動作無効

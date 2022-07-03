@@ -54,7 +54,7 @@ class P2 {
 
       this.add(dp.sMul(this.option.accelerator));
       this.locate();
-      if (!rockOn && gameSituation != 2) this.target.src = this.images[int((360 + ang) % 360 / n)].src;
+      if (!rockOn && !thunderSwordFlag && gameSituation != 2) this.target.src = this.images[int((360 + ang) % 360 / n)].src;
       if (this.target.src == this.images[0].src) direc = 0;
       if (this.target.src == this.images[1].src) direc = 1;
       if (this.target.src == this.images[2].src) direc = 2;
