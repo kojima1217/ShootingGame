@@ -63,9 +63,9 @@ function setShot() {
       //ショットが既に発射されているか？
       if (!charaShotCenter[i].alive && !charaShotRight[i].alive && !charaShotLeft[i].alive) {
         //ショットを自機の位置にセット、サイズ、速度
-        charaShotCenter[i].set(jiki.position, CHARA_SHOT_SIZE, CHARA_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAtackPoint);
-        charaShotRight[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAtackPoint);
-        charaShotLeft[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAtackPoint);
+        charaShotCenter[i].set(jiki.position, CHARA_SHOT_SIZE, CHARA_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAttackPoint);
+        charaShotRight[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAttackPoint);
+        charaShotLeft[i].set(jiki.position, CHARA_SIDE_SHOT_SIZE, CHARA_SIDE_SHOT_SPEED, blastInit, direc, SCREEN_W, SCREEN_H, diago, shotAttackPoint);
         //ループを抜ける
         break;
       }
@@ -73,87 +73,111 @@ function setShot() {
   }
 }
 
+let shotRdraw = 56;
+let sRdCount = 0;
+let shotLdraw = 56;
+let sLdCount = 0;
+let shotCdraw = 56;
+let sCdCount = 0;
 
 //自機ショットの描画処理まとめ
 function drawShot() {
   //** 右側の弾の描画 **//
   //自機ショットのパスを設定
-  vcon.beginPath();
+  //vcon.beginPath();
   //自機ショットのチェック（描画用）
   for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
     //ショットはもう発射されてる？
     if (charaShotRight[i].alive) {
       //ショットを動かす
-      if (direc == 0) charaShotRight[i].position.x += 1.5;//上
-      else if (direc == 1) charaShotRight[i].position.x += 1.5;//右上
-      else if (direc == 2) charaShotRight[i].position.y += 1.5;//右
-      else if (direc == 3) charaShotRight[i].position.y += 1.5;//右下
-      else if (direc == 4) charaShotRight[i].position.x -= 1.5;//下
-      else if (direc == 5) charaShotRight[i].position.x -= 1.5;//左下
-      else if (direc == 6) charaShotRight[i].position.y -= 1.5;//左
+      if (charaShotRight[i].direction == 0) charaShotRight[i].position.x += 1.5;//上
+      else if (charaShotRight[i].direction == 1) charaShotRight[i].position.x += 1.5;//右上
+      else if (charaShotRight[i].direction == 2) charaShotRight[i].position.y += 1.5;//右
+      else if (charaShotRight[i].direction == 3) charaShotRight[i].position.y += 1.5;//右下
+      else if (charaShotRight[i].direction == 4) charaShotRight[i].position.x -= 1.5;//下
+      else if (charaShotRight[i].direction == 5) charaShotRight[i].position.x -= 1.5;//左下
+      else if (charaShotRight[i].direction == 6) charaShotRight[i].position.y -= 1.5;//左
       else charaShotRight[i].position.y -= 1.5;//左上
       charaShotRight[i].move();
 
       //ショットを描くパスを設定
       if(stopStage){
-      vcon.arc(
-        charaShotRight[i].position.x,
-        charaShotRight[i].position.y,
-        charaShotRight[i].size,
-        0, Math.PI * 2, false
-      );
+      // vcon.arc(
+      //   charaShotRight[i].position.x,
+      //   charaShotRight[i].position.y,
+      //   charaShotRight[i].size,
+      //   0, Math.PI * 2, false
+      // );
+      sRdCount++;
+      if(sRdCount > 6) sRdCount = 0;
+      if(sRdCount == 0) shotRdraw = 56;
+      if(sRdCount == 1) shotRdraw = 103;
+      if(sRdCount == 2) shotRdraw = 149;
+      if(sRdCount == 3) shotRdraw = 196;
+      if(sRdCount == 4) shotRdraw = 242;
+      if(sRdCount == 5) shotRdraw = 289;
+      vcon.drawImage(spriteImage2, shotRdraw, 1290, 43, 43, charaShotRight[i].position.x-charaShotRight[i].size, charaShotRight[i].position.y-charaShotRight[i].size, charaShotRight[i].size*2, charaShotRight[i].size*2);
       }
       //パスをいったん閉じる
-      vcon.closePath();
+      //vcon.closePath();
     }
   }
   //自機ショットの色を設定
-  vcon.fillStyle = "#87cefa";
+  //vcon.fillStyle = "#87cefa";
   //自機ショットを描く
-  vcon.fill();
+  //vcon.fill();
 
 
   //** 左側の弾の描画 **//
   //自機ショットのパスを設定
-  vcon.beginPath();
+  //vcon.beginPath();
   //自機ショットのチェック（描画用）
   for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
     //ショットはもう発射されてる？
     if (charaShotLeft[i].alive) {
       //ショットを動かす
       //charaShotLeft[i].position.x -= 1.5;
-      if (direc == 0) charaShotLeft[i].position.x -= 1.5;//上
-      else if (direc == 1) charaShotLeft[i].position.y -= 1.5;//右上
-      else if (direc == 2) charaShotLeft[i].position.y -= 1.5;//右
-      else if (direc == 3) charaShotLeft[i].position.x += 1.5;//右下
-      else if (direc == 4) charaShotLeft[i].position.x += 1.5;//下
-      else if (direc == 5) charaShotLeft[i].position.y += 1.5;//左下
-      else if (direc == 6) charaShotLeft[i].position.y += 1.5;//左
+      if (charaShotLeft[i].direction == 0) charaShotLeft[i].position.x -= 1.5;//上
+      else if (charaShotLeft[i].direction == 1) charaShotLeft[i].position.y -= 1.5;//右上
+      else if (charaShotLeft[i].direction == 2) charaShotLeft[i].position.y -= 1.5;//右
+      else if (charaShotLeft[i].direction == 3) charaShotLeft[i].position.x += 1.5;//右下
+      else if (charaShotLeft[i].direction == 4) charaShotLeft[i].position.x += 1.5;//下
+      else if (charaShotLeft[i].direction == 5) charaShotLeft[i].position.y += 1.5;//左下
+      else if (charaShotLeft[i].direction == 6) charaShotLeft[i].position.y += 1.5;//左
       else charaShotLeft[i].position.x -= 1.5;//左上
       charaShotLeft[i].move();
 
       //ショットを描くパスを設定
       if(stopStage){
-      vcon.arc(
-        charaShotLeft[i].position.x,
-        charaShotLeft[i].position.y,
-        charaShotLeft[i].size,
-        0, Math.PI * 2, false
-      );
+      // vcon.arc(
+      //   charaShotLeft[i].position.x,
+      //   charaShotLeft[i].position.y,
+      //   charaShotLeft[i].size,
+      //   0, Math.PI * 2, false
+      // );
+      sLdCount++;
+      if(sLdCount > 6) sLdCount = 0;
+      if(sLdCount == 0) shotLdraw = 56;
+      if(sLdCount == 1) shotLdraw = 103;
+      if(sLdCount == 2) shotLdraw = 149;
+      if(sLdCount == 3) shotLdraw = 196;
+      if(sLdCount == 4) shotLdraw = 242;
+      if(sLdCount == 5) shotLdraw = 289;
+      vcon.drawImage(spriteImage2, shotLdraw, 1290, 43, 43, charaShotLeft[i].position.x-charaShotLeft[i].size, charaShotLeft[i].position.y-charaShotLeft[i].size, charaShotLeft[i].size*2, charaShotLeft[i].size*2);
       }
       //パスをいったん閉じる
-      vcon.closePath();
+      //vcon.closePath();
     }
   }
   //自機ショットの色を設定
-  vcon.fillStyle = "#87cefa";
+  //vcon.fillStyle = "#87cefa";
   //自機ショットを描く
-  vcon.fill();
+  //vcon.fill();
 
 
   //** 真ん中の弾の描画 **//
   //自機ショットのパスを設定
-  vcon.beginPath();
+  //vcon.beginPath();
   //自機ショットのチェック（描画用）
   for (i = 0; i < CHARA_SHOT_MAX_COUNT; i++) {
     //ショットはもう発射されてる？
@@ -163,21 +187,30 @@ function drawShot() {
 
       //ショットを描くパスを設定
       if(stopStage){
-      vcon.arc(
-        charaShotCenter[i].position.x,
-        charaShotCenter[i].position.y,
-        charaShotCenter[i].size,
-        0, Math.PI * 2, false
-      );
+      // vcon.arc(
+      //   charaShotCenter[i].position.x,
+      //   charaShotCenter[i].position.y,
+      //   charaShotCenter[i].size,
+      //   0, Math.PI * 2, false
+      // );
+      sCdCount++;
+      if(sCdCount > 6) sCdCount = 0;
+      if(sCdCount == 0) shotCdraw = 56;
+      if(sCdCount == 1) shotCdraw = 103;
+      if(sCdCount == 2) shotCdraw = 149;
+      if(sCdCount == 3) shotCdraw = 196;
+      if(sCdCount == 4) shotCdraw = 242;
+      if(sCdCount == 5) shotCdraw = 289;
+      vcon.drawImage(spriteImage2, shotRdraw, 1228, 43, 43, charaShotCenter[i].position.x-charaShotCenter[i].size, charaShotCenter[i].position.y-charaShotCenter[i].size, charaShotCenter[i].size*2, charaShotCenter[i].size*2);
       }
       //パスをいったん閉じる
-      vcon.closePath();
+      //vcon.closePath();
     }
   }
   //自機ショットの色を設定
-  vcon.fillStyle = "cyan";
+  //vcon.fillStyle = "cyan";
   //自機ショットを描く
-  vcon.fill();
+  //vcon.fill();
 }
 
 

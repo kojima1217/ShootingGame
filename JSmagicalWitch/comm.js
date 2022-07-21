@@ -4,10 +4,10 @@
 function gameDebug() {
   if (Debug) {
     con.font = "20px 'Impact'";
-    con.fillStyle = "white";
+    con.fillStyle = "blue";
     con.fillText("弾" + charaShotCenter.length, 20, 20);
     con.fillText("敵" + bat.length, 20, 40);
-    con.fillText("敵弾" + batAtack.length, 20, 60);
+    con.fillText("ボスHP" + bossHP, 20, 60);
     con.fillText("HP" + jiki.hpPoint, 20, 80);
     con.fillText("MAXHP" + jiki.maxHp, 20, 100);
     con.fillText("ゲームの状態" + gameSituation, 20, 120);
@@ -18,6 +18,8 @@ function gameDebug() {
     con.fillText("stopStage" + stopStage, 20, 220);
     con.fillText("actFontFlag" + actFontFlag, 20, 240);
     con.fillText("actFontCount" + actFontCount, 20, 260);
+    con.fillText("フォーメーション" + formation, 20, 280);
+    con.fillText("treantCount" + treantCount, 20, 300);
   }
 }
 
@@ -45,7 +47,7 @@ function CharacterShot() {
   this.alive = false;
 }
 
-CharacterShot.prototype.set = function (p, size, speed, blast, direction, screenW, screenH, diagonal, shotAtackPoint) {
+CharacterShot.prototype.set = function (p, size, speed, blast, direction, screenW, screenH, diagonal, shotAttackPoint) {
   //座標をセット
   this.position.x = p.x;
   this.position.y = p.y;
@@ -61,7 +63,7 @@ CharacterShot.prototype.set = function (p, size, speed, blast, direction, screen
   this.screenH = screenH;//画面サイズ縦
   this.diagonal = diagonal;//斜め補正
 
-  this.shotAtackPoint = shotAtackPoint;//攻撃力
+  this.shotAttackPoint = shotAttackPoint;//攻撃力
 
   //生存フラグを立てる
   this.alive = true;
@@ -72,7 +74,7 @@ CharacterShot.prototype.move = function () {
   //弾が段々大きくなり、段々早くなり、段々攻撃力アップ
   this.size += this.blast;
   this.speed += this.blast;
-  this.shotAtackPoint += this.blast;
+  this.shotAttackPoint += this.blast;
 
   if (this.direction == 0) {//----------------------------上----------------------------------
     //弾をspeed分だけ移動させる
@@ -110,23 +112,99 @@ CharacterShot.prototype.move = function () {
   }
 
   //敵に弾が当たったらHPを減らす
-  for (let i = 0; i < bat.length; i++) {
-    if (!bat[i].kill) {
+  if (attackDamage(bat, this.position.x, this.position.y, this.size, this.shotAttackPoint, 0, 0, 0, 0)) {
+    this.alive = false;
+  }
+  if (attackDamage(treant, this.position.x, this.position.y, this.size, this.shotAttackPoint, 30, 20, -50, -30)) {
+    hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
+    this.alive = false;
+  }
+  if (attackDamage(pumpkin, this.position.x, this.position.y, this.size, this.shotAttackPoint, 10, 10, -20, -20)) {
+    hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
+    this.alive = false;
+  }
+  if (attackDamage(ghost, this.position.x, this.position.y, this.size, this.shotAttackPoint, 15, 0, -30, -10)) {
+    hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
+    this.alive = false;
+  }
+  if (attackDamage(devil, this.position.x, this.position.y, this.size, this.shotAttackPoint, 30, 20, -50, -40)) {
+    hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
+    this.alive = false;
+  }
+  if (attackDamage(bossSkull, this.position.x, this.position.y, this.size, this.shotAttackPoint, 102, 260, -204, -300)) {
+    hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
+    this.alive = false;
+    bossHP-=this.shotAttackPoint;
+  }
+  if (attackDamage(bossHand, this.position.x, this.position.y, this.size, this.shotAttackPoint, 60, 60, -120, -120)) {
+    hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
+    this.alive = false;
+  }
+  //ボスと自機ショットの描画優先度調整
+  for (let i = 0; i < bossSkull.length; i++) {
+    if (!bossSkull[i].kill && !bossSkull[i].active) {
       if (checkHit(
         this.position.x, this.position.y, this.size, this.size,
-        bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
+        bossSkull[i].x + 60, bossSkull[i].y + 30, bossSkull[i].sizeX -120, bossSkull[i].sizeY -100
       )) {
-        bat[i].hp -= this.shotAtackPoint;
         this.alive = false;
-        if (bat[i].hp < 0) {
-          jyouka.push(new Jyouka(4, bat[i].x + 10, bat[i].y, bat[i].vx, bat[i].vy));
-          bat[i].kill = true;
-        }
         break;
       }
     }
   }
+
+  // for (let i = 0; i < bat.length; i++) {
+  //   if (!bat[i].kill) {
+  //     if (checkHit(
+  //       this.position.x, this.position.y, this.size, this.size,
+  //       bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
+  //     )) {
+  //       bat[i].hp -= this.shotAttackPoint;
+  //       this.alive = false;
+  //       if (bat[i].hp < 0) {
+  //         jyouka.push(new Jyouka(4, bat[i].x + 10, bat[i].y, bat[i].vx, bat[i].vy));
+  //         bat[i].kill = true;
+  //       }
+  //       break;
+  //     }
+  //   }
+  // }
 }
+
+//ダメージ判定
+function attackDamage(obj, x, y, size, attack, adaptX, adaptY, adaptSX, adaptSY) {
+  //(obj,sprite,x,y,size,attack,jyoukaX,jyoukaY,adaptX,adaptY,adaptSX,adaptSY){
+  for (let i = 0; i < obj.length; i++) {
+    if (!obj[i].kill && obj[i].active) {
+      if (checkHit(
+        x, y, size, size,
+        obj[i].x + adaptX, obj[i].y + adaptY, obj[i].sizeX + adaptSX, obj[i].sizeY + adaptSY
+      )) {
+        obj[i].hp -= attack;
+        // if (obj[i].hp < 0) {
+        //   jyouka.push(new Jyouka(sprite, obj[i].x + jyoukaX, obj[i].y + jyoukaY, obj[i].vx, obj[i].vy));
+        //   obj[i].kill = true;
+        // }
+        return true;
+      }
+    }
+  }
+}
+
+//ファイヤーブラストのヒット判定
+// function fireHit(obj,x,y,size,adaptX,adaptY,adaptSX,adaptSY){
+//   for (let i = 0; i < obj.length; i++) {
+//     if (!obj[i].kill) {
+//       if (checkHit(
+//         x, y, size, size,
+//         obj[i].x + adaptX, obj[i].y + adaptY, obj[i].sizeX + adaptSX, obj[i].sizeY + adaptSY
+//       )) {
+//         explod.push(new Explosion(x, y));
+//         return true;
+//       }
+//     }
+//   }
+// }
 
 //動作処理のまとめ
 function update_on(obj) {

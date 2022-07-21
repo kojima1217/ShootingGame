@@ -68,7 +68,7 @@ const CHARA_SIDE_SHOT_SPEED = 18;
 const CHARA_SHOT_MAX_COUNT = 100;
 let fire = false;
 let blastInit = 0.5;//ショットが段々大きくなる
-let shotAtackPoint = 10;//弾の攻撃力初期値
+let shotAttackPoint = 10;//弾の攻撃力初期値
 
 //音声ファイルの読み込み
 const startVo = new Audio("sounds/se/start.wav");
@@ -148,23 +148,7 @@ let yasikigaikan_8 = new Image();
 yasikigaikan_8.src = "images/map/8yasikigaikan.gif";
 let yasiki_9 = new Image();
 yasiki_9.src = "images/map/9yasiki.gif";
-//魔法アイコン
-let fireOn = new Image();
-fireOn.src = "images/ui/fireOn.png";
-let thunderOn = new Image();
-thunderOn.src = "images/ui/thunderOn.png";
-let iceOn = new Image();
-iceOn.src = "images/ui/iceOn.png";
 
-
-//仮で設置
-let test = new Image();
-test.src = "images/img03.png";
-
-
-//ダメージエフェクト　後にスプライト化
-let damageEf = new Image();
-damageEf.src = "images/damage.png";
 
 //スプライトクラス
 class Sprite {
@@ -197,7 +181,7 @@ let sprite = [
   new Sprite(266, 130, 112, 110),//15:トレント枯れ木
   new Sprite(410, 172, 50, 50),//16:トレントの弾
 
-  new Sprite(484, 163, 65, 65),//17:ヒットエフェクト
+  new Sprite(484, 163, 65, 65),//17:ヒットエフェクト１(２、３、４は一番下)
 
   new Sprite(394, 262, 80, 70),//18:パンプキン１
   new Sprite(300, 262, 80, 70),//19:パンプキン２
@@ -212,10 +196,10 @@ let sprite = [
   new Sprite(327, 360, 65, 64),//28:パンプキン消滅５
   new Sprite(411, 360, 65, 64),//29:パンプキン消滅６
 
-  new Sprite(22, 470, 70, 90),//30:ゴースト１
-  new Sprite(101, 470, 70, 90),//31:ゴースト２
-  new Sprite(180, 470, 70, 90),//32:ゴースト弾発射
-  new Sprite(278, 488, 56, 56),//33:ゴーストの弾
+  new Sprite(22, 471, 70, 74),//30:ゴースト１
+  new Sprite(98, 471, 70, 74),//31:ゴースト２
+  new Sprite(174, 471, 70, 74),//32:ゴースト弾発射
+  new Sprite(272, 478, 57, 57),//33:ゴーストの弾
   new Sprite(28, 582, 57, 66),//34:ゴースト消滅１
   new Sprite(110, 582, 57, 66),//35:ゴースト消滅２
   new Sprite(179, 582, 57, 66),//36:ゴースト消滅３
@@ -228,12 +212,12 @@ let sprite = [
   new Sprite(242, 786, 102, 106),//42:デビル消滅３
   new Sprite(352, 786, 102, 106),//43:デビル消滅４
 
-  new Sprite(8, 978, 132, 175),//44:ボス１
-  new Sprite(152, 978, 132, 175),//45:ボス２
-  new Sprite(296, 978, 132, 175),//46:ボス口開く１
-  new Sprite(440, 978, 132, 175),//47:ボス口開く２
-  new Sprite(584, 978, 132, 175),//48:ボス弱点出現１
-  new Sprite(728, 978, 132, 175),//49:ボス弱点出現２
+  new Sprite(8, 927, 132, 175),//44:ボス１
+  new Sprite(152, 927, 132, 175),//45:ボス２
+  new Sprite(296, 927, 132, 175),//46:ボス口開く１
+  new Sprite(440, 927, 132, 175),//47:ボス口開く２
+  new Sprite(584, 927, 132, 175),//48:ボス弱点出現１
+  new Sprite(728, 927, 132, 175),//49:ボス弱点出現２
 
   new Sprite(44, 1121, 136, 124),//50:ボス左下の手１
   new Sprite(198, 1121, 136, 124),//51:ボス左下の手２
@@ -256,21 +240,21 @@ let sprite = [
   new Sprite(333, 1450, 96, 96),//65:ボスサンダーボール３
   new Sprite(438, 1450, 96, 96),//66:ボスサンダーボール４
 
-  new Sprite(40, 1557, 536, 69),//67:ボス右側からレーザー１
-  new Sprite(40, 1628, 536, 69),//68:ボス右側からレーザー２
-  new Sprite(40, 1700, 536, 69),//69:ボス右側からレーザー３
-  new Sprite(40, 1773, 536, 69),//70:ボス右側からレーザー４
-  new Sprite(40, 1844, 536, 69),//71:ボス右側からレーザー５
-  new Sprite(40, 1915, 536, 69),//72:ボス右側からレーザー６
-  new Sprite(40, 1988, 536, 69),//73:ボス右側からレーザー７
+  new Sprite(40, 1557, 850, 69),//67:ボス右側からレーザー１
+  new Sprite(40, 1628, 850, 69),//68:ボス右側からレーザー２
+  new Sprite(40, 1700, 850, 69),//69:ボス右側からレーザー３
+  new Sprite(40, 1773, 850, 69),//70:ボス右側からレーザー４
+  new Sprite(40, 1844, 850, 69),//71:ボス右側からレーザー５
+  new Sprite(40, 1915, 850, 69),//72:ボス右側からレーザー６
+  new Sprite(40, 1988, 850, 69),//73:ボス右側からレーザー７
 
-  new Sprite(27, 2070, 536, 69),//74:ボス左側からレーザー１
-  new Sprite(27, 2140, 536, 69),//75:ボス左側からレーザー２
-  new Sprite(27, 2213, 536, 69),//76:ボス左側からレーザー３
-  new Sprite(27, 2285, 536, 69),//77:ボス左側からレーザー４
-  new Sprite(27, 2357, 536, 69),//78:ボス左側からレーザー５
-  new Sprite(27, 2428, 536, 69),//79:ボス左側からレーザー６
-  new Sprite(27, 2500, 536, 69),//80:ボス左側からレーザー７
+  new Sprite(27, 2070, 850, 69),//74:ボス左側からレーザー１
+  new Sprite(27, 2140, 850, 69),//75:ボス左側からレーザー２
+  new Sprite(27, 2213, 850, 69),//76:ボス左側からレーザー３
+  new Sprite(27, 2285, 850, 69),//77:ボス左側からレーザー４
+  new Sprite(27, 2357, 850, 69),//78:ボス左側からレーザー５
+  new Sprite(27, 2428, 850, 69),//79:ボス左側からレーザー６
+  new Sprite(27, 2500, 850, 69),//80:ボス左側からレーザー７
 
   new Sprite(50, 2612, 68, 67),//81:ボス爆発１
   new Sprite(205, 2612, 68, 67),//82:ボス爆発２
@@ -279,7 +263,17 @@ let sprite = [
   new Sprite(430, 2612, 68, 67),//85:ボス爆発５
   new Sprite(503, 2612, 68, 67),//86:ボス爆発６
 
+  new Sprite(556, 163, 65, 65),//87:ヒットエフェクト２
+  new Sprite(629, 163, 65, 65),//88:ヒットエフェクト３
+  new Sprite(712, 163, 65, 65),//89:ヒットエフェクト４
+
+  new Sprite(42, 2712, 128, 133),//90:ボス左下の光る手１
+  new Sprite(194, 2712, 128, 133),//91:ボス右下の光る手１
+  new Sprite(346, 2712, 128, 133),//92:ボス左下の光る手２
+  new Sprite(497, 2712, 128, 133),//93:ボス右下の光る手２
+
 ];
+
 let sprite2 = [
   new Sprite(16, 38, 120, 120),//0:炎魔法１
   new Sprite(142, 38, 120, 120),//1:炎魔法２
@@ -313,16 +307,42 @@ let sprite2 = [
   new Sprite(728, 952, 70, 70),//25:魔法アイコン雷リロード中
   new Sprite(808, 952, 70, 70),//26:魔法アイコン氷リロード中
 
+  new Sprite(45, 1083, 80, 105),//27:回復エフェクト１
+  new Sprite(158, 1083, 80, 105),//28:回復エフェクト２
+  new Sprite(268, 1083, 80, 105),//29:回復エフェクト３
+
+  new Sprite(402, 1113, 45, 67),//30:回復薬
+  new Sprite(502, 1112, 50, 68),//31:大回復薬
+
+  new Sprite(762, 1115, 55, 55),//32:ファイヤーブラスト１
+  new Sprite(828, 1115, 55, 55),//33:ファイヤーブラスト２
+
+  new Sprite(56, 1228, 43, 43),//34:真ん中弾１
+  new Sprite(103, 1228, 43, 43),//35:真ん中弾２
+  new Sprite(149, 1228, 43, 43),//36:真ん中弾３
+  new Sprite(196, 1228, 43, 43),//37:真ん中弾４
+  new Sprite(242, 1228, 43, 43),//38:真ん中弾５
+  new Sprite(289, 1228, 43, 43),//39:真ん中弾６
+
+  new Sprite(56, 1290, 43, 43),//40:横弾１
+  new Sprite(103, 1290, 43, 43),//41:横弾２
+  new Sprite(149, 1290, 43, 43),//42:横弾３
+  new Sprite(196, 1290, 43, 43),//43:横弾４
+  new Sprite(242, 1290, 43, 43),//44:横弾５
+  new Sprite(289, 1290, 43, 43),//45:横弾６
+
 ];
 
 //スプライトを描画する
-function drawSprite(snum, x, y) {
+function drawSprite(snum, x, y, ex) {
   let sx = sprite[snum].x;
   let sy = sprite[snum].y;
   let sw = sprite[snum].w;
   let sh = sprite[snum].h;
+  let sw2 = sprite[snum].w * ex;
+  let sh2 = sprite[snum].h * ex;
 
-  vcon.drawImage(spriteImage, sx, sy, sw, sh, x, y, sw, sh);
+  vcon.drawImage(spriteImage, sx, sy, sw, sh, x, y, sw2, sh2);
 }
 function drawSprite2(snum, x, y, ex) {
   let sx = sprite2[snum].x;
@@ -335,37 +355,67 @@ function drawSprite2(snum, x, y, ex) {
   vcon.drawImage(spriteImage2, sx, sy, sw, sh, x, y, sw2, sh2);
 }
 
+//魔法
 let fireBl = [];//ファイヤーブラスト
 let explod = [];//ファイヤーブラストの爆発
 let thHantei = [];//サンダーソードの判定
 let thGra = [];//サンダーソードのグラフィック
 let iceBa = [];//アイスバリア
 
+//魔法リロード
 let fireReload = 1800;
 let thunderReload = 1800;
 let iceReload = 1800;
 let reloadGauge = 0;
 
-//ステージ
-let stageSituation = [];
-
+//ヒットエフェクト
+let hitEf = [];
+//浄化
+let jyouka = [];
 //コウモリ
 let bat = [];
-let batAtack = [];
-let jyouka = [];
+//let batShot = [];
 let shutugen = [];
+//トレント
+let treant = [];
+let treantShot = [];
+//パンプキン
+let pumpkin = [];
+let pumpkinShot = [];
+//ゴースト
+let ghost = [];
+let ghostShot = [];
+//デビル
+let devil = [];
+let devilShot = [];
+//ボス：スカル
+let bossSkull = [];
+let bossHand = [];
+let bossDeath = [];
+let bossForm = [];
+let bossPlasma = [];
+let bossLaser = [];
+let bossHpOnFlag = false;//ボスHPの可視フラグ
+
+//アイテム
+let itemPortion = [];
+let itemElixir = [];
+let itemEffect = [];
+
+//ステージ
+let stageSituation = [];
+let gamethread = 0;
+let stagethred = 0;//ステージの段階　スタンバイ画面も合わせてるので注意
+let stopStage = false;
+let lastFadeOut = 1;
+let lastCount = 0;
+let treantCount = 0;
 
 //ゲーム初期化
 function gameInit() {
   setInterval(gameLoop, GAME_SPEED);
   //requestAnimationFrame の方がゲームに向いてるけど面倒なので保留
 }
-
-let gamethread = 0;
-let stagethred = 0;//ステージの段階　スタンバイ画面も合わせてるので注意
-let stopStage = false;
-let lastFadeOut = 1;
-let lastCount = 0;
 
 //ゲームループ
 function gameLoop() {
@@ -377,35 +427,89 @@ function gameLoop() {
 
     //-----ステージの背景-----
     stage_on();
-    //-----ステージ１-----
-    if (gamethread == 100) shutugen.push(new Shutugen(5, 500, 700, 0, 0, 50, 50, 1, 1));
-    //if (gamethread == 200) shutugen.push(new Shutugen(5, 200, 300, 0, 0, 50, 50, 1, 2));
 
-    //クリア条件(仮)
-    if (stagethred != 9) {
-      if (gamethread > 700) {
-        gameSituation = 3;
+    //if (gamethread == 200) itemPortion.push(new Portion(30,500,500,45*0.8,67*0.8));
+    if (gamethread == 200) itemElixir.push(new Elixir(31,500,500,50*0.8,68*0.8));
+
+    //-----ステージ１-----
+    if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 1));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 2));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 3));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 4));
+
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, 150, 0, 0, 50, 50, 5));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 6));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 7));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 8));
+
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 9));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 10));
+
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 11));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 12));
+
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 13));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 14));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 15));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 16));
+
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 17));
+    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 18));
+
+    if(stagethred == 3){
+      treantCount++;
+      if(treantCount == 190){
+        treant.push(new Treant(13,300,-500,0,0,112,110));
+        treant.push(new Treant(13,300,-900,0,0,112,110));
+        treant.push(new Treant(13,900,-500,0,0,112,110));
+        treant.push(new Treant(13,900,-900,0,0,112,110));
+        //スプライトナンバー, 出現位置ｘ, 出現位置ｙ, 動きｘ, 動きｙ, 大きさｘ, 大きさｙ
       }
-    } else {
-      if (gamethread > 700) {
-        gameSituation = 4;
+    }
+    //if(stagethred == 4) treantCount = 0;//★他でも初期化しないといけない
+
+    if(stagethred == 5){
+      treantCount++;
+      if(treantCount == 190){
+        treant.push(new Treant(13,50,-700,0,0,112,110));
+        treant.push(new Treant(13,1050,-950,0,0,112,110));
+        treant.push(new Treant(13,1050,-400,0,0,112,110));
+      }
+      if(gamethread == 100){
+        pumpkin.push(new Pumpkin(18,100,100,0,0,80,70));
+        ghost.push(new Ghost(30,700,100,0,0,70,90));
       }
     }
 
-    //-----敵の動き-----
-    // update_on(bat);//コウモリ
-    // update_on(batAtack);//コウモリの弾
-    // update_on(jyouka);//コウモリ浄化
-    // update_on(shutugen);
+    if(stagethred == 7){
+      if(gamethread == 100){
+        devil.push(new Devil(37,SCREEN_W+120,100,0,0,110,80,1));
+        // devil.push(new Devil(37,-200,200,0,0,110,80,2));
+        // devil.push(new Devil(37,SCREEN_W/2-55,SCREEN_H+200,0,0,110,80,3));
+        // devil.push(new Devil(37,SCREEN_W/2-55,-200,0,0,110,80,4));
+      }
+    }
+
+    if(stagethred == 9){
+      if(gamethread == 50){
+        bossSkull.push(new BossSkull(44,SCREEN_W/2-132,10,0,0,132*2,175*2));
+        bossHand.push(new BossHand(52,0,SCREEN_H-248,0,0,272,248,0));
+        bossHand.push(new BossHand(53,SCREEN_W-272,SCREEN_H-248,0,0,272,248,1));
+        bossForm.push(new BossForm(57,-146*1.8,SCREEN_H/2-161*1.7/2,0,0,146*1.7,161*1.7,0));
+        bossForm.push(new BossForm(60,SCREEN_W,SCREEN_H/2-161*1.7/2,0,0,146*1.7,161*1.7,1));
+      }
+      if(gamethread == 100) bossHpOnFlag = true;
+    }
+
+    //クリア条件(仮)
+    if (stagethred != 9) {
+      if (gamethread > 2000) {
+        gameSituation = 3;
+      }
+    }
 
     //-----自機ショットの生成-----
     setShot();
-    update_on(fireBl);
-    update_on(explod);
-    update_on(thHantei);
-    update_on(thGra);
-    update_on(iceBa);
-
 
     //-----描画の処理-----
     //背景
@@ -417,21 +521,49 @@ function gameLoop() {
     actFont();
     vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
 
-    //自機判定とショットの描画
-    //drawJiki();//←仮の描画
+    //自機ショットの描画
     drawShot();
+
+    //敵の描画
+    draw_on(treant);//トレント
+    draw_on(treantShot);//トレントの弾
+    draw_on(pumpkin);
+    draw_on(pumpkinShot);
+    draw_on(ghost);
+    draw_on(ghostShot);
+    draw_on(devil);
+    draw_on(bossSkull);
+    draw_on(bossPlasma);
+    draw_on(bossLaser);
+    draw_on(bossHand);
+    draw_on(bossForm);
+    draw_on(bossDeath);
+    draw_on(devilShot);
+    draw_on(shutugen);//コウモリ出現の魔法陣　描画順はコウモリより上
+    draw_on(bat);//コウモリ　どの敵よりも優先して描画
+    //draw_on(batShot);//コウモリの弾
+    draw_on(jyouka);//コウモリ浄化
+    draw_on(hitEf);//ヒットエフェクト
+
+    //アイテムの描画
+    draw_on(itemPortion);
+    draw_on(itemElixir);
+    draw_on(itemEffect);
+
+    //魔法の描画は敵より優先
     draw_on(iceBa);
     draw_on(fireBl);
     draw_on(explod);
     draw_on(thHantei);
-    draw_on(thGra);
 
-    //敵の描画
-    draw_on(shutugen);//コウモリ出現の魔法陣　描画順はコウモリより上
-    draw_on(bat);//コウモリ
-    draw_on(batAtack);//コウモリの弾
-    draw_on(jyouka);//コウモリ浄化
+    if (jiki.hpPoint <= 0) {
+      gameSituation = 2;
+    }
 
+  }
+
+  if(gameSituation != 1){
+    treantCount = 0;
   }
 
   //ゲーム状況に影響されないようgameSituationの外に置く
@@ -439,11 +571,36 @@ function gameLoop() {
   drawJiki();//←仮の描画
   //ステージ背景の動き
   update_on(stageSituation);
+  //魔法の動き
+  update_on(fireBl);
+  update_on(explod);
+  update_on(thHantei);
+  update_on(thGra);
+  draw_on(thGra);//サンダーソードのグラはここじゃないとダメ
+  update_on(iceBa);
   //敵の動き
   update_on(bat);//コウモリ
-  update_on(batAtack);//コウモリの弾
+  //update_on(batShot);//コウモリの弾
   update_on(jyouka);//コウモリ浄化
+  update_on(hitEf);
   update_on(shutugen);
+  update_on(treant);
+  update_on(treantShot);
+  update_on(pumpkin);
+  update_on(pumpkinShot);
+  update_on(ghost);
+  update_on(ghostShot);
+  update_on(devil);
+  update_on(bossSkull);
+  update_on(bossHand);
+  update_on(bossDeath);
+  update_on(devilShot);
+  update_on(bossForm);
+  update_on(bossPlasma);
+  update_on(bossLaser);
+  update_on(itemPortion);
+  update_on(itemElixir);
+  update_on(itemEffect);
 
   //オープニング画面
   if (gameSituation == 0) {

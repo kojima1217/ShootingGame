@@ -2,13 +2,14 @@
 
 class FireBlast {
   constructor() {
-    this.x = jiki.position.x;
-    this.y = jiki.position.y;
-    this.size = 20;
+    this.x = jiki.position.x-55/2;
+    this.y = jiki.position.y-55/2;
+    this.size = 55;
     this.speed = 10;
     this.fbDirec = direc;
     this.tenmetuCount = 0;
     this.hitReroad = true;
+    this.snum = 32;
     this.kill = false;
   }
 
@@ -45,44 +46,80 @@ class FireBlast {
     }
 
     //敵に弾が着弾して爆発
-    for (let i = 0; i < bat.length; i++) {
-      if (!bat[i].kill) {
-        if (checkHit(
-          this.x, this.y, this.size, this.size,
-          bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
-        )) {
-          if (this.hitReroad) {
-            explod.push(new Explosion(this.x, this.y));
-            this.hitReroad = false;
-          }
-          this.kill = true;
-          break;
-        }
-      }
+    if (attackDamage(bat, this.x, this.y, this.size, 0, 0, 0, 0, 0)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
     }
+    if (attackDamage(treant, this.x, this.y, this.size, 0, 30, 20, -50, -30)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
+    }
+    if (attackDamage(pumpkin, this.x, this.y, this.size, 0, 10, 10, -20, -20)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
+    }
+    if (attackDamage(ghost, this.x, this.y, this.size, 0, 15, 0, -30, -10)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
+    }
+    if (attackDamage(devil, this.x, this.y, this.size, 0, 30, 20, -50, -40)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
+    }
+    if (attackDamage(bossSkull, this.x, this.y, this.size, 0, 102, 260, -204, -300)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
+    }
+    if (attackDamage(bossHand, this.x, this.y, this.size, 0, 60, 60, -120, -120)) {
+      explod.push(new Explosion(this.x, this.y));
+      this.kill = true;
+    }
+    // for (let i = 0; i < bat.length; i++) {
+    //   if (!bat[i].kill) {
+    //     if (checkHit(
+    //       this.x, this.y, this.size, this.size,
+    //       bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
+    //     )) {
+    //       if (this.hitReroad) {
+    //         explod.push(new Explosion(this.x, this.y));
+    //         this.hitReroad = false;
+    //       }
+    //       this.kill = true;
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   draw() {
-    vcon.beginPath();
-    vcon.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+    //   vcon.beginPath();
+    //   vcon.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+    //   this.tenmetuCount++;
+    //   if (this.tenmetuCount < 5) {
+    //     vcon.fillStyle = "red";
+    //   } else if (this.tenmetuCount < 10) {
+    //     vcon.fillStyle = "#b22222";
+    //   }
+    //   vcon.fill();
+    //   vcon.closePath();
+    //   vcon.beginPath();
+    //   vcon.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2, false);
+    //   if (this.tenmetuCount < 5) {
+    //     vcon.fillStyle = "#800000";
+    //   } else if (this.tenmetuCount < 10) {
+    //     vcon.fillStyle = "rgb(120,10,10)";
+    //   }
+    //   vcon.fill();
+    //   vcon.closePath();
+    //   if (this.tenmetuCount >= 10) this.tenmetuCount = 0;
     this.tenmetuCount++;
-    if (this.tenmetuCount < 5) {
-      vcon.fillStyle = "red";
-    } else if (this.tenmetuCount < 10) {
-      vcon.fillStyle = "#b22222";
+    if (this.tenmetuCount > 10) this.tenmetuCount = 0;
+    if (this.tenmetuCount % 2 == 0) {
+      this.snum = 32;
+    } else {
+      this.snum = 33;
     }
-    vcon.fill();
-    vcon.closePath();
-    vcon.beginPath();
-    vcon.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2, false);
-    if (this.tenmetuCount < 5) {
-      vcon.fillStyle = "#800000";
-    } else if (this.tenmetuCount < 10) {
-      vcon.fillStyle = "rgb(120,10,10)";
-    }
-    vcon.fill();
-    vcon.closePath();
-    if (this.tenmetuCount >= 10) this.tenmetuCount = 0;
+    drawSprite2(this.snum, this.x, this.y, 1);
   }
 }
 
@@ -94,6 +131,7 @@ class Explosion {
     this.sizeY = 120 * 4;
     this.exCount = 0;
     this.spriteAnime = 0;
+    this.attackPoint = 30;
     this.kill = false;
   }
 
@@ -121,21 +159,32 @@ class Explosion {
     }
 
     //敵に弾が当たったらHPを減らす
-    for (let i = 0; i < bat.length; i++) {
-      if (!bat[i].kill) {
-        if (checkHit(
-          this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.sizeY / 2 + 80,
-          bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
-        )) {
-          bat[i].hp -= 5;
-          if (bat[i].hp < 0) {
-            jyouka.push(new Jyouka(4, bat[i].x + 10, bat[i].y, bat[i].vx >> 4, bat[i].vy >> 4));
-            bat[i].kill = true;
-          }
-          break;
-        }
-      }
+    attackDamage(bat, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 0, 0, 0, 0);
+    attackDamage(treant, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 30, 20, -50, -30);
+    attackDamage(pumpkin, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 10, 10, -20, -20);
+    attackDamage(ghost, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 15, 0, -30, -10);
+    attackDamage(devil, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 30, 20, -50, -40);
+    if (attackDamage(bossSkull, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 102, 260, -204, -300)) {
+      bossHP -= this.attackPoint;
     }
+    attackDamage(bossHand, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 60, 60, -120, -120);
+
+    //(obj,sprite,x,y,size,attack,hoseiX,hoseiY,hoseiSX,hoseiSY,jyoukaX,jyoukaY)
+    // for (let i = 0; i < bat.length; i++) {
+    //   if (!bat[i].kill) {
+    //     if (checkHit(
+    //       this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.sizeY / 2 + 80,
+    //       bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
+    //     )) {
+    //       bat[i].hp -= 5;
+    //       if (bat[i].hp < 0) {
+    //         jyouka.push(new Jyouka(4, bat[i].x + 10, bat[i].y, bat[i].vx >> 4, bat[i].vy >> 4));
+    //         bat[i].kill = true;
+    //       }
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   draw() {
@@ -154,6 +203,7 @@ class ThunderHantei {
     this.nagiruCount = 0;
     this.fukuramiCount = 0;
     this.fukuramiFlag = true;
+    this.attackPoint = 1000;
     this.kill = false;
   }
 
@@ -358,21 +408,30 @@ class ThunderHantei {
     }
 
     //敵に弾が当たったらHPを減らす
-    for (let i = 0; i < bat.length; i++) {
-      if (!bat[i].kill) {
-        if (checkHit(
-          this.x, this.y, this.size, this.size,
-          bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
-        )) {
-          bat[i].hp -= 100;
-          if (bat[i].hp < 0) {
-            jyouka.push(new Jyouka(4, bat[i].x + 10, bat[i].y, bat[i].vx >> 4, bat[i].vy >> 4));
-            bat[i].kill = true;
-          }
-          break;
-        }
-      }
+    attackDamage(bat, this.x, this.y, this.size, this.attackPoint, 0, 0, 0, 0);
+    attackDamage(treant, this.x, this.y, this.size, this.attackPoint, 30, 20, -50, -30);
+    attackDamage(pumpkin, this.x, this.y, this.size, this.attackPoint, 10, 10, -20, -20);
+    attackDamage(ghost, this.x, this.y, this.size, this.attackPoint, 15, 0, -30, -10);
+    attackDamage(devil, this.x, this.y, this.size, this.attackPoint, 30, 20, -50, -40);
+    if (attackDamage(bossSkull, this.x, this.y, this.size, this.attackPoint, 102, 260, -204, -300)) {
+      bossHP -= this.attackPoint;
     }
+    attackDamage(bossHand, this.x, this.y, this.size, this.attackPoint, 60, 60, -120, -120);
+    // for (let i = 0; i < bat.length; i++) {
+    //   if (!bat[i].kill) {
+    //     if (checkHit(
+    //       this.x, this.y, this.size, this.size,
+    //       bat[i].x, bat[i].y, bat[i].sizeX, bat[i].sizeY
+    //     )) {
+    //       bat[i].hp -= 100;
+    //       if (bat[i].hp < 0) {
+    //         jyouka.push(new Jyouka(4, bat[i].x + 10, bat[i].y, bat[i].vx >> 4, bat[i].vy >> 4));
+    //         bat[i].kill = true;
+    //       }
+    //       break;
+    //     }
+    //   }
+    // }
   }
 
   draw() {
@@ -627,6 +686,7 @@ class IceBarrier {
       this.kill = true;
     }
     if (gameSituation != 1) {
+      barrierOn = false;
       this.kill = true;
     }
   }

@@ -7,9 +7,9 @@ function HpGauge() {
         if (fireReload < 1800) fireReload += 10;
         if (thunderReload < 1800) thunderReload += 5;
         if (iceReload < 1800) iceReload++;
-        if(reloadGauge == 1800){
+        if (reloadGauge == 1800) {
             vcon.fillStyle = "rgba(30, 200, 230, 0.7)";
-        }else{
+        } else {
             vcon.fillStyle = "rgba(30, 150, 200, 0.7)";
         }
         vcon.fillRect(140, 85, reloadGauge / 10, 10);
@@ -66,6 +66,37 @@ function HpGauge() {
         //MIN-90 MAX270
         vcon.stroke();
         vcon.closePath();
+
+        //回復アイテムの処理
+        if(getPortion){
+            portionCount++;
+            if(portionCount <= 250/5){//25%回復
+                if(1000 > jiki.hpPoint) jiki.hpPoint+=5;
+            }else{
+                portionCount = 0;
+                getPortion = false;
+            }
+        }
+        if(getElixir){
+            elixirCount++;
+            if(elixirCount <= 500/5){//50%回復
+                if(1000 > jiki.hpPoint) jiki.hpPoint+=5;
+            }else{
+                elixirCount = 0;
+                getElixir = false;
+            }
+        }
+
+        //ボスのHP
+        if (bossHpOnFlag) {
+            //HPゲージ枠
+            vcon.strokeStyle = "rgba(255,215,0,0.5)";
+            vcon.lineWidth = 4;
+            vcon.strokeRect(838, 58, 404, 24+4);
+            //HPゲージ
+            vcon.fillStyle = "rgba(255,0,0,0.5)";
+            vcon.fillRect(840, 60, bossHP / 125, 20+4);
+        }
     }
 
     //戦闘が終わったらリロード回復
