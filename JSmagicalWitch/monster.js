@@ -81,6 +81,10 @@ class EnemyShot extends Enemy {
                 this.x + this.sizeX / 2, this.y + this.sizeY / 2, this.sizeX / 2,
                 jiki.position.x, jiki.position.y, 80//80はアイスバリアの半径
             )) {
+                if (seFlag) {
+                    itSE.currentTime = 0;
+                    itSE.play();
+                }
                 this.kill = true;
             }
         } else {
@@ -112,12 +116,16 @@ class Shutugen extends Enemy {
 
     update() {
         super.update();
-        if(this.shutNum2 == 17 || this.shutNum2 == 18) this.max = 150;
+        if (this.shutNum2 == 17 || this.shutNum2 == 18) this.max = 150;
         this.shutugenCount++;
+        if (this.shutugenCount == 1 && seFlag) {
+            shoukanSE.currentTime = 0;
+            shoukanSE.play();
+        }
         if (this.shutugenCount > 50) {
             if (this.shutugenCount % 10 == 0) {
-                for(let i = 1; i <= 18; i++){
-                    if (this.shutNum2 == i) bat.push(new Bat(0, this.x-64/2+50/2, this.y - 43/2+50/2, 0, 0, 64, 43, i));
+                for (let i = 1; i <= 18; i++) {
+                    if (this.shutNum2 == i) bat.push(new Bat(0, this.x - 64 / 2 + 50 / 2, this.y - 43 / 2 + 50 / 2, 0, 0, 64, 43, i));
                     //スプライトナンバー, 出現位置ｘ, 出現位置ｙ, 動きｘ, 動きｙ, 大きさｘ, 大きさｙ, コウモリのパターン
                 }
             }
@@ -165,7 +173,7 @@ class Bat extends Enemy {
             this.x, this.y, this.sizeX, this.sizeY,
             jiki.position.x, jiki.position.y, jiki.size, jiki.size
         )) {
-            jiki.hpPoint -= 5;
+            jiki.hpPoint -= batAtackPoint;
             damageFlag = true;
         }
 
@@ -177,27 +185,37 @@ class Bat extends Enemy {
             if (this.shutNum == 3) batPattern(this, 3, 5, 0, 2, 0, -5, 3, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             if (this.shutNum == 4) batPattern(this, 3, -5, 0, 0, 0, -5, 3, 5, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-            if (this.shutNum == 5) batPattern(this, 4, -8*diago, 5*diago, 0, 8*diago, 5*diago, 1, 8*diago, -5*diago, 2, -8*diago, -5*diago, 3, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 6) batPattern(this, 4, 8*diago, 5*diago, 1, 8*diago, -5*diago, 2, -8*diago, -5*diago, 3, -8*diago, 5*diago, 0, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 7) batPattern(this, 4, 8*diago, -5*diago, 2, -8*diago, -5*diago, 3, -8*diago, 5*diago, 0, 8*diago, 5*diago, 1, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 8) batPattern(this, 4, -8*diago, -5*diago, 3, -8*diago, 5*diago, 0, 8*diago, 5*diago, 1, 8*diago, -5*diago, 2, 0, 0, 0, 0, 0, 0);
-            
-            if (this.shutNum == 9) batPattern(this, 3, 5, 0, 2, -10*diago, 5*diago, 1, 0, -5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 10) batPattern(this, 3, -5, 0, 0, 10*diago, -5*diago, 3, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            
+            if (this.shutNum == 5) batPattern(this, 4, -8 * diago, 5 * diago, 0, 8 * diago, 5 * diago, 1, 8 * diago, -5 * diago, 2, -8 * diago, -5 * diago, 3, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 6) batPattern(this, 4, 8 * diago, 5 * diago, 1, 8 * diago, -5 * diago, 2, -8 * diago, -5 * diago, 3, -8 * diago, 5 * diago, 0, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 7) batPattern(this, 4, 8 * diago, -5 * diago, 2, -8 * diago, -5 * diago, 3, -8 * diago, 5 * diago, 0, 8 * diago, 5 * diago, 1, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 8) batPattern(this, 4, -8 * diago, -5 * diago, 3, -8 * diago, 5 * diago, 0, 8 * diago, 5 * diago, 1, 8 * diago, -5 * diago, 2, 0, 0, 0, 0, 0, 0);
+
+            if (this.shutNum == 9) batPattern(this, 3, 5, 0, 2, -10 * diago, 5 * diago, 1, 0, -5, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 10) batPattern(this, 3, -5, 0, 0, 10 * diago, -5 * diago, 3, 0, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
             if (this.shutNum == 11) batPattern(this, 5, 0, -5, 3, 5, 0, 2, 0, 5, 1, -5, 0, 0, 0, -5, 3, 0, 0, 0);
             if (this.shutNum == 12) batPattern(this, 5, 0, 5, 1, -5, 0, 0, 0, -5, 3, 5, 0, 2, 0, 5, 1, 0, 0, 0);
-            
-            if (this.shutNum == 13) batPattern(this, 3, 8*diago, 5*diago, 1, -5, 0, 0, 8*diago, -5*diago, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 14) batPattern(this, 3, 8*diago, -5*diago, 3, -5, 0, 0, 8*diago, 5*diago, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 15) batPattern(this, 3, -8*diago, 5*diago, 1, 5, 0, 2, -8*diago, -5*diago, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            if (this.shutNum == 16) batPattern(this, 3, -8*diago, -5*diago, 3, 5, 0, 2, -8*diago, 5*diago, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            
+
+            if (this.shutNum == 13) batPattern(this, 3, 8 * diago, 5 * diago, 1, -5, 0, 0, 8 * diago, -5 * diago, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 14) batPattern(this, 3, 8 * diago, -5 * diago, 3, -5, 0, 0, 8 * diago, 5 * diago, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 15) batPattern(this, 3, -8 * diago, 5 * diago, 1, 5, 0, 2, -8 * diago, -5 * diago, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            if (this.shutNum == 16) batPattern(this, 3, -8 * diago, -5 * diago, 3, 5, 0, 2, -8 * diago, 5 * diago, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
             if (this.shutNum == 17) batPattern(this, 1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             if (this.shutNum == 18) batPattern(this, 1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            
-            
+
+
         } else {
+            batKillCount++;
+            if (stagethred == 1 && batKillCount == 80) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
+            if (stagethred == 9 && batKillCount == 10) {
+                itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
+                batKillCount = 0;
+            }
+            if (seFlag) {
+                batDeathSE.currentTime = 0;
+                batDeathSE.play();
+            }
             jyouka.push(new Jyouka(4, this.x + 10, this.y, this.vx, this.vy));
             this.kill = true;
         }
@@ -207,27 +225,27 @@ class Bat extends Enemy {
         //コウモリの羽ばたきアニメーション
         this.animeCount++;
         if (this.animeCount < 10) {
-            if(this.shutNum == 17 || this.shutNum == 18){
+            if (this.shutNum == 17 || this.shutNum == 18) {
                 this.snum = 10;
-            }else{
+            } else {
                 this.snum = 0;
             }
         } else if (this.animeCount < 20) {
-            if(this.shutNum == 17 || this.shutNum == 18){
+            if (this.shutNum == 17 || this.shutNum == 18) {
                 this.snum = 11;
-            }else{
+            } else {
                 this.snum = 1;
             }
         } else if (this.animeCount < 30) {
-            if(this.shutNum == 17 || this.shutNum == 18){
+            if (this.shutNum == 17 || this.shutNum == 18) {
                 this.snum = 12;
-            }else{
+            } else {
                 this.snum = 2;
             }
         } else if (this.animeCount < 40) {
-            if(this.shutNum == 17 || this.shutNum == 18){
+            if (this.shutNum == 17 || this.shutNum == 18) {
                 this.snum = 11;
-            }else{
+            } else {
                 this.snum = 1;
             }
         } else {
@@ -423,7 +441,7 @@ function batPattern(obj, turn, x1, y1, j1, x2, y2, j2, x3, y3, j3, x4, y4, j4, x
 class Treant extends Enemy {
     constructor(snum, x, y, vx, vy, sizeX, sizeY) {
         super(snum, x, y, vx, vy, sizeX, sizeY);
-        this.hp = 10000;
+        this.hp = 8000;
         this.move = true;
         this.actionCount = 0;
         this.killCount = 0;
@@ -447,17 +465,34 @@ class Treant extends Enemy {
             }
             if (this.active) {
                 //弾の発射
-                if (this.actionCount == 300) {
+                if (this.actionCount == treantShotCount) {
                     homing(this.x + this.sizeX / 2 - 25, this.y + this.sizeY / 2);
+                    if (seFlag) {
+                        treantShotSE.currentTime = 0;
+                        treantShotSE.play();
+                    }
                 }
-                if (this.actionCount > 310) {
+                if (this.actionCount > treantShotCount + 10) {
                     this.actionCount = 200;
                 }
             }
         } else {//HPがゼロになったら
             this.active = false;
             this.killCount++;
+            if (this.killCount == 1) {
+                if (seFlag) {
+                    treantDeathSE.currentTime = 0;
+                    treantDeathSE.play();
+                }
+            }
             if (this.killCount > 100) {
+                treantKillCount++;
+                if (stagethred == 3 && this.x > 500 && this.y > 500) {
+                    itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
+                }
+                if (stagethred == 5 && this.x > 500 && this.y < 500) {
+                    itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
+                }
                 this.kill = true;
             }
         }
@@ -483,7 +518,7 @@ class Treant extends Enemy {
                     this.snum = 15;//枯れ木
                 }
             } else {
-                if (this.actionCount > 290 && this.actionCount <= 310) {
+                if (this.actionCount > treantShotCount - 10 && this.actionCount <= treantShotCount + 10) {
                     this.snum = 14;
                 } else {
                     this.snum = 13;
@@ -519,7 +554,7 @@ class TreantShot extends EnemyShot {
 class Pumpkin extends Enemy {
     constructor(snum, x, y, vx, vy, sizeX, sizeY) {
         super(snum, x, y, vx, vy, sizeX, sizeY);
-        this.hp = 4000;
+        this.hp = pumpkinHP;
         this.move = true;
         this.actionCount = 0;
         this.killCount = 0;
@@ -564,6 +599,10 @@ class Pumpkin extends Enemy {
                 if (this.shotCount != 1 && this.shotCount % 2 == 0) {
                     if (this.actionCount >= 120 && this.actionCount < 170) {
                         scatter(this.x + this.sizeX / 2 - 24, this.y + this.sizeY / 2 - 24, this, 5);
+                        if(seFlag){
+                            pumpkinShotSE.currentTime = 0;
+                            pumpkinShotSE.play();
+                        }
                     }
                 }
             }
@@ -574,7 +613,15 @@ class Pumpkin extends Enemy {
             this.active = false;
             this.move = false;
             this.killCount++;
+            if(this.killCount == 1){
+                if(seFlag){
+                    pumpkinDeathSE.currentTime = 0;
+                    pumpkinDeathSE.play();
+                }
+            }
             if (this.killCount > 36) {
+                pumpkinKillCount++;
+                if (pumpkinKillCount == 3) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
                 this.kill = true;
             }
         }
@@ -681,7 +728,11 @@ class Ghost extends Enemy {
                 if (this.y >= SCREEN_H - this.sizeY) this.y = SCREEN_H - this.sizeY;
 
                 //カウントが溜まると弾を撃つ
-                if (this.actionCount > 200) {
+                if (this.actionCount > ghostShotCount) {
+                    if(seFlag){
+                        ghostShotSE.currentTime = 0;
+                        ghostShotSE.play();
+                    }
                     //弾発射
                     way4(this.x + this.sizeX / 2 - 28, this.y + this.sizeY / 2 - 28, 10);//最後の数値は角度
                     way4(this.x + this.sizeX / 2 - 28, this.y + this.sizeY / 2 - 28, -10);
@@ -703,7 +754,17 @@ class Ghost extends Enemy {
             this.vy = 0;
             this.active = false;
             this.killCount++;
+            if(this.killCount == 1){
+                if(seFlag){
+                    ghostDeathSE.currentTime = 0;
+                    ghostDeathSE.play();
+                }
+            }
             if (this.killCount > 30) {
+                ghostKillCount++;
+                if (stagethred == 7 && ghostKillCount == 7) {
+                    itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
+                }
                 this.kill = true;
             }
         }
@@ -718,7 +779,7 @@ class Ghost extends Enemy {
     draw() {
         if (this.hp > 0) {
             if (this.active) {
-                if (this.actionCount > 180) {
+                if (this.actionCount > ghostShotCount-20) {
                     this.snum = 32;
                 } else {
                     if (this.actionCount % 5 == 0) {
@@ -765,7 +826,7 @@ class GhostShot extends EnemyShot {
 class Devil extends Enemy {
     constructor(snum, x, y, vx, vy, sizeX, sizeY, number) {
         super(snum, x, y, vx, vy, sizeX, sizeY);
-        this.hp = 2000;
+        this.hp = devilHP;
         this.actionCount = 0;
         this.killCount = 0;
         this.active = true;
@@ -813,7 +874,13 @@ class Devil extends Enemy {
             this.vy = 0;
             this.active = false;
             this.killCount++;
+            if(this.killCount == 1 && seFlag){
+                devilDeathSE.currentTime = 0;
+                devilDeathSE.play();
+            }
             if (this.killCount > 40) {
+                devilKillCount++;
+                if (devilKillCount == 2) itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
                 this.kill = true;
             }
         }
@@ -838,9 +905,9 @@ class Devil extends Enemy {
                     }
                 }
             } else if (this.shotFlag == 0) {
-                if (this.animeCount % 100 == 0) {
+                if (this.animeCount % 20 == 0) {
                     this.snum = 38;
-                } else if (this.animeCount % 50 == 0) {
+                } else if (this.animeCount % 10 == 0) {
                     this.snum = 37;
                 }
             }
@@ -947,6 +1014,10 @@ function devilPattern(obj, x1, y1, j1, x4, y4, j4, x5, y5, j5, x6, y6, j6, reset
         if (obj.actionCount > 50 && obj.actionCount <= 150) {
             //弾連射
             rapid(obj.x + obj.sizeX / 2 - 32, obj.y + obj.sizeY / 2 - 32);
+            if(seFlag){
+                devilShotSE.currentTime = 0;
+                devilShotSE.play();
+            }
         }
         if (obj.actionCount > 150) {
             obj.pattern = 3;
@@ -960,6 +1031,10 @@ function devilPattern(obj, x1, y1, j1, x4, y4, j4, x5, y5, j5, x6, y6, j6, reset
         if (obj.actionCount > 10 && obj.actionCount <= 80) {
             //弾ばらまく
             cyclone(obj.x + obj.sizeX / 2 - 32, obj.y + obj.sizeY / 2 - 32, obj, 10, 30);
+            if(seFlag){
+                devilShotSE.currentTime = 0;
+                devilShotSE.play();
+            }
         }
         if (obj.actionCount > 100) {
             if (obj.paSwitch == 1) {
@@ -1071,16 +1146,24 @@ class BossSkull extends Enemy {
                         //弾ばらまく
                         if (this.actionCount >= 300 && this.actionCount < 360) {
                             cyclone(this.x + 50, this.y + 110, this, 5, 30);
+                            if(seFlag){
+                                devilShotSE.currentTime = 0;
+                                devilShotSE.play();
+                            }
                         }
                         if (this.actionCount >= 700 && this.actionCount < 760) {
                             cyclone(this.x + this.sizeX - 110, this.y + 110, this, 5, 30);
+                            if(seFlag){
+                                devilShotSE.currentTime = 0;
+                                devilShotSE.play();
+                            }
                         }
                         //赤コウモリ召喚
-                        if(this.actionCount == 500){
+                        if (this.actionCount == 500) {
                             shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 17));
                         }
-                        if(this.actionCount == 900){
-                            shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 18));
+                        if (this.actionCount == 900) {
+                            shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, 150, 0, 0, 50, 50, 18));
                         }
                     } else if (formation == 1) {//プラズマ
                         //首が真ん中へ
@@ -1226,6 +1309,14 @@ class BossHand extends Enemy {
 
             if (formation == 0 || formation == 2) {
                 //掴みかかり
+                if(this.actionCount == 220 && seFlag){
+                    bossHandSE.currentTime = 0;
+                    bossHandSE.play();
+                }
+                if(this.actionCount == 240 && seFlag){
+                    bossHandSE.currentTime = 0;
+                    bossHandSE.play();
+                }
                 if (this.actionCount == 250) {
                     this.dx = grab(this.x + this.sizeX / 2, this.y + this.sizeY / 2)[0];
                     this.dy = grab(this.x + this.sizeX / 2, this.y + this.sizeY / 2)[1];
@@ -1435,6 +1526,10 @@ function grab(objX, objY) {
 class Death extends Enemy {
     draw() {
         this.animeCount++;
+        if(this.animeCount == 1 && seFlag){
+            bossDeathSE.currentTime = 0;
+            bossDeathSE.play();
+        }
         if (this.animeCount < 10) {
             this.snum = 81;
         } else if (this.animeCount < 20) {
@@ -1512,7 +1607,13 @@ class BossForm extends Enemy {
                         if (this.y <= SCREEN_H - this.sizeY + 100) {//ここの100は安置潰し
                             this.vy = 2;
                             //プラズマボール発射
-                            if (formCount % 40 == 0) bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, 10, 0, 96 * 1.7, 96 * 1.7, 200));
+                            if (formCount % 40 == 0) {
+                                bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, 10, 0, 96 * 1.7, 96 * 1.7, 200));
+                                if(seFlag){
+                                    bossPbSE.currentTime = 0;
+                                    bossPbSE.play();
+                                }
+                            }
                         } else {
                             this.vy = 0;
                         }
@@ -1590,7 +1691,13 @@ class BossForm extends Enemy {
                         //極太レーザー発射
                         if (this.y >= SCREEN_H / 2 - 10) {//10は微調整 レーザー側もある
                             this.vy = -1;
-                            if (formCount == 181) bossLaser.push(new BossLaser(67, this.x + 45, this.y + 33, 0, 0, 850 * 3, 69 * 3, 200, 0));
+                            if (formCount == 181) {
+                                bossLaser.push(new BossLaser(67, this.x + 45, this.y + 33, 0, 0, 850 * 3, 69 * 3, 200, 0));
+                                if(seFlag){
+                                    bossLaserSE.currentTime = 0;
+                                    bossLaserSE.play();
+                                }
+                            }
                         } else {
                             this.vy = 0;
                         }
@@ -1692,14 +1799,14 @@ class BossLaser extends EnemyShot {
 
         if (formCount > 180 && formCount <= 600) {
             if (this.leftRight == 0) {
-                if (this.y >= SCREEN_H / 2 + 33 -10) {//10は微調整
+                if (this.y >= SCREEN_H / 2 + 33 - 10) {//10は微調整
                     this.vy = -1;
                 } else {
                     this.vy = 0;
                 }
             }
             if (this.leftRight == 1) {
-                if (this.y <= SCREEN_H / 2 - 30 - this.sizeY +10) {
+                if (this.y <= SCREEN_H / 2 - 30 - this.sizeY + 10) {
                     this.vy = 1;
                 } else {
                     this.vy = 0;

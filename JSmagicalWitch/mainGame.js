@@ -5,6 +5,25 @@
 //デバッグモードフラグ
 let Debug = false;
 
+//難易度設定
+let difficulty = 1;//0=EASY 1=NORMAL 2=HARD
+let fireReloadAddPoint = 10;//EASY=20 NORMAL=10 HARD=5
+let thunderReloadAddPoint = 5;//EASY=10 NORMAL=5 HARD=2
+let iceReloadAddPoint = 2;//EASY=5 NORMAL=2 HARD=1
+let batAtackPoint = 5;//EASY=2 NORMAL=5 HARD=10
+let treantShotCount = 400;//EASY=500 NORMAL=400 HARD=300
+let pumpkinHP = 3000;//EASY=2000 NORMAL=3000 HARD=5000
+let ghostShotCount = 300;//EASY=400 NORMAL=300 HARD=200
+let devilHP = 3000;//EASY=2000 NORMAL=3000 HARD=5000
+let bossHandAtackPoint = 10;//EASY=5 NORMAL=10 HARD=20
+
+//BGMフラグ
+let bgmFlag = true;
+//SEフラグ
+let seFlag = true;
+//ボイスフラグ
+let voFlag = true;
+
 //ゲームスピード
 const GAME_SPEED = 1000 / 60;
 
@@ -42,6 +61,7 @@ let camera_y = 0;
 // 2コンテニュー画面
 // 3ステージクリア画面
 // 4エンディング画面
+// 5オプション画面
 let gameSituation = 0;
 let toggleFlag = true;//ゲーム状態の切り換えトグル
 
@@ -71,44 +91,83 @@ let blastInit = 0.5;//ショットが段々大きくなる
 let shotAttackPoint = 10;//弾の攻撃力初期値
 
 //音声ファイルの読み込み
-const startVo = new Audio("sounds/se/start.wav");
-const gameOverVo = new Audio("sounds/se/gameover.wav");
+//ボイス
+const startVo = new Audio("sounds/vo/start.wav");
+const gameOverVo = new Audio("sounds/vo/gameover.wav");
 let goVoCount = 0;
-const continueVo = new Audio("sounds/se/continue.wav");
-const stageClearVo = new Audio("sounds/se/ok.wav");
+const continueVo = new Audio("sounds/vo/continue.wav");
+const stageClearVo = new Audio("sounds/vo/ok.wav");
 let stageClearVoFlag = true;
-const allStageClearVo = new Audio("sounds/se/yatta.wav");
-const thankVo = new Audio("sounds/se/arigatou.wav");
-
+const allStageClearVo = new Audio("sounds/vo/yatta.wav");
+const thankVo = new Audio("sounds/vo/arigatou.wav");
+const damageVo1 = new Audio("sounds/vo/damageVo1.wav");
+const damageVo2 = new Audio("sounds/vo/damageVo2.wav");
+//BGM
+const act1BGM = new Audio("sounds/bgm/act1.wav");
+const act2BGM = new Audio("sounds/bgm/act2.wav");
+const act3BGM = new Audio("sounds/bgm/act3.wav");
+const act4BGM = new Audio("sounds/bgm/act4.wav");
+const bossBGM = new Audio("sounds/bgm/boss.wav");
+const gameOverBGM = new Audio("sounds/bgm/gameoverBgm.wav");
+const allClearBGM = new Audio("sounds/bgm/happytime.wav");
+const stageClearBGM = new Audio("sounds/bgm/stageclear.wav");
+//SE
+const shotSE = new Audio("sounds/se/shot.wav");//自機ショット
+const hitSE = new Audio("sounds/se/hit.wav");//自機の弾が敵にヒット
+const fbSE = new Audio("sounds/se/fireBlast.wav");//炎魔法の玉
+const burnSE = new Audio("sounds/se/blastBurn.wav");//炎魔法の爆発
+const tsSE = new Audio("sounds/se/thunderSword.wav");//雷魔法
+const ibSE = new Audio("sounds/se/iceBarrier.wav");//氷魔法
+const itSE = new Audio("sounds/se/iceHit.wav");//氷魔法に弾ヒット
+const cureSE = new Audio("sounds/se/itemCure.wav");//回復アイテム
+const shoukanSE = new Audio("sounds/se/shoukan.wav");//コウモリの魔法陣
+const batDeathSE = new Audio("sounds/se/batDeath.wav");//コウモリ撃破
+const treantShotSE = new Audio("sounds/se/treantShot.wav");//トレント弾発射
+const treantDeathSE = new Audio("sounds/se/treantDeath.wav");//トレント撃破
+const pumpkinShotSE = new Audio("sounds/se/pumpkinShot.wav");//パンプキン弾発射
+const pumpkinDeathSE = new Audio("sounds/se/pumpkinDeath.wav");//パンプキン撃破
+const ghostShotSE = new Audio("sounds/se/ghostShot.wav");//ゴースト弾発射
+const ghostDeathSE = new Audio("sounds/se/ghostDeath.wav");//ゴースト撃破
+const devilShotSE = new Audio("sounds/se/devilShot.wav");//デビル弾発射、ボス目弾
+const devilDeathSE = new Audio("sounds/se/devilDeath.wav");//デビル撃破
+const bossUpSE = new Audio("sounds/se/bossUp.wav")//ボス登場時
+const bossHandSE = new Audio("sounds/se/bossHand.wav");//ボス手掴み(2回鳴らす)
+const bossPbSE = new Audio("sounds/se/bossPlasmaBall.wav");//ボスプラズマボール
+const bossLaserSE = new Audio("sounds/se/bossLaser.wav");//ボス極太レーザー
+const bossDeathSE = new Audio("sounds/se/bossDeath.wav");//ボス本体、ボス手撃破
+//optionSE
+const optionOpenSE = new Audio("sounds/se/optionOpen.wav");
+const optionCloseSE = new Audio("sounds/se/optionClose.wav");
+const optionSelectSE = new Audio("sounds/se/optionSelect.wav");
 
 //画像ファイルを読み込み
 //背景の枠
 let waku = new Image();
-waku.src = "images/waku.gif";
+waku.src = "images/screen/waku.gif";
 //モンスター
 let spriteImage = new Image();
-spriteImage.src = "images/monster.png";
+spriteImage.src = "images/sprite/monster.png";
 //魔法
 let spriteImage2 = new Image();
-spriteImage2.src = "images/magic.png";
+spriteImage2.src = "images/sprite/magic.png";
 //ゲーム開始画面の画像
 let titleLogo = new Image();
 titleLogo.src = "images/ui/TitleLogo.png";
 let titleWitch = new Image();
-titleWitch.src = "images/TitleWitch.png";
+titleWitch.src = "images/ui/TitleWitch.png";
 let howTo = new Image();
 howTo.src = "images/ui/HowToPlay.png";
 let startBtn = new Image();
 startBtn.src = "images/ui/startbutton.png";
 let openingBG = new Image();
-openingBG.src = "images/OpeningBG.jpg";
+openingBG.src = "images/screen/OpeningBG.jpg";
 //ゲームオーバー画面の画像
 let loseWitch = new Image();
-loseWitch.src = "images/GameOverWitch3.png";
+loseWitch.src = "images/ui/GameOverWitch.png";
 let continueBtn = new Image();
 continueBtn.src = "images/ui/continue.png";
 let gameOverBG = new Image();
-gameOverBG.src = "images/GameOverBG.jpg";
+gameOverBG.src = "images/screen/GameOverBG.jpg";
 let gameOverFont = new Image();
 gameOverFont.src = "images/ui/gameOverFont.png";
 //ゲームスタンバイ画面のステージ紹介文
@@ -126,7 +185,7 @@ clearFont.src = "images/ui/clearFont.gif"
 let allClearFont = new Image();
 allClearFont.src = "images/ui/allClearFont.gif";
 let clearWitch = new Image();
-clearWitch.src = "images/clearWitch.jpg";
+clearWitch.src = "images/screen/clearWitch.jpg";
 let thank = new Image();
 thank.src = "images/ui/TFP.gif";
 //ステージ画像
@@ -148,7 +207,18 @@ let yasikigaikan_8 = new Image();
 yasikigaikan_8.src = "images/map/8yasikigaikan.gif";
 let yasiki_9 = new Image();
 yasiki_9.src = "images/map/9yasiki.gif";
-
+//クレジット
+let credit = new Image();
+credit.src = "images/ui/credit.png";
+//オプション画面
+let optionButton = new Image();
+optionButton.src = "images/ui/optionButton.png";
+let optionBackButton = new Image();
+optionBackButton.src = "images/ui/backButton.png";
+let optionMenu = new Image();
+optionMenu.src = "images/ui/optionSelect.png";
+let optionSelecter = new Image();
+optionSelecter.src = "images/ui/selecter.png";
 
 //スプライトクラス
 class Sprite {
@@ -411,6 +481,9 @@ let lastFadeOut = 1;
 let lastCount = 0;
 let treantCount = 0;
 
+//エンドグラフィックフラグ
+let endGraFlag = false;
+
 //ゲーム初期化
 function gameInit() {
   setInterval(gameLoop, GAME_SPEED);
@@ -420,271 +493,269 @@ function gameInit() {
 //ゲームループ
 function gameLoop() {
 
-  if (gameSituation == 1) {
-    stageClearVoFlag = true;
+  try {
+    //バトル中
+    if (gameSituation == 1) {
+      stageClearVoFlag = true;
 
-    if (stopStage) gamethread++;
+      //-----ステージの背景-----
+      stage_on();
 
-    //-----ステージの背景-----
-    stage_on();
+      //-----ステージの敵出現パターンセット-----
+      setStage();
 
-    //if (gamethread == 200) itemPortion.push(new Portion(30,500,500,45*0.8,67*0.8));
-    if (gamethread == 200) itemElixir.push(new Elixir(31,500,500,50*0.8,68*0.8));
+      //-----自機ショットの生成-----
+      setShot();
 
-    //-----ステージ１-----
-    if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 1));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 2));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 3));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 4));
+      //-----描画の処理-----
+      //背景
+      //vcon.fillStyle = "#2e8b57";
+      //vcon.fillStyle = "black";
+      //vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
+      //vcon.drawImage(test, 0, 0, 700, 400, 0, 0, 1400, 800);
+      draw_on(stageSituation);
+      actFont();
+      vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
 
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, 150, 0, 0, 50, 50, 5));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 6));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 7));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 8));
+      //自機ショットの描画
+      drawShot();
 
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 9));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 10));
+      //敵の描画
+      draw_on(treant);//トレント
+      draw_on(pumpkin);
+      draw_on(ghost);
+      draw_on(devil);
+      draw_on(bossSkull);
+      draw_on(bossPlasma);
+      draw_on(bossLaser);
+      draw_on(bossHand);
+      draw_on(bossForm);
+      draw_on(bossDeath);
+      draw_on(shutugen);//コウモリ出現の魔法陣　描画順はコウモリより上
+      draw_on(bat);//コウモリ　どの敵よりも優先して描画
+      //draw_on(batShot);//コウモリの弾
+      draw_on(jyouka);//コウモリ浄化
+      draw_on(hitEf);//ヒットエフェクト
 
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 11));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W/2 - 50/2, SCREEN_H/2 - 50/2, 0, 0, 50, 50, 12));
+      //魔法の描画は敵より優先
+      draw_on(iceBa);
+      draw_on(fireBl);
+      draw_on(explod);
+      draw_on(thHantei);
 
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 13));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 14));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 15));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, SCREEN_H - 150 - 50/2, 0, 0, 50, 50, 16));
+      //アイテムの描画
+      draw_on(itemPortion);
+      draw_on(itemElixir);
+      draw_on(itemEffect);
 
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 17));
-    //if (gamethread == 100) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50/2, 150, 0, 0, 50, 50, 18));
+      //敵弾の描画は最優先
+      draw_on(treantShot);//トレントの弾
+      draw_on(pumpkinShot);
+      draw_on(ghostShot);
+      draw_on(devilShot);
 
-    if(stagethred == 3){
-      treantCount++;
-      if(treantCount == 190){
-        treant.push(new Treant(13,300,-500,0,0,112,110));
-        treant.push(new Treant(13,300,-900,0,0,112,110));
-        treant.push(new Treant(13,900,-500,0,0,112,110));
-        treant.push(new Treant(13,900,-900,0,0,112,110));
-        //スプライトナンバー, 出現位置ｘ, 出現位置ｙ, 動きｘ, 動きｙ, 大きさｘ, 大きさｙ
+      if (jiki.hpPoint <= 0) {
+        if (voFlag) {
+          damageVo2.currentTime = 0;
+          damageVo2.play();
+        }
+        gameSituation = 2;
       }
-    }
-    //if(stagethred == 4) treantCount = 0;//★他でも初期化しないといけない
 
-    if(stagethred == 5){
-      treantCount++;
-      if(treantCount == 190){
-        treant.push(new Treant(13,50,-700,0,0,112,110));
-        treant.push(new Treant(13,1050,-950,0,0,112,110));
-        treant.push(new Treant(13,1050,-400,0,0,112,110));
-      }
-      if(gamethread == 100){
-        pumpkin.push(new Pumpkin(18,100,100,0,0,80,70));
-        ghost.push(new Ghost(30,700,100,0,0,70,90));
-      }
-    }
-
-    if(stagethred == 7){
-      if(gamethread == 100){
-        devil.push(new Devil(37,SCREEN_W+120,100,0,0,110,80,1));
-        // devil.push(new Devil(37,-200,200,0,0,110,80,2));
-        // devil.push(new Devil(37,SCREEN_W/2-55,SCREEN_H+200,0,0,110,80,3));
-        // devil.push(new Devil(37,SCREEN_W/2-55,-200,0,0,110,80,4));
-      }
-    }
-
-    if(stagethred == 9){
-      if(gamethread == 50){
-        bossSkull.push(new BossSkull(44,SCREEN_W/2-132,10,0,0,132*2,175*2));
-        bossHand.push(new BossHand(52,0,SCREEN_H-248,0,0,272,248,0));
-        bossHand.push(new BossHand(53,SCREEN_W-272,SCREEN_H-248,0,0,272,248,1));
-        bossForm.push(new BossForm(57,-146*1.8,SCREEN_H/2-161*1.7/2,0,0,146*1.7,161*1.7,0));
-        bossForm.push(new BossForm(60,SCREEN_W,SCREEN_H/2-161*1.7/2,0,0,146*1.7,161*1.7,1));
-      }
-      if(gamethread == 100) bossHpOnFlag = true;
     }
 
-    //クリア条件(仮)
-    if (stagethred != 9) {
-      if (gamethread > 2000) {
-        gameSituation = 3;
+    //ゲームオーバーorクリア時の初期化
+    if (gameSituation != 1) {
+      batKillCount = 0;
+      treantCount = 0;
+      treantKillCount = 0;
+      ghostKillCount = 0;
+      pumpkinKillCount = 0;
+      devilKillCount = 0;
+
+      soundsCount = 0;
+
+      if (bgmFlag) {
+        act1BGM.loop = false;
+        act1BGM.pause();
+        act1BGM.currentTime = 0;
+        act2BGM.loop = false;
+        act2BGM.pause();
+        act2BGM.currentTime = 0;
+        act3BGM.loop = false;
+        act3BGM.pause();
+        act3BGM.currentTime = 0;
+        act4BGM.loop = false;
+        act4BGM.pause();
+        act4BGM.currentTime = 0;
+        bossBGM.loop = false;
+        bossBGM.pause();
+        bossBGM.currentTime = 0;
       }
     }
 
-    //-----自機ショットの生成-----
-    setShot();
+    //ゲーム状況に影響されないようgameSituationの外に置く
+    //自機ダメージ判定
+    jikiDamage();
+    //ステージ背景の動き
+    update_on(stageSituation);
+    //魔法の動き
+    update_on(fireBl);
+    update_on(explod);
+    update_on(thHantei);
+    update_on(thGra);
+    draw_on(thGra);//サンダーソードのグラはここじゃないとダメ
+    update_on(iceBa);
+    //敵の動き
+    update_on(bat);//コウモリ
+    //update_on(batShot);//コウモリの弾
+    update_on(jyouka);//コウモリ浄化
+    update_on(hitEf);
+    update_on(shutugen);
+    update_on(treant);
+    update_on(treantShot);
+    update_on(pumpkin);
+    update_on(pumpkinShot);
+    update_on(ghost);
+    update_on(ghostShot);
+    update_on(devil);
+    update_on(bossSkull);
+    update_on(bossHand);
+    update_on(bossDeath);
+    update_on(devilShot);
+    update_on(bossForm);
+    update_on(bossPlasma);
+    update_on(bossLaser);
+    update_on(itemPortion);
+    update_on(itemElixir);
+    update_on(itemEffect);
 
-    //-----描画の処理-----
-    //背景
-    //vcon.fillStyle = "#2e8b57";
-    //vcon.fillStyle = "black";
-    //vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
-    //vcon.drawImage(test, 0, 0, 700, 400, 0, 0, 1400, 800);
-    draw_on(stageSituation);
-    actFont();
-    vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
-
-    //自機ショットの描画
-    drawShot();
-
-    //敵の描画
-    draw_on(treant);//トレント
-    draw_on(treantShot);//トレントの弾
-    draw_on(pumpkin);
-    draw_on(pumpkinShot);
-    draw_on(ghost);
-    draw_on(ghostShot);
-    draw_on(devil);
-    draw_on(bossSkull);
-    draw_on(bossPlasma);
-    draw_on(bossLaser);
-    draw_on(bossHand);
-    draw_on(bossForm);
-    draw_on(bossDeath);
-    draw_on(devilShot);
-    draw_on(shutugen);//コウモリ出現の魔法陣　描画順はコウモリより上
-    draw_on(bat);//コウモリ　どの敵よりも優先して描画
-    //draw_on(batShot);//コウモリの弾
-    draw_on(jyouka);//コウモリ浄化
-    draw_on(hitEf);//ヒットエフェクト
-
-    //アイテムの描画
-    draw_on(itemPortion);
-    draw_on(itemElixir);
-    draw_on(itemEffect);
-
-    //魔法の描画は敵より優先
-    draw_on(iceBa);
-    draw_on(fireBl);
-    draw_on(explod);
-    draw_on(thHantei);
-
-    if (jiki.hpPoint <= 0) {
-      gameSituation = 2;
+    //オープニング画面
+    if (gameSituation == 0) {
+      stopStage = false;
+      gamethread = 0;
+      goVoCount = 0;
+      lastFadeOut = 1;
+      lastCount = 0;
+      vcon.drawImage(openingBG, 0, 0, 1920, 1080, -600, 0, 1920, 1080);
+      vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
+      vcon.drawImage(titleWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
+      vcon.drawImage(howTo, 0, 0, 800, 550, 100, 220, 800 / 1.5, 550 / 1.5);
+      vcon.drawImage(startBtn, 0, 0, 450, 130, 185, 630, 450 * 0.8, 130 * 0.8);
+      vcon.drawImage(titleLogo, 0, 0, 650, 150, (SCREEN_W - 650 * 1.5) / 2, 20, 650 * 1.5, 150 * 1.5);
+      vcon.drawImage(optionButton, 0, 0, 216, 220, SCREEN_W - 100, 30, 216 / 3, 220 / 3);
     }
 
+    //ゲームオーバー
+    if (gameSituation == 2) {
+      if (bgmFlag && goVoCount == 1) {//goVoCountを利用
+        gameOverBGM.play();
+        gameOverBGM.loop = false;
+      }
+      if (goVoCount <= 80) {
+        goVoCount++;
+        if (goVoCount == 80) {
+          if (voFlag) gameOverVo.play();
+        }
+      }
+      vcon.drawImage(gameOverBG, 0, 0, 800, 600, 0, 0, 800 * 1.6, 600 * 1.6);
+      vcon.drawImage(continueBtn, 0, 0, 260, 260, 50, 220, 260 * 2.2, 260 * 2.2);
+      vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
+      vcon.drawImage(loseWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
+      vcon.drawImage(gameOverFont, 0, 0, 620, 100, 50, 40, 620 * 1.8, 100 * 1.8);
+    }
+    if (gameSituation != 2) {
+      if (bgmFlag) {
+        gameOverBGM.pause();
+        gameOverBGM.currentTime = 0;
+      }
+    }
+
+    //ステージクリア
+    if (gameSituation == 3) {
+      if (stageClearVoFlag) {
+        if (voFlag) {
+          stageClearVo.play();
+          if (bgmFlag) stageClearBGM.play();
+        }
+        stageClearVoFlag = false;
+      }
+      actFontCount = 0;
+      actFontFlag = true;
+      if (stagethred == 1) {
+        vcon.drawImage(sougen_2, 0, 0, 700, 400, -60, 0, 1400, 800);
+      } else if (stagethred == 3) {
+        vcon.drawImage(mori_5, 0, 0, 700, 400, -30, 0, 1400, 800);
+      } else if (stagethred == 5) {
+        vcon.drawImage(haka_7, 0, 0, 700, 400, -80, 0, 1400, 800);
+      } else if (stagethred == 7) {
+        vcon.drawImage(yasiki_9, 0, 0, 700, 400, -60, 0, 1400, 800);
+      }
+      vcon.drawImage(clearFont, 0, 0, 470, 170, (SCREEN_W - 470 * 1.5) / 2, 200, 470 * 1.5, 170 * 1.5);
+      vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
+    }
+    if (gameSituation != 3) {
+      if (bgmFlag) {
+        stageClearBGM.pause();
+        stageClearBGM.currentTime = 0;
+      }
+    }
+
+    //全ステージクリア
+    if (gameSituation == 4) {
+      lastCount++;
+      if (!endGraFlag) {
+        if (bgmFlag && lastCount == 100) allClearBGM.play();
+        vcon.drawImage(sougen_2, 0, 0, 700, 400, -60, 0, 1400, 800);
+        vcon.fillStyle = "rgba(" + [0, 0, 0, lastFadeOut] + ")";
+        vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
+        if (lastCount > 100) {
+          if (lastFadeOut > 0) {
+            lastFadeOut -= 0.01;
+          }
+        }
+        if (lastCount == 200) {
+          if (voFlag) allStageClearVo.play();
+        }
+        if (lastCount > 200) {
+          vcon.drawImage(allClearFont, 0, 0, 690, 180, (SCREEN_W - 690 * 1.5) / 2, 100, 690 * 1.5, 180 * 1.5);
+          vcon.drawImage(credit, 0, 0, 761, 276, SCREEN_W / 2 - 761 / 2, SCREEN_H - 400, 761, 276);
+        }
+      } else {
+        if (lastCount == 1) {
+          if (voFlag) thankVo.play();
+        }
+        vcon.drawImage(clearWitch, 0, 150, 1024, 1024, 0, 0, 1024 * 1.3, 1024 * 1.3);
+        vcon.drawImage(thank, 0, 0, 600, 100, 680, 680, 600, 100);
+      }
+      vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
+    }
+    if (gameSituation != 4) {
+      if (bgmFlag) {
+        allClearBGM.pause();
+        allClearBGM.currentTime = 0;
+      }
+      endGraFlag = false;
+    }
+
+    HpGauge();
+
+    option();
+
+    //仮想画面から実際のキャンバスにコピー
+    con.drawImage(vcan, 0, 0, SCREEN_W, SCREEN_H, 0, 0, CANVAS_W, CANVAS_H);
+
+    //-----デバッグ-----
+    gameDebug();
+
+  } catch (e) {
+    console.log(e.message);
+    con.font = "50px 'Impact'";
+    con.fillStyle = "black";
+    con.fillText("致命的なエラーが発生しました。", 200, SCREEN_H/2-100);
+    con.fillText("ブラウザを更新してもダメな場合は、", 200, SCREEN_H/2);
+    con.fillText("制作者にご連絡ください。", 200, SCREEN_H/2+100);
   }
-
-  if(gameSituation != 1){
-    treantCount = 0;
-  }
-
-  //ゲーム状況に影響されないようgameSituationの外に置く
-  //自機判定
-  drawJiki();//←仮の描画
-  //ステージ背景の動き
-  update_on(stageSituation);
-  //魔法の動き
-  update_on(fireBl);
-  update_on(explod);
-  update_on(thHantei);
-  update_on(thGra);
-  draw_on(thGra);//サンダーソードのグラはここじゃないとダメ
-  update_on(iceBa);
-  //敵の動き
-  update_on(bat);//コウモリ
-  //update_on(batShot);//コウモリの弾
-  update_on(jyouka);//コウモリ浄化
-  update_on(hitEf);
-  update_on(shutugen);
-  update_on(treant);
-  update_on(treantShot);
-  update_on(pumpkin);
-  update_on(pumpkinShot);
-  update_on(ghost);
-  update_on(ghostShot);
-  update_on(devil);
-  update_on(bossSkull);
-  update_on(bossHand);
-  update_on(bossDeath);
-  update_on(devilShot);
-  update_on(bossForm);
-  update_on(bossPlasma);
-  update_on(bossLaser);
-  update_on(itemPortion);
-  update_on(itemElixir);
-  update_on(itemEffect);
-
-  //オープニング画面
-  if (gameSituation == 0) {
-    stopStage = false;
-    gamethread = 0;
-    //stagethred = 0;//←ここで初期化するとバグる
-    goVoCount = 0;
-    lastFadeOut = 1;
-    lastCount = 0;
-    vcon.drawImage(openingBG, 0, 0, 1920, 1080, -600, 0, 1920, 1080);
-    vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
-    vcon.drawImage(titleWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
-    vcon.drawImage(howTo, 0, 0, 800, 550, 100, 220, 800 / 1.5, 550 / 1.5);
-    vcon.drawImage(startBtn, 0, 0, 450, 130, 185, 630, 450 * 0.8, 130 * 0.8);
-    vcon.drawImage(titleLogo, 0, 0, 650, 150, (SCREEN_W - 650 * 1.5) / 2, 20, 650 * 1.5, 150 * 1.5);
-  }
-
-  //ゲームオーバー
-  if (gameSituation == 2) {
-    if (goVoCount <= 40) {
-      goVoCount++;
-      if (goVoCount == 40) {
-        gameOverVo.play();
-      }
-    }
-    vcon.drawImage(gameOverBG, 0, 0, 800, 600, 0, 0, 800 * 1.6, 600 * 1.6);
-    vcon.drawImage(continueBtn, 0, 0, 260, 260, 50, 220, 260 * 2.2, 260 * 2.2);
-    vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
-    vcon.drawImage(loseWitch, 0, 0, 1180, 1070, 600, 160, (1180 / 2) * 1.2, (1070 / 2) * 1.2);
-    vcon.drawImage(gameOverFont, 0, 0, 620, 100, 50, 40, 620 * 1.8, 100 * 1.8);
-  }
-
-  //ステージクリア
-  if (gameSituation == 3) {
-    if (stageClearVoFlag) {
-      stageClearVo.play();
-      stageClearVoFlag = false;
-    }
-    actFontCount = 0;
-    actFontFlag = true;
-    if (stagethred == 1) {
-      vcon.drawImage(sougen_2, 0, 0, 700, 400, -60, 0, 1400, 800);
-    } else if (stagethred == 3) {
-      vcon.drawImage(mori_5, 0, 0, 700, 400, -30, 0, 1400, 800);
-    } else if (stagethred == 5) {
-      vcon.drawImage(haka_7, 0, 0, 700, 400, -80, 0, 1400, 800);
-    } else if (stagethred == 7) {
-      vcon.drawImage(yasiki_9, 0, 0, 700, 400, -60, 0, 1400, 800);
-    }
-    vcon.drawImage(clearFont, 0, 0, 470, 170, (SCREEN_W - 470 * 1.5) / 2, 200, 470 * 1.5, 170 * 1.5);
-    vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
-  }
-
-  //全ステージクリア
-  if (gameSituation == 4) {
-    vcon.drawImage(sougen_2, 0, 0, 700, 400, -60, 0, 1400, 800);
-    vcon.fillStyle = "rgba(" + [0, 0, 0, lastFadeOut] + ")";
-    vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
-    lastCount++;
-    if (lastCount > 100) {
-      if (lastFadeOut > 0) {
-        lastFadeOut -= 0.01;
-      }
-    }
-    if (lastCount == 200) allStageClearVo.play();
-    if (lastCount > 200) {
-      vcon.drawImage(allClearFont, 0, 0, 690, 180, (SCREEN_W - 690 * 1.5) / 2, 200, 690 * 1.5, 180 * 1.5);
-    }
-    if (lastCount == 400) thankVo.play();
-    if (lastCount > 400) {
-      vcon.drawImage(clearWitch, 0, 0, 960, 540, 0, 0, 960 * 1.5, 540 * 1.5);
-      vcon.drawImage(thank, 0, 0, 600, 100, 680, 680, 600, 100);
-    }
-    vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
-  }
-
-  HpGauge();
-
-  //仮想画面から実際のキャンバスにコピー
-  con.drawImage(vcan, 0, 0, SCREEN_W, SCREEN_H, 0, 0, CANVAS_W, CANVAS_H);
-
-
-  //-----デバッグ-----
-  gameDebug();
 }
 
 window.onload = function () {

@@ -137,6 +137,10 @@ class Explosion {
 
   update() {
     this.exCount++;
+    if(this.exCount == 1 && seFlag) {
+      burnSE.currentTime = 0;
+      burnSE.play();
+    }
     if (this.exCount < 10) {
       this.spriteAnime = 0;
     } else if (this.exCount < 20) {
@@ -681,7 +685,7 @@ class IceBarrier {
     this.x = jiki.position.x - this.hankei * Math.cos(Math.PI + this.kaitenCount) - this.sizeX / 2;
     this.y = jiki.position.y - this.hankei * Math.sin(Math.PI + this.kaitenCount) - this.sizeY / 2;
 
-    if (this.kaitenCount - this.posi > 20) {
+    if (this.kaitenCount - this.posi > 60) {
       barrierOn = false;
       this.kill = true;
     }

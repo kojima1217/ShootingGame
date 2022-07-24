@@ -32,6 +32,9 @@ let screenBox = targetElement.getBoundingClientRect();
 let cX = Math.floor(screenBox.left);
 let cY = Math.floor(screenBox.top);
 
+//オプション画面の切り換え用
+let optionFlag = false;
+
 //マウスボタンを押下した時
 document.addEventListener("mousedown", mouseDown, true);
 function mouseDown(event) {
@@ -44,17 +47,25 @@ function mouseDown(event) {
   if (event.which == 1) {
     console.log("左クリック");
     if (toggleFlag) {
-      if (gameSituation == 0) {//ゲーム開始
+      if (gameSituation == 0) {//スタート画面
+        //ゲーム開始
         if (clickPositonX > 200 && clickPositonX < 530 && clickPositonY > 640 && clickPositonY < 730) {
           gamethread = 0;
-          startVo.play();
+          if (voFlag) startVo.play();
           gameSituation = 1;
           toggleFlag = false;
+        }
+        //オプションボタン
+        if (clickPositonX > 1140 && clickPositonX < SCREEN_W && clickPositonY > 0 && clickPositonY < 110 && !optionFlag) {
+          gameSituation = 5;
+          toggleFlag = false;
+          optionOpenSE.currentTime = 0;
+          optionOpenSE.play();
         }
       }
       if (gameSituation == 2) {//ゲームオーバー
         if (clickPositonX > 160 && clickPositonX < 520 && clickPositonY > 330 && clickPositonY < 450) {
-          continueVo.play();
+          if (voFlag) continueVo.play();
           if (stagethred == 1) stagethred = 0;
           else if (stagethred == 3) stagethred = 2;
           else if (stagethred == 5) stagethred = 4;
@@ -96,16 +107,106 @@ function mouseDown(event) {
         gamethread = 0;
         toggleFlag = false;
       }
-      if (gameSituation == 4 && lastCount > 500) {//全ステージクリア
-        jiki.hpPoint = 1000;
-        gameSituation = 0;
-        stagethred = 0;
-        actFontCount = 0;
-        actFontFlag = true;
-        stopStage = false;
-        fire = false;
-        damageFlag = false;
-        toggleFlag = false;
+      if (gameSituation == 4) {//全ステージクリア
+        if (!endGraFlag && lastCount > 400) {
+          endGraFlag = true;
+          lastCount = 0;
+        }
+        if (endGraFlag && lastCount > 200) {
+          jiki.hpPoint = 1000;
+          gameSituation = 0;
+          stagethred = 0;
+          actFontCount = 0;
+          actFontFlag = true;
+          stopStage = false;
+          fire = false;
+          damageFlag = false;
+          toggleFlag = false;
+        }
+      }
+      if (gameSituation == 5) {//オプション画面
+        //バックボタン
+        if (clickPositonX > 1140 && clickPositonX < SCREEN_W && clickPositonY > 0 && clickPositonY < 110 && optionFlag) {
+          gameSituation = 0;
+          toggleFlag = false;
+          optionCloseSE.currentTime = 0;
+          optionCloseSE.play();
+        }
+        //難易度設定
+        if (clickPositonX > 140 && clickPositonX < 310 && clickPositonY > 250 && clickPositonY < 410) {
+          difficulty = 0;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 325 && clickPositonX < 495 && clickPositonY > 250 && clickPositonY < 410) {
+          difficulty = 1;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 525 && clickPositonX < 695 && clickPositonY > 250 && clickPositonY < 410) {
+          difficulty = 2;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        //開始ステージ選択
+        if (clickPositonX > 130 && clickPositonX < 220 && clickPositonY > 520 && clickPositonY < 640) {
+          stagethred = 0;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 225 && clickPositonX < 315 && clickPositonY > 520 && clickPositonY < 640) {
+          stagethred = 2;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 320 && clickPositonX < 410 && clickPositonY > 520 && clickPositonY < 640) {
+          stagethred = 4;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 415 && clickPositonX < 505 && clickPositonY > 520 && clickPositonY < 640) {
+          stagethred = 6;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 510 && clickPositonX < 600 && clickPositonY > 520 && clickPositonY < 640) {
+          stagethred = 8;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        //BGM設定
+        if (clickPositonX > 880 && clickPositonX < 990 && clickPositonY > 250 && clickPositonY < 350) {
+          bgmFlag = true;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 1000 && clickPositonX < 1120 && clickPositonY > 250 && clickPositonY < 350) {
+          bgmFlag = false;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        //SE設定
+        if (clickPositonX > 880 && clickPositonX < 990 && clickPositonY > 380 && clickPositonY < 480) {
+          seFlag = true;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 1000 && clickPositonX < 1120 && clickPositonY > 380 && clickPositonY < 480) {
+          seFlag = false;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        //vo設定
+        if (clickPositonX > 880 && clickPositonX < 990 && clickPositonY > 510 && clickPositonY < 610) {
+          voFlag = true;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
+        if (clickPositonX > 1000 && clickPositonX < 1120 && clickPositonY > 510 && clickPositonY < 610) {
+          voFlag = false;
+          optionSelectSE.currentTime = 0;
+          optionSelectSE.play();
+        }
       }
     }
     if (gameSituation == 1 && stopStage && !thunderSwordFlag) fire = true;
@@ -115,10 +216,14 @@ function mouseDown(event) {
   }
   if (event.which == 3 && gameSituation == 1 && stopStage) {
     console.log("右クリック");
-    fire = false;
+    //fire = false;
 
     if (changeMagic == 0 && fireReload == 1800) {
       fireBl.push(new FireBlast());
+      if (seFlag) {
+        fbSE.currentTime = 0;
+        fbSE.play();
+      }
     } else if (changeMagic == 1 && thunderReload == 1800) {
       thunderSwordFlag = true;
       thHantei.push(new ThunderHantei(1));
@@ -127,6 +232,10 @@ function mouseDown(event) {
       thHantei.push(new ThunderHantei(4));
       thHantei.push(new ThunderHantei(5));
       thGra.push(new ThunderGraphic());
+      if (seFlag) {
+        tsSE.currentTime = 0;
+        tsSE.play();
+      }
     } else if (changeMagic == 2 && iceReload == 1800) {
       barrierOn = true;
       iceBa.push(new IceBarrier(0));
@@ -135,6 +244,10 @@ function mouseDown(event) {
       iceBa.push(new IceBarrier(180));
       iceBa.push(new IceBarrier(240));
       iceBa.push(new IceBarrier(300));
+      if (seFlag) {
+        ibSE.currentTime = 0;
+        ibSE.play();
+      }
     }
   }
 }
@@ -146,6 +259,8 @@ function mouseUp(event) {
     console.log("左クリック離された");
     toggleFlag = true;
     if (gameSituation == 1) fire = false;
+    if (gameSituation == 0) optionFlag = false;
+    if (gameSituation == 5) optionFlag = true;
   }
   if (event.which == 2) {
     console.log("中クリック離された");

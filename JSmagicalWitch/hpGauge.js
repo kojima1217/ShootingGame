@@ -4,9 +4,9 @@ function HpGauge() {
     if (gameSituation == 1 || gameSituation == 3) {
         vcon.beginPath();
         //魔法アイコンリロードゲージ
-        if (fireReload < 1800) fireReload += 10;
-        if (thunderReload < 1800) thunderReload += 5;
-        if (iceReload < 1800) iceReload++;
+        if (fireReload < 1800) fireReload += fireReloadAddPoint;
+        if (thunderReload < 1800) thunderReload += thunderReloadAddPoint;
+        if (iceReload < 1800) iceReload += iceReloadAddPoint;
         if (reloadGauge == 1800) {
             vcon.fillStyle = "rgba(30, 200, 230, 0.7)";
         } else {
@@ -96,6 +96,7 @@ function HpGauge() {
             //HPゲージ
             vcon.fillStyle = "rgba(255,0,0,0.5)";
             vcon.fillRect(840, 60, bossHP / 125, 20+4);
+            if(bossHP < 0) bossHP = 0;
         }
     }
 

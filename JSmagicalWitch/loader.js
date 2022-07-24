@@ -1,3 +1,4 @@
+//****NOW LOADINGの処理****//
 let bg = document.getElementById("loader-bg");
 
 bg.classList.remove("is-hide");

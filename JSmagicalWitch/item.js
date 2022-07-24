@@ -1,3 +1,4 @@
+//****アイテムの処理****//
 class Item {
     constructor(snum, x, y, sizeX, sizeY) {
         this.snum = snum;//スプライトナンバー
@@ -12,13 +13,13 @@ class Item {
     update() {
         this.killCount++;
         //画面が切り替わったら全部消すor時間経過で消える
-        if (gameSituation != 1 || this.killCount > 300) {
+        if (gameSituation != 1 || this.killCount > 400) {
             this.kill = true;
         }
     }
 
     draw() {
-        if (this.killCount > 250) {
+        if (this.killCount > 350) {
             if (this.killCount % 5 == 0) {
                 drawSprite2(this.snum, this.x, this.y, 0.8);
             }
@@ -41,9 +42,13 @@ class Portion extends Item {
 
         //アイテムゲット時の処理
         if (!this.kill && checkHit(
-            this.x, this.y, this.sizeX, this.sizeY,
+            this.x-10, this.y-10, this.sizeX+30, this.sizeY+40,
             jiki.position.x, jiki.position.y, jiki.size, jiki.size
         )) {
+            if(seFlag){
+                cureSE.currentTime = 0;
+                cureSE.play();
+            }
             itemEffect.push(new ItemEffect(27,jiki.position.x-80/2-5,jiki.position.y-105/2-5,80,105));
             getPortion = true;
             this.kill = true;
@@ -68,9 +73,13 @@ class Elixir extends Item {
 
         //アイテムゲット時の処理
         if (!this.kill && checkHit(
-            this.x, this.y, this.sizeX, this.sizeY,
+            this.x-10, this.y-10, this.sizeX+30, this.sizeY+40,
             jiki.position.x, jiki.position.y, jiki.size, jiki.size
         )) {
+            if(seFlag){
+                cureSE.currentTime = 0;
+                cureSE.play();
+            }
             itemEffect.push(new ItemEffect(27,jiki.position.x-80/2-5,jiki.position.y-105/2-5,80,105));
             getElixir = true;
             this.kill = true;

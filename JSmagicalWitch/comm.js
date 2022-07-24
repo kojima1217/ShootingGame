@@ -181,6 +181,10 @@ function attackDamage(obj, x, y, size, attack, adaptX, adaptY, adaptSX, adaptSY)
         obj[i].x + adaptX, obj[i].y + adaptY, obj[i].sizeX + adaptSX, obj[i].sizeY + adaptSY
       )) {
         obj[i].hp -= attack;
+        if(seFlag && obj != bat){
+          hitSE.currentTime = 0;
+          hitSE.play();
+        }       
         // if (obj[i].hp < 0) {
         //   jyouka.push(new Jyouka(sprite, obj[i].x + jyoukaX, obj[i].y + jyoukaY, obj[i].vx, obj[i].vy));
         //   obj[i].kill = true;
