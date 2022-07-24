@@ -10,7 +10,7 @@ let dVcount = 0;//ダメージボイスカウント
 let damageVoFlag = false;
 
 //仮の自機判定描画
-//function drawJiki() {
+function drawJiki() {
 //パスの設定を開始
 //vcon.beginPath();
 
@@ -26,7 +26,7 @@ let damageVoFlag = false;
 
 //自機を描く
 //vcon.fill();
-//}
+}
 
 function jikiDamage() {
   //自機の位置を設定

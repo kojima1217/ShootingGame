@@ -597,6 +597,7 @@ function gameLoop() {
     //ゲーム状況に影響されないようgameSituationの外に置く
     //自機ダメージ判定
     jikiDamage();
+    drawJiki();
     //ステージ背景の動き
     update_on(stageSituation);
     //魔法の動き
@@ -705,7 +706,10 @@ function gameLoop() {
     if (gameSituation == 4) {
       lastCount++;
       if (!endGraFlag) {
-        if (bgmFlag && lastCount == 100) allClearBGM.play();
+        if (bgmFlag && lastCount == 100) {
+          allClearBGM.play();
+          allClearBGM.loop = true;
+        }
         vcon.drawImage(sougen_2, 0, 0, 700, 400, -60, 0, 1400, 800);
         vcon.fillStyle = "rgba(" + [0, 0, 0, lastFadeOut] + ")";
         vcon.fillRect(0, 0, SCREEN_W, SCREEN_H);
@@ -732,6 +736,7 @@ function gameLoop() {
     }
     if (gameSituation != 4) {
       if (bgmFlag) {
+        allClearBGM.loop = false;
         allClearBGM.pause();
         allClearBGM.currentTime = 0;
       }
