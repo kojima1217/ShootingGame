@@ -108,11 +108,11 @@ function mouseDown(event) {
         toggleFlag = false;
       }
       if (gameSituation == 4) {//全ステージクリア
-        if (!endGraFlag && lastCount > 400) {
+        if (!endGraFlag && lastCount > 250) {
           endGraFlag = true;
           lastCount = 0;
         }
-        if (endGraFlag && lastCount > 200) {
+        if (endGraFlag && lastCount > 50) {
           jiki.hpPoint = 1000;
           gameSituation = 0;
           stagethred = 0;

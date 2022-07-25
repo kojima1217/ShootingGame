@@ -18,11 +18,6 @@ class Enemy {
         this.x += this.vx;
         this.y += this.vy;
 
-        //画面外に行ったら消える
-        if (this.x < -200 || this.x > SCREEN_W || this.y < -200 || this.y > SCREEN_H) {
-            this.kill = true;
-        }
-
         //画面が切り替わったら全部消す
         if (gameSituation != 1) {
             this.kill = true;
@@ -75,6 +70,11 @@ class EnemyShot extends Enemy {
 
     update() {
         super.update();
+
+        //画面外に行ったら消える
+        if (this.x < -200 || this.x > SCREEN_W+200 || this.y < -200 || this.y > SCREEN_H+200) {
+            this.kill = true;
+        }
 
         if (barrierOn) {
             if (circleHit(
@@ -177,6 +177,12 @@ class Bat extends Enemy {
             damageFlag = true;
         }
 
+        //画面外に行ったら消える
+        if (this.x < -200 || this.x > SCREEN_W+200 || this.y < -200 || this.y > SCREEN_H+200) {
+            if (this.shutNum != 17 && this.shutNum != 18) batKillCount++;
+            this.kill = true;
+        }
+
         if (this.hp > 0) {
             //コウモリの動作
             //batPattern(obj, turn, x1, y1, j1, x2, y2, j2, x3, y3, j3, x4, y4, j4, x5, y5, j5, x6, y6, j6) 
@@ -203,7 +209,6 @@ class Bat extends Enemy {
 
             if (this.shutNum == 17) batPattern(this, 1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
             if (this.shutNum == 18) batPattern(this, 1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
 
         } else {
             batKillCount++;
@@ -599,7 +604,7 @@ class Pumpkin extends Enemy {
                 if (this.shotCount != 1 && this.shotCount % 2 == 0) {
                     if (this.actionCount >= 120 && this.actionCount < 170) {
                         scatter(this.x + this.sizeX / 2 - 24, this.y + this.sizeY / 2 - 24, this, 5);
-                        if(seFlag){
+                        if (seFlag) {
                             pumpkinShotSE.currentTime = 0;
                             pumpkinShotSE.play();
                         }
@@ -613,8 +618,8 @@ class Pumpkin extends Enemy {
             this.active = false;
             this.move = false;
             this.killCount++;
-            if(this.killCount == 1){
-                if(seFlag){
+            if (this.killCount == 1) {
+                if (seFlag) {
                     pumpkinDeathSE.currentTime = 0;
                     pumpkinDeathSE.play();
                 }
@@ -729,7 +734,7 @@ class Ghost extends Enemy {
 
                 //カウントが溜まると弾を撃つ
                 if (this.actionCount > ghostShotCount) {
-                    if(seFlag){
+                    if (seFlag) {
                         ghostShotSE.currentTime = 0;
                         ghostShotSE.play();
                     }
@@ -754,8 +759,8 @@ class Ghost extends Enemy {
             this.vy = 0;
             this.active = false;
             this.killCount++;
-            if(this.killCount == 1){
-                if(seFlag){
+            if (this.killCount == 1) {
+                if (seFlag) {
                     ghostDeathSE.currentTime = 0;
                     ghostDeathSE.play();
                 }
@@ -779,7 +784,7 @@ class Ghost extends Enemy {
     draw() {
         if (this.hp > 0) {
             if (this.active) {
-                if (this.actionCount > ghostShotCount-20) {
+                if (this.actionCount > ghostShotCount - 20) {
                     this.snum = 32;
                 } else {
                     if (this.actionCount % 5 == 0) {
@@ -874,7 +879,7 @@ class Devil extends Enemy {
             this.vy = 0;
             this.active = false;
             this.killCount++;
-            if(this.killCount == 1 && seFlag){
+            if (this.killCount == 1 && seFlag) {
                 devilDeathSE.currentTime = 0;
                 devilDeathSE.play();
             }
@@ -1014,7 +1019,7 @@ function devilPattern(obj, x1, y1, j1, x4, y4, j4, x5, y5, j5, x6, y6, j6, reset
         if (obj.actionCount > 50 && obj.actionCount <= 150) {
             //弾連射
             rapid(obj.x + obj.sizeX / 2 - 32, obj.y + obj.sizeY / 2 - 32);
-            if(seFlag){
+            if (seFlag) {
                 devilShotSE.currentTime = 0;
                 devilShotSE.play();
             }
@@ -1031,7 +1036,7 @@ function devilPattern(obj, x1, y1, j1, x4, y4, j4, x5, y5, j5, x6, y6, j6, reset
         if (obj.actionCount > 10 && obj.actionCount <= 80) {
             //弾ばらまく
             cyclone(obj.x + obj.sizeX / 2 - 32, obj.y + obj.sizeY / 2 - 32, obj, 10, 30);
-            if(seFlag){
+            if (seFlag) {
                 devilShotSE.currentTime = 0;
                 devilShotSE.play();
             }
@@ -1146,14 +1151,14 @@ class BossSkull extends Enemy {
                         //弾ばらまく
                         if (this.actionCount >= 300 && this.actionCount < 360) {
                             cyclone(this.x + 50, this.y + 110, this, 5, 30);
-                            if(seFlag){
+                            if (seFlag) {
                                 devilShotSE.currentTime = 0;
                                 devilShotSE.play();
                             }
                         }
                         if (this.actionCount >= 700 && this.actionCount < 760) {
                             cyclone(this.x + this.sizeX - 110, this.y + 110, this, 5, 30);
-                            if(seFlag){
+                            if (seFlag) {
                                 devilShotSE.currentTime = 0;
                                 devilShotSE.play();
                             }
@@ -1309,11 +1314,11 @@ class BossHand extends Enemy {
 
             if (formation == 0 || formation == 2) {
                 //掴みかかり
-                if(this.actionCount == 220 && seFlag){
+                if (this.actionCount == 220 && seFlag) {
                     bossHandSE.currentTime = 0;
                     bossHandSE.play();
                 }
-                if(this.actionCount == 240 && seFlag){
+                if (this.actionCount == 240 && seFlag) {
                     bossHandSE.currentTime = 0;
                     bossHandSE.play();
                 }
@@ -1526,7 +1531,7 @@ function grab(objX, objY) {
 class Death extends Enemy {
     draw() {
         this.animeCount++;
-        if(this.animeCount == 1 && seFlag){
+        if (this.animeCount == 1 && seFlag) {
             bossDeathSE.currentTime = 0;
             bossDeathSE.play();
         }
@@ -1609,7 +1614,7 @@ class BossForm extends Enemy {
                             //プラズマボール発射
                             if (formCount % 40 == 0) {
                                 bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, 10, 0, 96 * 1.7, 96 * 1.7, 200));
-                                if(seFlag){
+                                if (seFlag) {
                                     bossPbSE.currentTime = 0;
                                     bossPbSE.play();
                                 }
@@ -1693,7 +1698,7 @@ class BossForm extends Enemy {
                             this.vy = -1;
                             if (formCount == 181) {
                                 bossLaser.push(new BossLaser(67, this.x + 45, this.y + 33, 0, 0, 850 * 3, 69 * 3, 200, 0));
-                                if(seFlag){
+                                if (seFlag) {
                                     bossLaserSE.currentTime = 0;
                                     bossLaserSE.play();
                                 }

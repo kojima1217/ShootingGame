@@ -29,7 +29,7 @@ function setStage() {
     if (gamethread == 1500) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 10));
     if (gamethread == 1800) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 3));
     if (gamethread == 2000) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, 150, 0, 0, 50, 50, 5));
-    if (gamethread > 2800) gameSituation = 3;
+    if (batKillCount == 160) gameSituation = 3;
   }
 
   //-----ステージ２-----

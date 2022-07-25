@@ -675,10 +675,8 @@ function gameLoop() {
     //ステージクリア
     if (gameSituation == 3) {
       if (stageClearVoFlag) {
-        if (voFlag) {
-          stageClearVo.play();
-          if (bgmFlag) stageClearBGM.play();
-        }
+        if (voFlag) stageClearVo.play();
+        if (bgmFlag) stageClearBGM.play();
         stageClearVoFlag = false;
       }
       actFontCount = 0;
@@ -757,9 +755,9 @@ function gameLoop() {
     console.log(e.message);
     con.font = "50px 'Impact'";
     con.fillStyle = "black";
-    con.fillText("致命的なエラーが発生しました。", 200, SCREEN_H/2-100);
-    con.fillText("ブラウザを更新してもダメな場合は、", 200, SCREEN_H/2);
-    con.fillText("制作者にご連絡ください。", 200, SCREEN_H/2+100);
+    con.fillText("致命的なエラーが発生しました。", 200, SCREEN_H / 2 - 100);
+    con.fillText("ブラウザを更新してもダメな場合は、", 200, SCREEN_H / 2);
+    con.fillText("制作者にご連絡ください。", 200, SCREEN_H / 2 + 100);
   }
 }
 
