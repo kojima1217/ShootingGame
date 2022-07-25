@@ -5,6 +5,9 @@
 //デバッグモードフラグ
 let Debug = false;
 
+//検証用右クリックフラグ
+let leftClickFlag = false;
+
 //難易度設定
 let difficulty = 1;//0=EASY 1=NORMAL 2=HARD
 let fireReloadAddPoint = 10;//EASY=20 NORMAL=10 HARD=5
@@ -16,6 +19,8 @@ let pumpkinHP = 3000;//EASY=2000 NORMAL=3000 HARD=5000
 let ghostShotCount = 300;//EASY=400 NORMAL=300 HARD=200
 let devilHP = 3000;//EASY=2000 NORMAL=3000 HARD=5000
 let bossHandAtackPoint = 10;//EASY=5 NORMAL=10 HARD=20
+let poCurePoint = 250;//EASY=500 NORMAL=250 HARD=250 回復処理はhpGauge.jsで
+let elCurePoint = 500;//EASY=1000 NORMAL=500 HARD=500 回復処理はhpGauge.jsで
 
 //BGMフラグ
 let bgmFlag = true;
@@ -750,6 +755,16 @@ function gameLoop() {
 
     //-----デバッグ-----
     gameDebug();
+
+    //右クリックのメニュー無効
+    if (!leftClickFlag) {
+      document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+      });
+      document.oncontextmenu = function () {
+        return false;
+      };
+    }
 
   } catch (e) {
     console.log(e.message);

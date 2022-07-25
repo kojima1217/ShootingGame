@@ -868,7 +868,7 @@ class Devil extends Enemy {
                 devilPattern(this, 50, 0, 4, 0, 50, 5, -50, 0, 6, 0, -50, 7, 1);
             }
             if (this.number == 3) {
-                devilPattern(this, 20, -30, 8, -40, -20, 9, -40, 20, 10, 40, 20, 11, 1);
+                devilPattern(this, -20, -30, 8, -40, 20, 9, 40, 20, 10, 40, -20, 11, 1);
             }
             if (this.number == 4) {
                 devilPattern(this, 0, 50, 12, -40, 0, 13, 40, 0, 14, -40, 0, 15, 4);
@@ -976,13 +976,13 @@ function devilConditions(pa, obj) {
     } else if (pa == 7) {
         return obj.y <= 200;
     } else if (pa == 8) {//pattern == 3
-        return obj.x >= SCREEN_W - 200 || obj.y <= 200;
-    } else if (pa == 9) {
         return obj.y <= 100;
-    } else if (pa == 10) {
+    } else if (pa == 9) {
         return obj.x <= 100;
-    } else if (pa == 11) {
+    } else if (pa == 10) {
         return obj.y >= SCREEN_H - 200;
+    } else if (pa == 11) {
+        return obj.x >= SCREEN_W - 200 || obj.y <= 200;
     } else if (pa == 12) {//pattern == 4
         return obj.y >= SCREEN_H / 2 - obj.sizeY / 2;
     } else if (pa == 13) {

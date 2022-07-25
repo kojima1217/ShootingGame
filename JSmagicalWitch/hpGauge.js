@@ -70,7 +70,7 @@ function HpGauge() {
         //回復アイテムの処理
         if(getPortion){
             portionCount++;
-            if(portionCount <= 250/5){//25%回復
+            if(portionCount <= poCurePoint/5){//25%回復
                 if(1000 > jiki.hpPoint) jiki.hpPoint+=5;
             }else{
                 portionCount = 0;
@@ -79,7 +79,7 @@ function HpGauge() {
         }
         if(getElixir){
             elixirCount++;
-            if(elixirCount <= 500/5){//50%回復
+            if(elixirCount <= elCurePoint/5){//50%回復
                 if(1000 > jiki.hpPoint) jiki.hpPoint+=5;
             }else{
                 elixirCount = 0;

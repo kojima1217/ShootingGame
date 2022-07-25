@@ -59,6 +59,7 @@ function mouseDown(event) {
         if (clickPositonX > 1140 && clickPositonX < SCREEN_W && clickPositonY > 0 && clickPositonY < 110 && !optionFlag) {
           gameSituation = 5;
           toggleFlag = false;
+          leftClickFlag = true;
           optionOpenSE.currentTime = 0;
           optionOpenSE.play();
         }
@@ -129,6 +130,7 @@ function mouseDown(event) {
         if (clickPositonX > 1140 && clickPositonX < SCREEN_W && clickPositonY > 0 && clickPositonY < 110 && optionFlag) {
           gameSituation = 0;
           toggleFlag = false;
+          leftClickFlag = false;
           optionCloseSE.currentTime = 0;
           optionCloseSE.play();
         }
@@ -270,15 +272,15 @@ function mouseUp(event) {
   }
 }
 
-//右クリックのメニュー無効
-if (!Debug) {
-  document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-  });
-  document.oncontextmenu = function () {
-    return false;
-  };
-}
+// //右クリックのメニュー無効
+// if (!leftClickFlag) {
+//   document.addEventListener('contextmenu', function (e) {
+//     e.preventDefault();
+//   });
+//   document.oncontextmenu = function () {
+//     return false;
+//   };
+// }
 
 let changeMagic = 0;
 //マウスホイール

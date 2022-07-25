@@ -19,6 +19,8 @@ function option() {
             ghostShotCount = 400;
             devilHP = 2000;
             bossHandAtackPoint = 5;
+            poCurePoint = 500;
+            elCurePoint = 1000;
             
             difButtonX = 120;//セレクターのX座標
 
@@ -32,6 +34,8 @@ function option() {
             ghostShotCount = 300;
             devilHP = 3000;
             bossHandAtackPoint = 10;
+            poCurePoint = 250;
+            elCurePoint = 500;
 
             difButtonX = 305;//セレクターのX座標
 
@@ -45,6 +49,8 @@ function option() {
             ghostShotCount = 200;
             devilHP = 5000;
             bossHandAtackPoint = 20;
+            poCurePoint = 250;
+            elCurePoint = 500;
 
             difButtonX = 505;//セレクターのX座標
         }

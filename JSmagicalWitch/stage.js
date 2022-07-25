@@ -108,7 +108,7 @@ function setStage() {
     //デビル
     if (gamethread == 100) devil.push(new Devil(37, SCREEN_W + 120, 100, 0, 0, 110, 80, 1));
     if (gamethread == 1100) devil.push(new Devil(37, -200, 200, 0, 0, 110, 80, 2));
-    if (gamethread == 2100) devil.push(new Devil(37, SCREEN_W / 2 - 55, SCREEN_H + 200, 0, 0, 110, 80, 3));
+    if (gamethread == 2100) devil.push(new Devil(37, SCREEN_W, SCREEN_H + 200, 0, 0, 110, 80, 3));
     if (gamethread == 3100) devil.push(new Devil(37, SCREEN_W / 2 - 55, -200, 0, 0, 110, 80, 4));
     //ゴースト
     if (gamethread == 700) {
