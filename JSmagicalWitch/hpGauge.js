@@ -95,7 +95,7 @@ function HpGauge() {
             vcon.strokeRect(838, 58, 404, 24+4);
             //HPゲージ
             vcon.fillStyle = "rgba(255,0,0,0.5)";
-            vcon.fillRect(840, 60, bossHP / 125, 20+4);
+            vcon.fillRect(840, 60, bossHP / bossHPgauge, 20+4);
             if(bossHP < 0) bossHP = 0;
         }
     }

@@ -20,6 +20,7 @@ function gameDebug() {
     con.fillText("actFontCount" + actFontCount, 20, 260);
     con.fillText("フォーメーション" + formation, 20, 280);
     con.fillText("treantCount" + treantCount, 20, 300);
+    con.fillText("左のおてて" + deathLeft, 20, 320);
   }
 }
 

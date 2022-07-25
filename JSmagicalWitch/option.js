@@ -19,6 +19,11 @@ function option() {
             ghostShotCount = 400;
             devilHP = 2000;
             bossHandAtackPoint = 5;
+            bossHandHP = 5000;
+            bossPlasmaSpeed = 10;
+            bossPlasmaRhythm = 40;
+            bossHP = 50000;
+            bossHPgauge = 125;
             poCurePoint = 500;
             elCurePoint = 1000;
             
@@ -34,6 +39,11 @@ function option() {
             ghostShotCount = 300;
             devilHP = 3000;
             bossHandAtackPoint = 10;
+            bossHandHP = 10000;
+            bossPlasmaSpeed = 20;
+            bossPlasmaRhythm = 30;
+            bossHP = 50000;
+            bossHPgauge = 125;
             poCurePoint = 250;
             elCurePoint = 500;
 
@@ -49,6 +59,11 @@ function option() {
             ghostShotCount = 200;
             devilHP = 5000;
             bossHandAtackPoint = 20;
+            bossHandHP = 30000;
+            bossPlasmaSpeed = 30;
+            bossPlasmaRhythm = 20;
+            bossHP = 100000;
+            bossHPgauge = 250;
             poCurePoint = 250;
             elCurePoint = 500;
 

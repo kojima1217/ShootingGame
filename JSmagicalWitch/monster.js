@@ -72,7 +72,7 @@ class EnemyShot extends Enemy {
         super.update();
 
         //画面外に行ったら消える
-        if (this.x < -200 || this.x > SCREEN_W+200 || this.y < -200 || this.y > SCREEN_H+200) {
+        if (this.x < -200 || this.x > SCREEN_W + 200 || this.y < -200 || this.y > SCREEN_H + 200) {
             this.kill = true;
         }
 
@@ -178,7 +178,7 @@ class Bat extends Enemy {
         }
 
         //画面外に行ったら消える
-        if (this.x < -200 || this.x > SCREEN_W+200 || this.y < -200 || this.y > SCREEN_H+200) {
+        if (this.x < -200 || this.x > SCREEN_W + 200 || this.y < -200 || this.y > SCREEN_H + 200) {
             if (this.shutNum != 17 && this.shutNum != 18) batKillCount++;
             this.kill = true;
         }
@@ -1107,7 +1107,7 @@ function devilPattern(obj, x1, y1, j1, x4, y4, j4, x5, y5, j5, x6, y6, j6, reset
 }
 
 //----------------------------------ボス：スカル----------------------------------
-let bossHP = 50000;
+
 let downFlag = false;
 let deathLeft = false;
 let deathRight = false;
@@ -1295,7 +1295,7 @@ class BossSkull extends Enemy {
 class BossHand extends Enemy {
     constructor(snum, x, y, vx, vy, sizeX, sizeY, lr) {
         super(snum, x, y, vx, vy, sizeX, sizeY);
-        this.hp = 5000;
+        this.hp = bossHandHP;
         this.active = false;
         this.leftRight = lr;//0=左 1=右
         this.actionCount = 0;
@@ -1612,8 +1612,8 @@ class BossForm extends Enemy {
                         if (this.y <= SCREEN_H - this.sizeY + 100) {//ここの100は安置潰し
                             this.vy = 2;
                             //プラズマボール発射
-                            if (formCount % 40 == 0) {
-                                bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, 10, 0, 96 * 1.7, 96 * 1.7, 200));
+                            if (formCount % bossPlasmaRhythm == 0) {
+                                bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, bossPlasmaSpeed, 0, 96 * 1.7, 96 * 1.7, 200));
                                 if (seFlag) {
                                     bossPbSE.currentTime = 0;
                                     bossPbSE.play();
@@ -1627,7 +1627,7 @@ class BossForm extends Enemy {
                         if (this.y >= 0 - 100) {
                             this.vy = -2;
                             //プラズマボール発射
-                            if (formCount % 40 == 0) bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, -10, 0, 96 * 1.7, 96 * 1.7, 200));
+                            if (formCount % bossPlasmaRhythm == 0) bossPlasma.push(new BossPlasmaBall(63, this.x, this.y + this.sizeY / 2 - 96 * 1.7 / 2, -bossPlasmaSpeed, 0, 96 * 1.7, 96 * 1.7, 200));
                         } else {
                             this.vy = 0;
                         }

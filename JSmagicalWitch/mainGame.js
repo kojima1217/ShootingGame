@@ -19,6 +19,11 @@ let pumpkinHP = 3000;//EASY=2000 NORMAL=3000 HARD=5000
 let ghostShotCount = 300;//EASY=400 NORMAL=300 HARD=200
 let devilHP = 3000;//EASY=2000 NORMAL=3000 HARD=5000
 let bossHandAtackPoint = 10;//EASY=5 NORMAL=10 HARD=20
+let bossHandHP = 10000;//EASY=5000 NORMAL=10000 HARD=30000
+let bossPlasmaSpeed = 20;//EASY=10 NORMAL=20 HARD=30
+let bossPlasmaRhythm = 30;//EASY=40 NORMAL=30 HARD=20
+let bossHP = 50000;//EASY=50000 NORMAL=50000 HARD=100000
+let bossHPgauge = 125;//EASY=125 NORMAL=125 HARD=250
 let poCurePoint = 250;//EASY=500 NORMAL=250 HARD=250 回復処理はhpGauge.jsで
 let elCurePoint = 500;//EASY=1000 NORMAL=500 HARD=500 回復処理はhpGauge.jsで
 
