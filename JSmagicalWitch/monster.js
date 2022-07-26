@@ -1427,14 +1427,14 @@ class BossHand extends Enemy {
             this.vy = 0;
             this.active = false;
             this.killCount++;
+            if (this.leftRight == 0) deathLeft = true;
+            if (this.leftRight == 1) deathRight = true;
             if (this.killCount == 20) bossDeath.push(new Death(81, this.x + this.sizeX / 2 + rand(-100, 100), this.y + this.sizeY / 2 + rand(-100, 100), 0, 0, 68, 67));
             if (this.killCount == 40) bossDeath.push(new Death(81, this.x + this.sizeX / 2 + rand(-100, 100), this.y + this.sizeY / 2 + rand(-100, 100), 0, 0, 68, 67));
             if (this.killCount == 70) bossDeath.push(new Death(81, this.x + this.sizeX / 2 + rand(-100, 100), this.y + this.sizeY / 2 + rand(-100, 100), 0, 0, 68, 67));
             if (this.killCount == 90) bossDeath.push(new Death(81, this.x + this.sizeX / 2 + rand(-100, 100), this.y + this.sizeY / 2 + rand(-100, 100), 0, 0, 68, 67));
             if (this.killCount > 100) {
                 if (formation == 0 || formation == 2) downFlag = true;
-                if (this.leftRight == 0) deathLeft = true;
-                if (this.leftRight == 1) deathRight = true;
                 this.kill = true;
             }
         }
