@@ -213,7 +213,7 @@ class Bat extends Enemy {
         } else {
             batKillCount++;
             if (stagethred == 1 && batKillCount == 80) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
-            if (stagethred == 9 && batKillCount == 10) {
+            if (stagethred == 9 && batKillCount == bossBatCount) {
                 itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
                 batKillCount = 0;
             }
@@ -1107,7 +1107,7 @@ function devilPattern(obj, x1, y1, j1, x4, y4, j4, x5, y5, j5, x6, y6, j6, reset
 }
 
 //----------------------------------ボス：スカル----------------------------------
-
+let bossHP = 50000;
 let downFlag = false;
 let deathLeft = false;
 let deathRight = false;
@@ -1121,6 +1121,7 @@ class BossSkull extends Enemy {
         this.killCount = 0;
         this.active = false;//口を開けたらtrue
         this.downCount = 0;//口を開けている時間
+        bossHP = bossMAXHP;
 
         //弾をばらまく用
         this.dr = 90;
@@ -1250,7 +1251,7 @@ class BossSkull extends Enemy {
 
         //画面が切り替わったら全部消す
         if (gameSituation != 1) {
-            bossHP = 50000;
+            bossHP = bossMAXHP;
             downFlag = false;
             deathLeft = false;
             deathRight = false;
