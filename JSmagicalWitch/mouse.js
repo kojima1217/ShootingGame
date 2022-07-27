@@ -272,15 +272,15 @@ function mouseUp(event) {
   }
 }
 
-// //右クリックのメニュー無効
-// if (!leftClickFlag) {
-//   document.addEventListener('contextmenu', function (e) {
-//     e.preventDefault();
-//   });
-//   document.oncontextmenu = function () {
-//     return false;
-//   };
-// }
+//右クリックのメニュー無効
+if (!leftClickFlag) {
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+  document.oncontextmenu = function () {
+    return false;
+  };
+}
 
 let changeMagic = 0;
 //マウスホイール

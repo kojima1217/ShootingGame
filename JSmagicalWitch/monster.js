@@ -1315,11 +1315,11 @@ class BossHand extends Enemy {
 
             if (formation == 0 || formation == 2) {
                 //掴みかかり
-                if (this.actionCount == 220 && seFlag) {
+                if (this.actionCount == 220 && seFlag && bossHP != 0) {
                     bossHandSE.currentTime = 0;
                     bossHandSE.play();
                 }
-                if (this.actionCount == 240 && seFlag) {
+                if (this.actionCount == 240 && seFlag && bossHP != 0) {
                     bossHandSE.currentTime = 0;
                     bossHandSE.play();
                 }
@@ -1745,6 +1745,8 @@ class BossForm extends Enemy {
 
         //画面が切り替わったら全部消す
         if (gameSituation != 1) {
+            bossLaserSE.pause();
+            bossLaserSE.currentTime = 0;
             this.kill = true;
         }
     }
@@ -1825,7 +1827,7 @@ class BossLaser extends EnemyShot {
             this.kill = true;
         }
 
-        if (checkHit(
+        if (this.animeCount > 10 && checkHit(
             this.x - 50, this.y + 40, this.sizeX + 100, this.sizeY - 40,
             jiki.position.x, jiki.position.y, jiki.size, jiki.size
         )) {

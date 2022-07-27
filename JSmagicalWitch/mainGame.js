@@ -762,23 +762,14 @@ function gameLoop() {
     //-----デバッグ-----
     gameDebug();
 
-    //右クリックのメニュー無効
-    if (!leftClickFlag) {
-      document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-      });
-      document.oncontextmenu = function () {
-        return false;
-      };
-    }
-
   } catch (e) {
     console.log(e.message);
     con.font = "50px 'Impact'";
     con.fillStyle = "black";
-    con.fillText("致命的なエラーが発生しました。", 200, SCREEN_H / 2 - 100);
-    con.fillText("ブラウザを更新してもダメな場合は、", 200, SCREEN_H / 2);
-    con.fillText("制作者にご連絡ください。", 200, SCREEN_H / 2 + 100);
+    con.fillText(e.message, 200, SCREEN_H / 2 - 150);
+    con.fillText("致命的なエラーが発生しました。", 200, SCREEN_H / 2 - 50);
+    con.fillText("ブラウザを更新してもダメな場合は、", 200, SCREEN_H / 2 + 50);
+    con.fillText("制作者にご連絡ください。", 200, SCREEN_H / 2 + 150);
   }
 }
 
