@@ -731,8 +731,8 @@ function gameLoop() {
           if (voFlag) allStageClearVo.play();
         }
         if (lastCount > 200) {
-          vcon.drawImage(allClearFont, 0, 0, 690, 180, (SCREEN_W - 690 * 1.5) / 2, 100, 690 * 1.5, 180 * 1.5);
-          vcon.drawImage(credit, 0, 0, 761, 276, SCREEN_W / 2 - 761 / 2, SCREEN_H - 400, 761, 276);
+          vcon.drawImage(allClearFont, 0, 0, 690, 180, (SCREEN_W - 690 * 1.5) / 2, 50, 690 * 1.5, 180 * 1.5);
+          vcon.drawImage(credit, 0, 0, 907, 416, SCREEN_W / 2 - 907 / 2, SCREEN_H - 460, 907, 416);
         }
       } else {
         if (lastCount == 1) {
