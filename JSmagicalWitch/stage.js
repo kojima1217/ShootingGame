@@ -29,7 +29,32 @@ function setStage() {
     if (gamethread == 1500) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 10));
     if (gamethread == 1800) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 3));
     if (gamethread == 2000) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, 150, 0, 0, 50, 50, 5));
-    if (batKillCount == 160) gameSituation = 3;
+    //クリア条件
+    if (batKillCount == 160 && difficulty != 3) gameSituation = 3;
+
+    //超むずかしいモード
+    if (difficulty == 3) {
+      //コウモリ追加
+      if (gamethread == 100) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 3));
+      if (gamethread == 300) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 10));
+      if (gamethread == 600) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, 150, 0, 0, 50, 50, 15));
+      if (gamethread == 900) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 14));
+      if (gamethread == 1300) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 8));
+      if (gamethread == 1500) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 11));
+      if (gamethread == 1800) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, 150, 0, 0, 50, 50, 1));
+      if (gamethread == 2000) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 16));
+      //パンプキン追加
+      if (gamethread == 100) pumpkin.push(new Pumpkin(18, SCREEN_W / 2 - 40, SCREEN_H + 10, 0, 0, 80, 70));
+      if (gamethread == 100) pumpkin.push(new Pumpkin(18, SCREEN_W / 2 - 40, -80, 0, 0, 80, 70));
+      if (gamethread == 600) pumpkin.push(new Pumpkin(18, -90, SCREEN_H + 10, 0, 0, 80, 70));
+      if (gamethread == 600) pumpkin.push(new Pumpkin(18, SCREEN_W + 10, -80, 0, 0, 80, 70));
+      if (gamethread == 1300) pumpkin.push(new Pumpkin(18, SCREEN_W + 10, SCREEN_H / 2 - 70 / 2, 0, 0, 80, 70));
+      if (gamethread == 1300) pumpkin.push(new Pumpkin(18, -90, SCREEN_H / 2 - 70 / 2, 0, 0, 80, 70));
+      if (gamethread == 1800) pumpkin.push(new Pumpkin(18, SCREEN_W / 2 - 40, SCREEN_H + 10, 0, 0, 80, 70));
+      if (gamethread == 1800) pumpkin.push(new Pumpkin(18, SCREEN_W / 2 - 40, -80, 0, 0, 80, 70));
+      //クリア条件
+      if (batKillCount == 320 && pumpkinKillCount == 8) gameSituation = 3;
+    }
   }
 
   //-----ステージ２-----
@@ -52,7 +77,29 @@ function setStage() {
     if (gamethread == 1200) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 4));
     if (gamethread == 1700) gamethread = 0;
     //クリア条件
-    if (treantKillCount == 4) gameSituation = 3;
+    if (treantKillCount == 4 && difficulty != 3) gameSituation = 3;
+
+    //超むずかしいモード
+    if (difficulty == 3) {
+      //ゴースト追加
+      if (gamethread == 100) {
+        ghost.push(new Ghost(30, SCREEN_W - 200 - 70 / 2, SCREEN_H / 2 - 90 / 2, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, 150 - 70 / 2, SCREEN_H - 100 - 90 / 2, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, 400, SCREEN_H / 2, 0, 0, 70, 90));
+      }
+      if (gamethread == 600) {
+        ghost.push(new Ghost(30, 300 - 70 / 2, 200, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, SCREEN_W - 500 - 70 / 2, SCREEN_H - 200 - 90 / 2, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, SCREEN_W / 2 + 200, SCREEN_H / 2 - 100, 0, 0, 70, 90));
+      }
+      if (gamethread == 1100) {
+        ghost.push(new Ghost(30, 300 - 70 / 2, 200, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, SCREEN_W - 500 - 70 / 2, SCREEN_H - 200 - 90 / 2, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, SCREEN_W / 2 - 120, 150, 0, 0, 70, 90));
+      }
+      //クリア条件
+      if (treantKillCount == 4 && ghostKillCount == 9) gameSituation = 3;
+    }
   }
 
   //-----ステージ３-----
@@ -96,7 +143,29 @@ function setStage() {
     if (gamethread == 400) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 10));
     if (gamethread == 1500) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 8));
     //クリア条件
-    if (treantKillCount == 3 && ghostKillCount == 6 && pumpkinKillCount == 4) gameSituation = 3;
+    if (treantKillCount == 3 && ghostKillCount == 6 && pumpkinKillCount == 4 && difficulty != 3) gameSituation = 3;
+
+    //超むずかしいモード
+    if (difficulty == 3) {
+      //コウモリ追加
+      if (gamethread == 400) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, 150, 0, 0, 50, 50, 15));
+      if (gamethread == 900) shutugen.push(new Shutugen(5, 150, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 9));
+      if (gamethread == 1000) shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 14));
+      if (gamethread == 1400) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 12));
+      //ゴースト追加
+      if (gamethread == 200) ghost.push(new Ghost(30, SCREEN_W / 2 + 200, SCREEN_H / 2 - 100, 0, 0, 70, 90));
+      if (gamethread == 1000) ghost.push(new Ghost(30, 400, SCREEN_H / 2, 0, 0, 70, 90));
+      if (gamethread == 1800) {
+        ghost.push(new Ghost(30, SCREEN_W / 2 - 70 / 2, SCREEN_H / 2 - 90 / 2 + 200, 0, 0, 70, 90));
+        ghost.push(new Ghost(30, SCREEN_W / 2 - 70 / 2, SCREEN_H / 2 - 90 / 2 - 200, 0, 0, 70, 90));
+      }
+      //パンプキン追加
+      if (gamethread == 700) pumpkin.push(new Pumpkin(18, -90, SCREEN_H - 300, 0, 0, 80, 70));
+      if (gamethread == 1000) pumpkin.push(new Pumpkin(18, -90, SCREEN_H + 10, 0, 0, 80, 70));
+      if (gamethread == 2000) pumpkin.push(new Pumpkin(18, SCREEN_W + 10, SCREEN_H + 10, 0, 0, 80, 70));
+      //クリア条件
+      if (treantKillCount == 3 && ghostKillCount == 10 && pumpkinKillCount == 7) gameSituation = 3;
+    }
   }
 
   //-----ステージ４-----
@@ -139,7 +208,18 @@ function setStage() {
       shutugen.push(new Shutugen(5, 150, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 3));
     }
     //クリア条件
-    if (ghostKillCount == 8 && devilKillCount == 4) gameSituation = 3;
+    if (ghostKillCount == 8 && devilKillCount == 4 && difficulty != 3) gameSituation = 3;
+
+    //超むずかしいモード
+    if (difficulty == 3) {
+      //デビル追加
+      if (gamethread == 200) devil.push(new Devil(37, SCREEN_W, SCREEN_H + 200, 0, 0, 110, 80, 3));
+      if (gamethread == 800) devil.push(new Devil(37, SCREEN_W / 2 - 55, -200, 0, 0, 110, 80, 4));
+      if (gamethread == 1700) devil.push(new Devil(37, SCREEN_W + 120, 100, 0, 0, 110, 80, 1));
+      if (gamethread == 3000) devil.push(new Devil(37, -200, 200, 0, 0, 110, 80, 2));
+      //クリア条件
+      if (ghostKillCount == 8 && devilKillCount == 8) gameSituation = 3;
+    }
   }
 
   //ボス戦
@@ -156,6 +236,19 @@ function setStage() {
       bossForm.push(new BossForm(60, SCREEN_W, SCREEN_H / 2 - 161 * 1.7 / 2, 0, 0, 146 * 1.7, 161 * 1.7, 1));
     }
     if (gamethread == 150) bossHpOnFlag = true;
+    if (gamethread > 1000) gamethread = 200;
+
+    //超むずかしいモード
+    if (difficulty == 3) {
+      if (formation == 0 || formation == 2) {
+        if (gamethread == 300) {
+          ghost.push(new Ghost(30, SCREEN_W / 2 - 70 / 2 - 400, SCREEN_H / 2 - 90 / 2, 0, 0, 70, 90));
+          ghost.push(new Ghost(30, SCREEN_W / 2 - 70 / 2 + 400, SCREEN_H / 2 - 90 / 2, 0, 0, 70, 90));
+        }
+      } else {
+        gamethread = 200;
+      }
+    }
   }
 
 }

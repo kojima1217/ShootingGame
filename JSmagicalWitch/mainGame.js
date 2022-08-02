@@ -9,7 +9,7 @@ let Debug = false;
 let leftClickFlag = false;
 
 //難易度設定
-let difficulty = 1;//0=EASY 1=NORMAL 2=HARD
+let difficulty = 1;//0=EASY 1=NORMAL 2=HARD 3=DEADLY
 let fireReloadAddPoint = 10;//EASY=20 NORMAL=10 HARD=5
 let thunderReloadAddPoint = 5;//EASY=10 NORMAL=5 HARD=2
 let iceReloadAddPoint = 2;//EASY=5 NORMAL=2 HARD=1
@@ -27,6 +27,9 @@ let bossMAXHP = 50000;//EASY=50000 NORMAL=50000 HARD=100000
 let bossHPgauge = 125;//EASY=125 NORMAL=125 HARD=250
 let poCurePoint = 250;//EASY=500 NORMAL=250 HARD=250 回復処理はhpGauge.jsで
 let elCurePoint = 500;//EASY=1000 NORMAL=500 HARD=500 回復処理はhpGauge.jsで
+
+//超むずかしい難易度カウント
+let deadlyCount = 0;
 
 //BGMフラグ
 let bgmFlag = true;
@@ -113,6 +116,8 @@ const allStageClearVo = new Audio("sounds/vo/yatta.wav");
 const thankVo = new Audio("sounds/vo/arigatou.wav");
 const damageVo1 = new Audio("sounds/vo/damageVo1.wav");
 const damageVo2 = new Audio("sounds/vo/damageVo2.wav");
+const deadlyVo = new Audio("sounds/vo/deadly.wav");
+const sugoiVo = new Audio("sounds/vo/sugoi.wav");
 //BGM
 const act1BGM = new Audio("sounds/bgm/act1.wav");
 const act2BGM = new Audio("sounds/bgm/act2.wav");
@@ -728,7 +733,13 @@ function gameLoop() {
           }
         }
         if (lastCount == 200) {
-          if (voFlag) allStageClearVo.play();
+          if (voFlag) {
+            if (difficulty != 3) {
+              allStageClearVo.play();
+            } else {
+              sugoiVo.play();
+            }
+          }
         }
         if (lastCount > 200) {
           vcon.drawImage(allClearFont, 0, 0, 690, 180, (SCREEN_W - 690 * 1.5) / 2, 50, 690 * 1.5, 180 * 1.5);
@@ -740,6 +751,11 @@ function gameLoop() {
         }
         vcon.drawImage(clearWitch, 0, 150, 1024, 1024, 0, 0, 1024 * 1.3, 1024 * 1.3);
         vcon.drawImage(thank, 0, 0, 600, 100, 680, 680, 600, 100);
+        if (difficulty == 2) {
+          vcon.font = "20px 'Impact'";
+          vcon.fillStyle = "white";
+          vcon.fillText("「むずかしい」を５回クリックすると・・・？", 830, SCREEN_H - 110);
+        }
       }
       vcon.drawImage(waku, 0, 0, SCREEN_W, SCREEN_H, -20, -18, 1393, 818);
     }

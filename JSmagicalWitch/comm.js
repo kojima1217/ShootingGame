@@ -21,6 +21,8 @@ function gameDebug() {
     con.fillText("フォーメーション" + formation, 20, 280);
     con.fillText("treantCount" + treantCount, 20, 300);
     con.fillText("左のおてて" + deathLeft, 20, 320);
+    con.fillText("難易度" + difficulty, 20, 340);
+    con.fillText("deadlyCount" + deadlyCount, 20, 360);
   }
 }
 

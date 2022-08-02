@@ -71,6 +71,7 @@ function option() {
             elCurePoint = 500;
 
             difButtonX = 505;//セレクターのX座標
+
         }
         
         //セレクターのX座標

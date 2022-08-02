@@ -212,8 +212,8 @@ class Bat extends Enemy {
 
         } else {
             batKillCount++;
-            if (stagethred == 1 && batKillCount == 80) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
-            if (stagethred == 9 && batKillCount == bossBatCount) {
+            if (stagethred == 1 && batKillCount == 80 && difficulty != 3) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
+            if (stagethred == 9 && batKillCount == bossBatCount && difficulty != 3) {
                 itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
                 batKillCount = 0;
             }
@@ -492,10 +492,10 @@ class Treant extends Enemy {
             }
             if (this.killCount > 100) {
                 treantKillCount++;
-                if (stagethred == 3 && this.x > 500 && this.y > 500) {
+                if (stagethred == 3 && this.x > 500 && this.y > 500 && difficulty != 3) {
                     itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
                 }
-                if (stagethred == 5 && this.x > 500 && this.y < 500) {
+                if (stagethred == 5 && this.x > 500 && this.y < 500 && difficulty != 3) {
                     itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
                 }
                 this.kill = true;
@@ -626,7 +626,7 @@ class Pumpkin extends Enemy {
             }
             if (this.killCount > 36) {
                 pumpkinKillCount++;
-                if (pumpkinKillCount == 3) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
+                if (pumpkinKillCount == 3 && difficulty != 3) itemPortion.push(new Portion(30, this.x + this.sizeX / 2 - 45 * 0.8 / 2, this.y + this.sizeY / 2 - 67 * 0.8 / 2, 45 * 0.8, 67 * 0.8));
                 this.kill = true;
             }
         }
@@ -726,11 +726,24 @@ class Ghost extends Enemy {
                     this.vy = rand(-5, 5);
                 }
 
-                //画面外にはいかない
-                if (this.x <= 0) this.x = 0;
-                if (this.x >= SCREEN_W - this.sizeX) this.x = SCREEN_W - this.sizeX
-                if (this.y <= 0) this.y = 0;
-                if (this.y >= SCREEN_H - this.sizeY) this.y = SCREEN_H - this.sizeY;
+                if (stagethred != 9) {
+                    //画面外にはいかない
+                    if (this.x <= 0) this.x = 0;
+                    if (this.x >= SCREEN_W - this.sizeX) this.x = SCREEN_W - this.sizeX
+                    if (this.y <= 0) this.y = 0;
+                    if (this.y >= SCREEN_H - this.sizeY) this.y = SCREEN_H - this.sizeY;
+                } else {
+                    //ボス戦ではボスの方へ行かない
+                    if (this.x < SCREEN_W / 2) {
+                        if (this.x <= 0) this.x = 0;
+                        if (this.x >= 400) this.x = 400;
+                    } else {
+                        if (this.x <= SCREEN_W - 400 - this.sizeX) this.x = SCREEN_W - 400 - this.sizeX;
+                        if (this.x >= SCREEN_W - this.sizeX) this.x = SCREEN_W - this.sizeX;
+                    }
+                    if (this.y <= 150) this.y = 150;
+                    if (this.y >= SCREEN_H - 200 - this.sizeY) this.y = SCREEN_H - 200 - this.sizeY;
+                }
 
                 //カウントが溜まると弾を撃つ
                 if (this.actionCount > ghostShotCount) {
@@ -767,7 +780,7 @@ class Ghost extends Enemy {
             }
             if (this.killCount > 30) {
                 ghostKillCount++;
-                if (stagethred == 7 && ghostKillCount == 7) {
+                if (stagethred == 7 && ghostKillCount == 7 && difficulty != 3) {
                     itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
                 }
                 this.kill = true;
@@ -885,7 +898,7 @@ class Devil extends Enemy {
             }
             if (this.killCount > 40) {
                 devilKillCount++;
-                if (devilKillCount == 2) itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
+                if (devilKillCount == 2 && difficulty != 3) itemElixir.push(new Elixir(31, this.x + this.sizeX / 2 - 50 * 0.8 / 2, this.y + this.sizeY / 2 - 68 * 0.8 / 2, 50 * 0.8, 68 * 0.8));
                 this.kill = true;
             }
         }

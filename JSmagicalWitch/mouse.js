@@ -146,9 +146,19 @@ function mouseDown(event) {
           optionSelectSE.play();
         }
         if (clickPositonX > 525 && clickPositonX < 695 && clickPositonY > 250 && clickPositonY < 410) {
-          difficulty = 2;
-          optionSelectSE.currentTime = 0;
-          optionSelectSE.play();
+          deadlyCount++;
+          if(deadlyCount >= 5){
+            difficulty = 3;
+            deadlyVo.currentTime = 0;
+            deadlyVo.play();
+            deadlyCount = 0;
+          }else{
+            difficulty = 2;
+            optionSelectSE.currentTime = 0;
+            optionSelectSE.play();
+          }
+        }else{
+          deadlyCount = 0;
         }
         //開始ステージ選択
         if (clickPositonX > 130 && clickPositonX < 220 && clickPositonY > 520 && clickPositonY < 640) {
