@@ -75,7 +75,9 @@ function setStage() {
     if (gamethread == 300) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 11));
     if (gamethread == 1200) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 2));
     if (gamethread == 1200) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 4));
-    if (gamethread == 1700) gamethread = 0;
+    if (gamethread == 2000) shutugen.push(new Shutugen(5, SCREEN_W / 2 - 50 / 2, SCREEN_H / 2 - 50 / 2, 0, 0, 50, 50, 11));
+    if (gamethread == 2900) shutugen.push(new Shutugen(5, 150, 150, 0, 0, 50, 50, 2));
+    if (gamethread == 2900) shutugen.push(new Shutugen(5, SCREEN_W - 150 - 50 / 2, SCREEN_H - 150 - 50 / 2, 0, 0, 50, 50, 4));
     //クリア条件
     if (treantKillCount == 4 && difficulty != 3) gameSituation = 3;
 
