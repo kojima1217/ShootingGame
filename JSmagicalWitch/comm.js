@@ -139,7 +139,7 @@ CharacterShot.prototype.move = function () {
     this.alive = false;
     bossHP-=this.shotAttackPoint;
   }
-  if (attackDamage(bossHand, this.position.x, this.position.y, this.size, this.shotAttackPoint, 60, 60, -120, -120)) {
+  if (attackDamage(bossHand, this.position.x, this.position.y, this.size, this.shotAttackPoint, 60, 60, -120, -100)) {
     hitEf.push(new HitEffect(17, this.position.x - 32 + rand(-10,10), this.position.y -32 + rand(-10,10), 0, 0, 65, 65));
     this.alive = false;
   }
@@ -150,7 +150,7 @@ CharacterShot.prototype.move = function () {
         this.position.x, this.position.y, this.size, this.size,
         bossSkull[i].x + 60, bossSkull[i].y + 30, bossSkull[i].sizeX -120, bossSkull[i].sizeY -100
       )) {
-        this.alive = false;
+        if(bossHP > 0) this.alive = false;
         break;
       }
     }

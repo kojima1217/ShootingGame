@@ -70,7 +70,7 @@ class FireBlast {
       explod.push(new Explosion(this.x, this.y));
       this.kill = true;
     }
-    if (attackDamage(bossHand, this.x, this.y, this.size, 0, 60, 60, -120, -120)) {
+    if (attackDamage(bossHand, this.x, this.y, this.size, 0, 60, 60, -120, -100)) {
       explod.push(new Explosion(this.x, this.y));
       this.kill = true;
     }
@@ -171,7 +171,7 @@ class Explosion {
     if (attackDamage(bossSkull, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 102, 260, -204, -300)) {
       bossHP -= this.attackPoint;
     }
-    attackDamage(bossHand, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 60, 60, -120, -120);
+    attackDamage(bossHand, this.x - this.sizeX / 2 + 80, this.y - this.sizeY / 2 + 80, this.sizeX / 2 + 80, this.attackPoint, 60, 60, -120, -100);
 
     //(obj,sprite,x,y,size,attack,hoseiX,hoseiY,hoseiSX,hoseiSY,jyoukaX,jyoukaY)
     // for (let i = 0; i < bat.length; i++) {
@@ -420,7 +420,7 @@ class ThunderHantei {
     if (attackDamage(bossSkull, this.x, this.y, this.size, this.attackPoint, 102, 260, -204, -300)) {
       bossHP -= this.attackPoint;
     }
-    attackDamage(bossHand, this.x, this.y, this.size, this.attackPoint, 60, 60, -120, -120);
+    attackDamage(bossHand, this.x, this.y, this.size, this.attackPoint, 60, 60, -120, -100);
     // for (let i = 0; i < bat.length; i++) {
     //   if (!bat[i].kill) {
     //     if (checkHit(
