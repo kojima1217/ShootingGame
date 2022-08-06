@@ -1483,7 +1483,7 @@ class BossHand extends Enemy {
                         if (this.leftRight == 1) this.snum = 53;
                         drawSprite(this.snum, this.x, this.y, 2);
                     }
-                } else if (this.actionCount < 250) {
+                } else if (this.actionCount < 220) {
                     if (this.actionCount % 30 == 0) {
                         if (this.leftRight == 0) this.snum = 50;
                         if (this.leftRight == 1) this.snum = 53;
@@ -1494,6 +1494,10 @@ class BossHand extends Enemy {
                         if (this.leftRight == 0) this.snum = 52;
                         if (this.leftRight == 1) this.snum = 55;
                     }
+                    drawSprite(this.snum, this.x, this.y, 2);
+                } else if (this.actionCount < 250) {
+                    if (this.leftRight == 0) this.snum = 52;
+                    if (this.leftRight == 1) this.snum = 53;
                     drawSprite(this.snum, this.x, this.y, 2);
                 } else {
                     if (this.actionCount < 300) {
