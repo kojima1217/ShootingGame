@@ -44,7 +44,7 @@ function mouseDown(event) {
   clickPositonX = clickX - cX;
   clickPositonY = clickY - cY;
   event.preventDefault();
-  if (event.which == 1) {
+  if (event.which == 1 && !errorFlag) {//エラーが起きていない時のみ機能
     console.log("左クリック");
     if (toggleFlag) {
       if (gameSituation == 0) {//スタート画面
@@ -226,7 +226,7 @@ function mouseDown(event) {
   if (event.which == 2) {
     console.log("中クリック");
   }
-  if (event.which == 3 && gameSituation == 1 && stopStage) {
+  if (event.which == 3 && gameSituation == 1 && stopStage && !errorFlag) {
     console.log("右クリック");
     //fire = false;
 

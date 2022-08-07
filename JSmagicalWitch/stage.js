@@ -11,8 +11,8 @@ let devilKillCount = 0;
 let soundsCount = 0;
 
 function setStage() {
-  if (stopStage) gamethread++;
-  soundsCount++;
+  if (stopStage && !errorFlag) gamethread++;
+  if (!errorFlag) soundsCount++;
 
   //-----ステージ１-----
   if (stagethred == 1) {

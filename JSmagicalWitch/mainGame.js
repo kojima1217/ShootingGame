@@ -8,6 +8,9 @@ let Debug = false;
 //検証用右クリックフラグ
 let leftClickFlag = false;
 
+//エラー発生フラグ
+let errorFlag = false;
+
 //難易度設定
 let difficulty = 1;//0=EASY 1=NORMAL 2=HARD 3=DEADLY
 let fireReloadAddPoint = 10;//EASY=20 NORMAL=10 HARD=5
@@ -611,41 +614,43 @@ function gameLoop() {
     }
 
     //ゲーム状況に影響されないようgameSituationの外に置く
-    //自機ダメージ判定
-    jikiDamage();
-    drawJiki();
-    //ステージ背景の動き
-    update_on(stageSituation);
-    //魔法の動き
-    update_on(fireBl);
-    update_on(explod);
-    update_on(thHantei);
-    update_on(thGra);
-    draw_on(thGra);//サンダーソードのグラはここじゃないとダメ
-    update_on(iceBa);
-    //敵の動き
-    update_on(bat);//コウモリ
-    //update_on(batShot);//コウモリの弾
-    update_on(jyouka);//コウモリ浄化
-    update_on(hitEf);
-    update_on(shutugen);
-    update_on(treant);
-    update_on(treantShot);
-    update_on(pumpkin);
-    update_on(pumpkinShot);
-    update_on(ghost);
-    update_on(ghostShot);
-    update_on(devil);
-    update_on(bossSkull);
-    update_on(bossHand);
-    update_on(bossDeath);
-    update_on(devilShot);
-    update_on(bossForm);
-    update_on(bossPlasma);
-    update_on(bossLaser);
-    update_on(itemPortion);
-    update_on(itemElixir);
-    update_on(itemEffect);
+    if (!errorFlag) {
+      //自機ダメージ判定
+      jikiDamage();
+      drawJiki();
+      //ステージ背景の動き
+      update_on(stageSituation);
+      //魔法の動き
+      update_on(fireBl);
+      update_on(explod);
+      update_on(thHantei);
+      update_on(thGra);
+      draw_on(thGra);//サンダーソードのグラはここじゃないとダメ
+      update_on(iceBa);
+      //敵の動き
+      update_on(bat);//コウモリ
+      //update_on(batShot);//コウモリの弾
+      update_on(jyouka);//コウモリ浄化
+      update_on(hitEf);
+      update_on(shutugen);
+      update_on(treant);
+      update_on(treantShot);
+      update_on(pumpkin);
+      update_on(pumpkinShot);
+      update_on(ghost);
+      update_on(ghostShot);
+      update_on(devil);
+      update_on(bossSkull);
+      update_on(bossHand);
+      update_on(bossDeath);
+      update_on(devilShot);
+      update_on(bossForm);
+      update_on(bossPlasma);
+      update_on(bossLaser);
+      update_on(itemPortion);
+      update_on(itemElixir);
+      update_on(itemEffect);
+    }
 
     //オープニング画面
     if (gameSituation == 0) {
@@ -780,12 +785,15 @@ function gameLoop() {
 
   } catch (e) {
     console.log(e.message);
-    con.font = "50px 'Impact'";
+    con.fillStyle = "white";
+    con.fillRect(0, 0, SCREEN_W, SCREEN_H);
+    con.font = "20px 'MSゴシック'";
     con.fillStyle = "black";
-    con.fillText(e.message, 200, SCREEN_H / 2 - 150);
-    con.fillText("致命的なエラーが発生しました。", 200, SCREEN_H / 2 - 50);
-    con.fillText("ブラウザを更新してもダメな場合は、", 200, SCREEN_H / 2 + 50);
-    con.fillText("制作者にご連絡ください。", 200, SCREEN_H / 2 + 150);
+    con.fillText(e.message, 20, SCREEN_H / 2 - 150);
+    con.fillText("致命的なエラーが発生しました。", 100, SCREEN_H / 2 - 20);
+    con.fillText("ブラウザを更新してもダメな場合は、", 100, SCREEN_H / 2 + 20);
+    con.fillText("制作者にご連絡ください。", 100, SCREEN_H / 2 + 60);
+    errorFlag = true;
   }
 }
 
